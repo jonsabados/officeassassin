@@ -15,7 +15,6 @@
     </properties>
 
     <build>
-        <finalName>rest</finalName>
         <plugins>
             <plugin>
                 <groupId>org.scala-tools</groupId>
