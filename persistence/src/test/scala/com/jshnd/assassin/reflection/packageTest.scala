@@ -11,7 +11,7 @@ import scala.beans.BeanProperty
 @RunWith(classOf[JUnitRunner])
 class packageTest extends FunSpec {
 
-  class TestInput(nonAnnotated: String, @BeanProperty @(TestAnnotation @field)(propA = "a", propB = "b") var annotated: String) {
+  case class TestInput(nonAnnotated: String, @(TestAnnotation @field)(propA = "a", propB = "b") annotated: String) {
 
     @TestAnnotationTwo
     @TestAnnotation(propA = "innerA", propB = "innerB")
@@ -21,38 +21,46 @@ class packageTest extends FunSpec {
 
   }
 
+  class TestInputExtension(foo: String, propA: String) extends TestInput(foo, propA) {
+
+  }
+
+  def annotationToString(annotation: Annotation):String = annotation match {
+    case a: TestAnnotation => "1" + a.propA() + a.propB()
+    case _: TestAnnotationTwo => "2"
+    case _ => fail("Unexpected annotation: " + annotation)
+  }
+
   describe("fieldAnnotations") {
 
-    val input = new TestInput("no", "yes")
+    it("returns expected data") {
+      val input = new TestInput("no", "yes")
 
-    val data: List[(Field, Annotation)] = fieldAnnotations(input)
-
-    def annotationToString(annotation: Annotation):String = annotation match {
-        case a: TestAnnotation => "1" + a.propA() + a.propB()
-        case _: TestAnnotationTwo => "2"
-        case _ => fail("Unexpected annotation: " + annotation)
+      val data: List[(Field, Annotation)] = fieldAnnotations(input)
+      val converted: Set[(String, String)] = data.map(x => (x._1.getName, annotationToString(x._2))).toSet
+      assert(converted === Set(("annotated", "1ab"), ("innerProp", "1innerAinnerB"), ("innerProp", "2")))
     }
 
-    it("returns expected data") {
+    it("returns expected data with extension") {
+      val input = new TestInputExtension("no", "yes")
+
+      val data: List[(Field, Annotation)] = fieldAnnotations(input)
       val converted: Set[(String, String)] = data.map(x => (x._1.getName, annotationToString(x._2))).toSet
       assert(converted === Set(("annotated", "1ab"), ("innerProp", "1innerAinnerB"), ("innerProp", "2")))
     }
 
   }
-//
-//  describe("annotatedSymbols") {
-//
-//    val input = new TestInput("no", "yes")
-//
-//
-//    it("Should return constructor fields") {
-//
-//    }
-//
-//    it("Should return non-consturctor fields") {
-//
-//    }
-//
-//  }
+
+  describe("annotatedFields") {
+
+    it("returns expected data") {
+      val input = new TestInput("no", "yes")
+
+      val data: List[(Field, TestAnnotation)] = annotatedFields(input, classOf[TestAnnotation])
+      val converted: Set[(String, String)] = data.map(x => (x._1.getName, annotationToString(x._2))).toSet
+      assert(converted === Set(("annotated", "1ab"), ("innerProp", "1innerAinnerB")))
+    }
+
+  }
 
 }
