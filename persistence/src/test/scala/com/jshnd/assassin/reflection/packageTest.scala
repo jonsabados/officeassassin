@@ -33,20 +33,22 @@ class packageTest extends FunSpec {
 
   describe("fieldAnnotations") {
 
-    it("returns expected data") {
-      val input = new TestInput("no", "yes")
-
+    def doFieldAnnotationsTest(input: TestInput) {
       val data: List[(Field, Annotation)] = fieldAnnotations(input)
       val converted: Set[(String, String)] = data.map(x => (x._1.getName, annotationToString(x._2))).toSet
       assert(converted === Set(("annotated", "1ab"), ("innerProp", "1innerAinnerB"), ("innerProp", "2")))
     }
 
+    it("returns expected data") {
+      val input = new TestInput("no", "yes")
+
+      doFieldAnnotationsTest(input)
+    }
+
     it("returns expected data with extension") {
       val input = new TestInputExtension("no", "yes")
 
-      val data: List[(Field, Annotation)] = fieldAnnotations(input)
-      val converted: Set[(String, String)] = data.map(x => (x._1.getName, annotationToString(x._2))).toSet
-      assert(converted === Set(("annotated", "1ab"), ("innerProp", "1innerAinnerB"), ("innerProp", "2")))
+      doFieldAnnotationsTest(input)
     }
 
   }

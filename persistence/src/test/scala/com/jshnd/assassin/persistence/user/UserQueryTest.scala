@@ -50,5 +50,4 @@ class UserQueryTest extends FunSpec with Inside {
 
   }
 
-
 }
