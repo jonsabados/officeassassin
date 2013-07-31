@@ -18,15 +18,15 @@ trait AnnotatedQuery {
     element._1.setAccessible(true)
     val value = element._1.get(this)
     value match {
-      case o: Option[Object] => value match {
+      case o: Option[Any] => value match {
         case None => currentPredicate
-        case s: Some[Object] => predicate(s.get, element._2, currentPredicate)
+        case s: Some[Any] => predicate(s.get, element._2, currentPredicate)
       }
       case _ => predicate(element._1.get(this), element._2, currentPredicate)
     }
   }
 
-  def predicate(value: AnyRef, annotation: QueryField, currentPredicate: AssassinQueryPredicate): AssassinQueryPredicate = {
+  def predicate(value: Any, annotation: QueryField, currentPredicate: AssassinQueryPredicate): AssassinQueryPredicate = {
     currentPredicate match {
       case NoPredicate() => new FieldEqualsPredicate(annotation.value(), value)
       case _ => new AndPredicate(currentPredicate, new FieldEqualsPredicate(annotation.value(), value))
