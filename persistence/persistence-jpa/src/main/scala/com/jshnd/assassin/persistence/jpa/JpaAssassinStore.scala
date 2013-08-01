@@ -16,7 +16,7 @@ class JpaAssassinStore(mapFact: JpaTypeMapperFactory) extends AssassinStore {
   }
 
   def doFind[J, A](query: AssassinQuery[A]): List[A] = {
-    val builder = em.getCriteriaBuilder
+    val builder = new NonAmbiguousCriteriaBuilder(em.getCriteriaBuilder)
     val mapper: JpaMapper[J, A] = mapFact.mapper(query.forType)
     val criteria = builder.createQuery(mapper.jpaClass)
     val root: Root[J] = criteria.from(mapper.jpaClass)
@@ -25,15 +25,19 @@ class JpaAssassinStore(mapFact: JpaTypeMapperFactory) extends AssassinStore {
     result.map(mapper.map).toList
   }
 
-  def applyPredicate[T](b: CriteriaBuilder, r: Root[T], c: CriteriaQuery[T], p: AssassinQueryPredicate): CriteriaQuery[T] = p match {
+  def applyPredicate[T](b: NonAmbiguousCriteriaBuilder,
+                        r: Root[T], c: NonAmbiguousCriteriaQuery[T],
+                        p: AssassinQueryPredicate): NonAmbiguousCriteriaQuery[T] = p match {
     case NoPredicate() => c
-    //case _ => c.where(toPredicate(b, r, p))
+    case _ => c.where(toPredicate(b, r, p))
   }
 
-  def toPredicate[T](b: CriteriaBuilder, r: Root[T], p: AssassinQueryPredicate): Predicate = p match {
+  def toPredicate[T](b: NonAmbiguousCriteriaBuilder, r: Root[T], p: AssassinQueryPredicate): Predicate = p match {
     case FieldEqualsPredicate(field, equalsWhat) => b.equal(r.get(field), equalsWhat)
-    //case AndPredicate(left, right) => b.and(toPredicate(b, r, left), toPredicate(b, r, right))
+    case AndPredicate(left, right) => b.and(toPredicate(b, r, left), toPredicate(b, r, right))
     case _ => throw new UnsupportedOperationException("Please implement me: " + p)
   }
+
+  implicit def unwrapAmbiguousHack[T](hack: NonAmbiguousCriteriaQuery[T]): CriteriaQuery[T] = hack.unwrap()
 
 }
