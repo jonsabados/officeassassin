@@ -9,8 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>persistence_jpa</artifactId>
+    <artifactId>persistence-jpa</artifactId>
     <name>Office Assassin - persistence via JPA</name>
+    <packaging>jar</packaging>
 
     <build>
         <plugins>
@@ -24,7 +25,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jshnd.assassin</groupId>
-            <artifactId>persistence</artifactId>
+            <artifactId>persistence-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
