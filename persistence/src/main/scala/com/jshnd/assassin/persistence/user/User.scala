@@ -1,5 +1,5 @@
 package com.jshnd.assassin.persistence.user
 
-class User(emailAddress: String, handle: String, fullName: String, passwordHash: String) {
+case class User(id: Int, emailAddress: String, handle: String, fullName: Option[String], passwordHash: String) {
 
 }
