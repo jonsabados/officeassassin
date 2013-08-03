@@ -5,10 +5,11 @@ import com.jshnd.assassin.persistence._
 import javax.persistence.{PersistenceContext, EntityManager}
 import javax.persistence.criteria.{CriteriaQuery, Predicate, CriteriaBuilder, Root}
 import com.jshnd.assassin.persistence.FieldEqualsPredicate
+import javax.inject.Inject
 
-class JpaAssassinStore(mapFact: JpaTypeMapperFactory) extends AssassinStore {
+class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory) extends AssassinStore {
 
-  @PersistenceContext
+  @Inject
   var em: EntityManager = _
 
   def find[T](query: AssassinQuery[T]): List[T] = {
