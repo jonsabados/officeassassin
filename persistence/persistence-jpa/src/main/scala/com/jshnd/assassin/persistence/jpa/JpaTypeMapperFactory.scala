@@ -15,12 +15,16 @@ abstract class JpaMapper[J, A] {
 
   def jpaClass: Class[J]
 
-  def map(in: J): A
+  def mapToAssassin(in: J): A
+
+  def mapTpaoJ(in: A): J
 
 }
 
 class UserMapper extends JpaMapper[UserEntity, User] {
   def jpaClass: Class[UserEntity] = classOf[UserEntity]
 
-  def map(in: UserEntity): User = new User(in.id, in.emailAddress, in.handle, in.fullName, in.passwordHash)
+  def mapToAssassin(in: UserEntity): User = new User(None, in.emailAddress, in.handle, in.fullName, in.passwordHash)
+
+  def mapTpaoJ(in: User): UserEntity = new UserEntity(in.emailAddress, in.handle, in.fullName, in.passwordHash)
 }

@@ -32,7 +32,7 @@ class JpaTypeMapperFactoryTest extends FunSpec {
       input.handle = "h"
       input.passwordHash = "p"
 
-      assert(userMapper.map(input) === User(2, "e", "h", Some("n"), "p"))
+      assert(userMapper.mapToAssassin(input) === User(Some(2), "e", "h", Some("n"), "p"))
     }
 
   }

@@ -3,9 +3,17 @@ package com.jshnd.assassin.persistence.jpa
 import javax.persistence._
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Access(AccessType.FIELD)
 class UserEntity {
+
+  def this(emailAddress: String, handle: String, fullName: Option[String], passwordHash: String) {
+    this()
+    this.emailAddress = emailAddress
+    this.handle = handle
+    this.fullName = fullName
+    this.passwordHash = passwordHash
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
