@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
     <name>Assassin rest bits</name>
     <modules>
-        <module>dto</module>
+        <module>assassin-dto</module>
         <module>assassin-webapp</module>
     </modules>
 
