@@ -4,7 +4,7 @@ Office Assassin
 What is this?
 -------------
 The combination of an office full of developers picking up nerf weapons without any direction -
-[see](http://en.wikipedia.org/wiki/Assassin_(game)), and me wanting to learn scala and how it might look in a large
+[see](http://en.wikipedia.org/wiki/Assassin_\(game\)), and me wanting to learn scala and how it might look in a large
 scale project living with existing java stuff (like jersey).
 
 
@@ -20,7 +20,7 @@ What it is not?
 Why not lift?
 -------------
 * Intermixing view stuff with business logic causes me a violent gag reflex - regardless of how small a project might be
- it is a bad idea. We have even gone as far as to invent css to separate data from presentation.
+ it is a bad idea. We have even gone as far as to invent CSS to separate data from presentation.
 
 License
 -------
