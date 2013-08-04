@@ -4,7 +4,7 @@ Office Assassin
 What is this?
 -------------
 The combination of an office full of developers picking up nerf weapons without any direction -
-[see](http://en.wikipedia.org/wiki/Assassin_\(game\)), and me wanting to learn scala and how it might look in a large
+[see wikipedia](http://en.wikipedia.org/wiki/Assassin_\(game\)), and me wanting to learn scala and how it might look in a large
 scale project living with existing java stuff (like jersey).
 
 
