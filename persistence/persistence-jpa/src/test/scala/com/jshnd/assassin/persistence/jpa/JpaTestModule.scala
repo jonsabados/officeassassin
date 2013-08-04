@@ -11,17 +11,17 @@ import java.sql.DriverManager
 
 class JpaTestModule extends AbstractModule {
   def configure() {
-    Class.forName("org.h2.Driver").newInstance();
-    val conn = DriverManager.getConnection("jdbc:h2:mem:test");
+    Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+    val conn = DriverManager.getConnection("jdbc:derby:memory:test;create=true");
     val  database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(conn));
     val  liquibase = new Liquibase("schema.xml", new ClassLoaderResourceAccessor(), database);
     liquibase.update(null);
 
     val persistModule = new JpaPersistModule("assassin")
     val props = new Properties()
-    props.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect")
-    props.put("javax.persistence.jdbc.driver", "org.h2.Driver")
-    props.put("javax.persistence.jdbc.url","jdbc:h2:mem:test")
+    props.put("hibernate.dialect", "org.hibernate.dialect.DerbyDialect")
+    props.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.EmbeddedDriver")
+    props.put("javax.persistence.jdbc.url","jdbc:derby:memory:test;create=true")
     persistModule.properties(props)
     install(persistModule)
   }

@@ -16,7 +16,7 @@ class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory) extends Assassi
   @Transactional
   def persist[A](entity: A) {
     val mapper = mapFact.mapper(entity.getClass.asInstanceOf[Class[A]])
-    em.persist(mapper.mapTpaoJ(entity))
+    em.persist(mapper.mapToJpa(entity))
   }
 
   @Transactional

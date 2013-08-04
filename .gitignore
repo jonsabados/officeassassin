@@ -2,3 +2,4 @@
 *.iml
 target
 console.devmode.log
+derby.log

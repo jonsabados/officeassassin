@@ -3,7 +3,7 @@ package com.jshnd.assassin.persistence.jpa
 import javax.persistence._
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Access(AccessType.FIELD)
 class UserEntity {
 
@@ -11,13 +11,13 @@ class UserEntity {
     this()
     this.emailAddress = emailAddress
     this.handle = handle
-    this.fullName = fullName
+    if(fullName.isDefined) this.fullName = fullName.get
     this.passwordHash = passwordHash
   }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  var id: Int = _
+  var id: Integer = _
 
   @Column(name = "email_address")
   var emailAddress: String = _
@@ -26,7 +26,7 @@ class UserEntity {
   var handle: String = _
 
   @Column(name = "full_name")
-  var fullName: Option[String] = None
+  var fullName: String = _
 
   @Column(name = "password_hash")
   var passwordHash: String = _

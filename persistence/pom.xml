@@ -12,6 +12,7 @@
     <artifactId>persistence</artifactId>
     <packaging>pom</packaging>
     <name>Office Assassin Persistence</name>
+
     <modules>
         <module>persistence-core</module>
         <module>persistence-jpa</module>
