@@ -15,7 +15,7 @@ What it is not?
 * This is NOT a good example of only making things as complex as they need be (it is intentionally over complex just to
  see how things might work when they need to be)
 * This is probably NOT useful - even if this ever reaches a point where a usable app is produced, it will just be an app
- to assign someone a target and track when someone else says that hit them.
+ to assign someone a target and track when someone else says that they hit them.
 
 Why not lift?
 -------------
