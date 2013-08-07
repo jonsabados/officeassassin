@@ -10,8 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>war</packaging>
 
-    <artifactId>assassin-webapp</artifactId>
-    <name>Office Assassin - Rest webapp</name>
+    <artifactId>rest-core</artifactId>
+    <name>Office Assassin - core bits of webapp</name>
 
     <build>
         <plugins>
@@ -66,7 +66,7 @@
         </dependency>
         <dependency>
             <groupId>com.jshnd.assassin</groupId>
-            <artifactId>assassin-dto</artifactId>
+            <artifactId>dto</artifactId>
             <version>${project.version}</version>
         </dependency>
 
