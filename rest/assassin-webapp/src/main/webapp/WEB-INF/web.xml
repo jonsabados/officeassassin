@@ -2,19 +2,19 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <servlet>
-        <servlet-name>jersey</servlet-name>
-        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>com.jshnd.assassin.resource</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+    
+    <listener>
+        <listener-class>com.jshnd.assassin.rest.AssassinServletConfig</listener-class>
+    </listener>
+    
+    <filter>
+        <filter-name>jerseyGuice</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
 
-    <servlet-mapping>
-        <servlet-name>jersey</servlet-name>
+    <filter-mapping>
+        <filter-name>jerseyGuice</filter-name>
         <url-pattern>/rest/*</url-pattern>
-    </servlet-mapping>
-
+    </filter-mapping>
+    
 </web-app>

@@ -8,10 +8,7 @@ import com.jshnd.assassin.persistence.FieldEqualsPredicate
 import javax.inject.Inject
 import com.google.inject.persist.Transactional
 
-class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory) extends AssassinStore {
-
-  @Inject
-  var em: EntityManager = _
+class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory, em: EntityManager) extends AssassinStore {
 
   @Transactional
   def persist[A](entity: A) {
