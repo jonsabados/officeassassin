@@ -7,8 +7,9 @@ import javax.persistence.criteria.{CriteriaQuery, Predicate, Root}
 import com.jshnd.assassin.persistence.FieldEqualsPredicate
 import javax.inject.Inject
 import com.google.inject.persist.Transactional
+import com.jshnd.assassin.HasAssassinConfiguration
 
-class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory, em: EntityManager) extends AssassinStore {
+class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory, em: EntityManager) extends AssassinStore with HasAssassinConfiguration {
 
   @Transactional
   def persist[A](entity: A) {

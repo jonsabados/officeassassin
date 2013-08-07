@@ -24,5 +24,6 @@ class JpaTestModule extends AbstractModule {
     props.put("javax.persistence.jdbc.url","jdbc:derby:memory:test;create=true")
     persistModule.properties(props)
     install(persistModule)
+    bind(classOf[JpaAssassinStore]).in(classOf[com.google.inject.Singleton])
   }
 }
