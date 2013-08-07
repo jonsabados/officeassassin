@@ -4,8 +4,8 @@ import javax.ws.rs.{Produces, GET, Path}
 import com.j.UserBaseDto
 import com.jshnd.assassin.dto.ListResult
 import com.google.inject.Inject
-import com.jshnd.assassin.persistence.AssassinStore
-import com.jshnd.assassin.persistence.user.UserQuery
+import com.jshnd.assassin.user.UserQuery
+import com.jshnd.assassin.query.AssassinStore
 
 
 @Path("/users")

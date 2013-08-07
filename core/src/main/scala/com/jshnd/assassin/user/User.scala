@@ -1,5 +1,5 @@
 package com.jshnd.assassin.user
 
-class User(val username: String, var fullName: String) {
+case class User(id: Option[Int], emailAddress: String, handle: String, fullName: Option[String], passwordHash: String) {
 
 }

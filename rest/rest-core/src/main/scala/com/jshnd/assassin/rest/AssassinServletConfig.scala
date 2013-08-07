@@ -5,7 +5,6 @@ import com.google.inject.{Singleton => GSingleton, Guice, Injector}
 import java.sql.DriverManager
 import com.google.inject.persist.jpa.JpaPersistModule
 import java.util.Properties
-import com.jshnd.assassin.persistence.AssassinStore
 import com.jshnd.assassin.persistence.jpa.JpaAssassinStore
 import com.sun.jersey.guice.JerseyServletModule
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
@@ -14,6 +13,7 @@ import liquibase.database.jvm.JdbcConnection
 import liquibase.resource.ClassLoaderResourceAccessor
 import liquibase.Liquibase
 import com.google.inject.persist.PersistService
+import com.jshnd.assassin.query.AssassinStore
 
 class AssassinServletConfig extends GuiceServletContextListener {
 

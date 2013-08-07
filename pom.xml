@@ -11,7 +11,7 @@
     <modules>
         <module>core</module>
         <module>rest</module>
-        <module>persistence</module>
+        <module>persistence-jpa</module>
     </modules>
 
     <packaging>pom</packaging>
