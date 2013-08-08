@@ -1,4 +1,4 @@
-package com.jshnd.assassin.persistence.jpa
+package com.jshnd.assassin.jpa
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner

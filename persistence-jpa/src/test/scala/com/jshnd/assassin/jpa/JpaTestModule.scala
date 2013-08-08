@@ -1,4 +1,4 @@
-package com.jshnd.assassin.persistence.jpa
+package com.jshnd.assassin.jpa
 
 import com.google.inject.AbstractModule
 import com.google.inject.persist.jpa.JpaPersistModule

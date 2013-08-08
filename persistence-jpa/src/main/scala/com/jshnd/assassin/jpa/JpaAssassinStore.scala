@@ -1,4 +1,4 @@
-package com.jshnd.assassin.persistence.jpa
+package com.jshnd.assassin.jpa
 
 import scala.collection.JavaConversions._
 import javax.persistence.EntityManager
@@ -6,10 +6,13 @@ import javax.persistence.criteria.{CriteriaQuery, Predicate, Root}
 import javax.inject.Inject
 import com.google.inject.persist.Transactional
 import com.jshnd.assassin.query._
-import com.jshnd.assassin.HasAssassinConfiguration
 import com.jshnd.assassin.query.NoPredicate
+import com.jshnd.assassin.persistence.jpa.{NonAmbiguousCriteriaQuery, NonAmbiguousCriteriaBuilder}
+import com.google.inject.Provider
 
-class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory, em: EntityManager) extends AssassinStore with HasAssassinConfiguration {
+class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory, emp: Provider[EntityManager]) extends AssassinStore {
+
+  def em = emp.get()
 
   @Transactional
   def persist[A](entity: A) {

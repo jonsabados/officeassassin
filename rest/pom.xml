@@ -12,6 +12,8 @@
     <modules>
         <module>dto</module>
         <module>rest-core</module>
+        <module>standalone</module>
+        <module>webapp</module>
     </modules>
 
     <properties>

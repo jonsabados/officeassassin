@@ -1,8 +1,8 @@
-package com.jshnd.assassin.persistence.jpa
+package com.jshnd.assassin.jpa
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{Inside, FunSpec}
+import org.scalatest.FunSpec
 import com.jshnd.assassin.user.User
 
 @RunWith(classOf[JUnitRunner])
@@ -21,11 +21,11 @@ class JpaTypeMapperFactoryTest extends FunSpec {
 
   describe("UserMapper") {
 
-    val userMapper = new UserMapper();
+    val userMapper = new UserMapper()
 
     it("Should properly map userEntities to assassin Users") {
 
-      val input = new UserEntity();
+      val input = new UserEntity()
       input.id = 2
       input.emailAddress = "e"
       input.fullName = "n"
@@ -37,7 +37,7 @@ class JpaTypeMapperFactoryTest extends FunSpec {
 
     it("Should properly map userEntities without full names to assassin Users") {
 
-      val input = new UserEntity();
+      val input = new UserEntity()
       input.id = 2
       input.emailAddress = "e"
       input.handle = "h"
@@ -48,7 +48,7 @@ class JpaTypeMapperFactoryTest extends FunSpec {
 
     it("Should properly map assassin Users with ids to UserEntities") {
 
-      val input = new User(Some(1), "e", "h", Some("foo"), "p");
+      val input = new User(Some(1), "e", "h", Some("foo"), "p")
       val result = userMapper.mapToJpa(input)
 
       assert(result.id === 1)
@@ -60,7 +60,7 @@ class JpaTypeMapperFactoryTest extends FunSpec {
 
     it("Should properly map assassin Users without ids to UserEntities") {
 
-      val input = new User(None, "e", "h", Some("foo"), "p");
+      val input = new User(None, "e", "h", Some("foo"), "p")
       val result = userMapper.mapToJpa(input)
 
       assert(result.id === null)
@@ -72,7 +72,7 @@ class JpaTypeMapperFactoryTest extends FunSpec {
 
     it("Should properly map assassin Users without full names to UserEntities") {
 
-      val input = new User(None, "e", "h", None, "p");
+      val input = new User(None, "e", "h", None, "p")
       val result = userMapper.mapToJpa(input)
 
       assert(result.fullName === null)
