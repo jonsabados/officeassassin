@@ -1,29 +1,20 @@
 package com.jshnd.assassin.jpa
 
-import com.google.inject.AbstractModule
-import com.google.inject.persist.jpa.JpaPersistModule
-import java.util.Properties
-import liquibase.Liquibase
-import liquibase.resource.ClassLoaderResourceAccessor
-import liquibase.database.jvm.JdbcConnection
-import liquibase.database.DatabaseFactory
-import java.sql.DriverManager
+import javax.sql.DataSource
+import org.apache.derby.jdbc.EmbeddedDataSource
 
-class JpaTestModule extends AbstractModule {
-  def configure() {
-    Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance()
-    val conn = DriverManager.getConnection("jdbc:derby:memory:test;create=true")
-    val  database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(conn))
-    val  liquibase = new Liquibase("schema.xml", new ClassLoaderResourceAccessor(), database)
-    liquibase.update(null)
+class JpaTestModule extends JpaStoreModule("org.hibernate.dialect.DerbyDialect") {
 
-    val persistModule = new JpaPersistModule("assassin")
-    val props = new Properties()
-    props.put("hibernate.dialect", "org.hibernate.dialect.DerbyDialect")
-    props.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.EmbeddedDriver")
-    props.put("javax.persistence.jdbc.url","jdbc:derby:memory:test;create=true")
-    persistModule.properties(props)
-    install(persistModule)
-    bind(classOf[JpaAssassinStore]).in(classOf[com.google.inject.Singleton])
+  def dataSource: DataSource = {
+    val ds = new EmbeddedDataSource()
+    ds.setCreateDatabase("create")
+    ds.setDatabaseName("memory:test")
+    ds
   }
+
+  def jpaProperties: Map[String, String] = Map(
+    "javax.persistence.jdbc.driver" ->  "org.apache.derby.jdbc.EmbeddedDriver",
+    "javax.persistence.jdbc.url" -> "jdbc:derby:memory:test;create=true"
+  )
+
 }

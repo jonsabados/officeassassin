@@ -9,8 +9,9 @@ trait QueryTester {
   val config = Map(AssassinRootModule.storeModuleClassKey -> "com.jshnd.assassin.jpa.JpaTestModule")
 
   val injector = Guice.createInjector(new AssassinRootModule(config))
-  injector.getInstance(classOf[PersistService]).start()
 
+  val initializer = injector.getInstance(classOf[JpaStoreModuleInitializer])
+  initializer.start()
   val testStore = injector.getInstance(classOf[JpaAssassinStore])
 
 }
