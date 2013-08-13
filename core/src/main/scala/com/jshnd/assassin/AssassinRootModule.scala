@@ -1,7 +1,7 @@
 package com.jshnd.assassin
 
 import scala.collection.JavaConversions._
-import com.google.inject.{Guice, TypeLiteral, Module, AbstractModule}
+import com.google.inject.{Guice, Module, AbstractModule}
 import com.google.inject.name.Names
 
 object AssassinRootModule {

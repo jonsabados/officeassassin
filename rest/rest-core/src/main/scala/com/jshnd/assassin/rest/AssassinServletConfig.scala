@@ -1,48 +1,36 @@
 package com.jshnd.assassin.rest
 
+import scala.collection.JavaConversions._
 import com.google.inject.servlet.GuiceServletContextListener
 import com.google.inject.{Singleton => GSingleton, Guice, Injector}
-import java.sql.DriverManager
-import com.google.inject.persist.jpa.JpaPersistModule
 import java.util.Properties
 import com.sun.jersey.guice.JerseyServletModule
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
-import liquibase.database.DatabaseFactory
-import liquibase.database.jvm.JdbcConnection
-import liquibase.resource.ClassLoaderResourceAccessor
-import liquibase.Liquibase
 import com.google.inject.persist.PersistService
-import com.jshnd.assassin.query.AssassinStore
-import com.jshnd.assassin.jpa.JpaAssassinStore
+import com.jshnd.assassin.AssassinRootModule
+import com.jshnd.assassin.jpa.JpaStoreModuleInitializer
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
-  class LetsSeeIfThisWorks extends JerseyServletModule {
+  class ServletModule extends JerseyServletModule {
     override def configureServlets() {
-      Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance()
-      val conn = DriverManager.getConnection("jdbc:derby:memory:test;create=true")
-      val  database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(conn))
-      val  liquibase = new Liquibase("schema.xml", new ClassLoaderResourceAccessor(), database)
-      liquibase.update(null)
+      install(new AssassinRootModule(propertyFile.toMap))
 
-      val persistModule = new JpaPersistModule("assassin")
-      val props = new Properties()
-      props.put("hibernate.dialect", "org.hibernate.dialect.DerbyDialect")
-      props.put("javax.persistence.jdbc.driver", "org.apache.derby.jdbc.EmbeddedDriver")
-      props.put("javax.persistence.jdbc.url","jdbc:derby:memory:test;create=true")
-      persistModule.properties(props)
-      install(persistModule)
-
-      bind(classOf[AssassinStore]).to(classOf[JpaAssassinStore]).in(classOf[GSingleton])
       bind(classOf[UserResource]).in(classOf[GSingleton])
 
       serve("/rest/*").`with`(classOf[GuiceContainer])
     }
   }
 
+  def propertyFile: Properties = {
+    val props = new Properties()
+    props.load(getClass().getResourceAsStream("/default-assassin-config.properties"))
+    props
+  }
+
   def getInjector: Injector = {
-    val i = Guice.createInjector(new LetsSeeIfThisWorks)
-    i.getInstance(classOf[PersistService]).start()
+    val i = Guice.createInjector(new ServletModule)
+    i.getInstance(classOf[JpaStoreModuleInitializer]).start()
     i
   }
 }

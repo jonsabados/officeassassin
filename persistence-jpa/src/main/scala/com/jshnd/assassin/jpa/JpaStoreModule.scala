@@ -11,6 +11,7 @@ import liquibase.database.DatabaseFactory
 import liquibase.database.jvm.JdbcConnection
 import liquibase.Liquibase
 import liquibase.resource.ClassLoaderResourceAccessor
+import com.jshnd.assassin.query.AssassinStore
 
 object JpaStoreModule {
   val dialectKey = "jpa.hibernate.dialect"
@@ -47,7 +48,7 @@ abstract class JpaStoreModule(dialect: String) extends AbstractModule {
 
     install(persistModule)
     bind(classOf[DataSource]).annotatedWith(classOf[AssassinDataSource]).toInstance(dataSource)
-    bind(classOf[JpaAssassinStore]).in(classOf[com.google.inject.Singleton])
+    bind(classOf[AssassinStore]).to(classOf[JpaAssassinStore]).in(classOf[com.google.inject.Singleton])
   }
 
   def dataSource: DataSource
