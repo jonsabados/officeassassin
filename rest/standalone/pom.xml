@@ -10,7 +10,93 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>standalone</artifactId>
-    <name>Assassin - packaged as a runnable jar</name>
+    <name>Assassin - packaged as a runnable war</name>
+    <packaging>war</packaging>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.jshnd.assassin.rest.AssassinStarter</mainClass>
+                        </manifest>
+                    </archive>
+                    <packagingExcludes>WEB-INF/lib/jetty-*.jar,WEB-INF/lib/scala-library*,WEB-INF/lib/*EmbeddedJetty*.jar</packagingExcludes>
+                    <overlays>
+                        <overlay>
+                            <groupId>org.scala-lang</groupId>
+                            <artifactId>scala-library</artifactId>
+                            <type>jar</type>
+                        </overlay>
+                        <overlay>
+                            <groupId>org.mortbay.jetty</groupId>
+                            <artifactId>jetty</artifactId>
+                            <type>jar</type>
+                        </overlay>
+                        <overlay>
+                            <groupId>org.mortbay.jetty</groupId>
+                            <artifactId>jetty-util</artifactId>
+                            <type>jar</type>
+                        </overlay>
+                        <overlay>
+                            <groupId>javax.servlet</groupId>
+                            <artifactId>javax.servlet-api</artifactId>
+                            <type>jar</type>
+                        </overlay>
+                        <overlay>
+                            <groupId>com.jshnd.assassin</groupId>
+                            <artifactId>standalone-starter</artifactId>
+                            <type>jar</type>
+                        </overlay>
+                        <overlay>
+                            <groupId>com.jshnd.assassin</groupId>
+                            <artifactId>webapp</artifactId>
+                            <type>war</type>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.jshnd.assassin</groupId>
+            <artifactId>rest-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jshnd.assassin</groupId>
+            <artifactId>standalone-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jshnd.assassin</groupId>
+            <artifactId>webapp</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -124,14 +124,12 @@
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>10.10.1.1</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>3.0.2</version>
         </dependency>
 
         <!-- TODO - this probalby will make its way into common for real use -->

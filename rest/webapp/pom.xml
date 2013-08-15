@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>webapp</artifactId>
-    <name>Assassin packaged as a war</name>
+    <name>Assassin packaged as a war (no jetty, not runnable)</name>
 
     <packaging>war</packaging>
 
