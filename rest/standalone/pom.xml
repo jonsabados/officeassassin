@@ -25,7 +25,7 @@
                             <mainClass>com.jshnd.assassin.rest.AssassinStarter</mainClass>
                         </manifest>
                     </archive>
-                    <packagingExcludes>WEB-INF/lib/jetty-*.jar,WEB-INF/lib/scala-library*,WEB-INF/lib/*EmbeddedJetty*.jar</packagingExcludes>
+                    <packagingExcludes>WEB-INF/lib/jetty-*.jar,WEB-INF/lib/scala-library*,WEB-INF/lib/standalone-starter-*.jar</packagingExcludes>
                     <overlays>
                         <overlay>
                             <groupId>org.scala-lang</groupId>

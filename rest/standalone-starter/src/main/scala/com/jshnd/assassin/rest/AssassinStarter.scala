@@ -22,7 +22,4 @@ object AssassinStarter extends App {
 
   server.addHandler(context)
   server.start()
-  System.in.read()
-  server.stop()
-  server.join()
 }
