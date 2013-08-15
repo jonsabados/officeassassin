@@ -3,6 +3,7 @@ package com.jshnd.assassin
 import scala.collection.JavaConversions._
 import com.google.inject.{Guice, Module, AbstractModule}
 import com.google.inject.name.Names
+import com.jshnd.assassin.user.UserModule
 
 object AssassinRootModule {
   val storeModuleClassKey = "module.store.class"
@@ -22,5 +23,8 @@ class AssassinRootModule(configuration: Map[String, String]) extends AbstractMod
     install(bootstrapInjector.getInstance(
       Class.forName(configuration(AssassinRootModule.storeModuleClassKey))).asInstanceOf[Module])
 
+    val userMod = new UserModule
+    requestInjection(userMod)
+    install(userMod)
   }
 }

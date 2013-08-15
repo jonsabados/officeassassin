@@ -4,7 +4,8 @@ import org.mortbay.jetty.webapp.WebAppContext
 import scala.Array
 
 /**
- * I'm too cheap to buy intellij for personal use, so this exists just for running & debugging in intellij.
+ * I'm too cheap to buy intellij ultimate to run a war for personal use, so this exists just for running & debugging
+ * in intellij community.
  */
 object RunInIntellij extends App {
   val server = new Server()

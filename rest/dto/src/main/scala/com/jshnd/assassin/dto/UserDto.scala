@@ -1,4 +1,4 @@
-package com.j
+package com.jshnd.assassin.dto
 
 import com.sun.xml.internal.txw2.annotation.XmlElement
 import javax.xml.bind.annotation.{XmlRootElement}
