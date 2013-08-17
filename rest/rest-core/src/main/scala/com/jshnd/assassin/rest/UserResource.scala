@@ -8,6 +8,7 @@ import com.jshnd.assassin.query.AssassinStore
 import com.jshnd.assassin.bindings.SaveUser
 import javax.ws.rs.core.Response
 import java.net.URI
+import org.apache.shiro.authz.annotation.RequiresPermissions
 
 
 @Path("/users")
@@ -19,6 +20,15 @@ class UserResource @Inject() (store: AssassinStore, @SaveUser saveUser: (User) =
      store.find(new UserQuery()).map(
        x => new UserBaseDto(x.emailAddress, x.handle, x.fullName.getOrElse(null))
      )
+  }
+
+  @GET
+  @Path("secured")
+  @RequiresPermissions(Array("helloShiro"))
+  def helloSecurityWorks(): ListResult[UserBaseDto] = {
+    store.find(new UserQuery()).map(
+      x => new UserBaseDto(x.emailAddress, x.handle, x.fullName.getOrElse(null))
+    )
   }
 
   @POST
