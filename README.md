@@ -7,20 +7,16 @@ The combination of an office full of developers picking up nerf weapons without 
 [see wikipedia](http://en.wikipedia.org/wiki/Assassin_\(game\)), and me wanting to learn scala and how it might look in a large
 scale project living with existing java stuff (like jersey).
 
-
 What it is not?
 ---------------
 * This is most likely NOT a good example of scala
 * This is NOT a good example of how I would actually implement a fairly simple app
 * This is NOT a good example of only making things as complex as they need be (it is intentionally over complex just to
  see how things might work when they need to be)
+* This is NOT a good example of the level of testing I would add to a real project. The test coverage is pretty crappy,
+ and usually only exists for things where it was easier to write a test than fire the app up.
 * This is probably NOT useful - even if this ever reaches a point where a usable app is produced, it will just be an app
  to assign someone a target and track when someone else says that they hit them.
-
-Why not lift?
--------------
-* Intermixing view stuff with business logic causes me a violent gag reflex - regardless of how small a project might be
- it is a bad idea. We have even gone as far as to invent CSS to separate data from presentation.
 
 License
 -------

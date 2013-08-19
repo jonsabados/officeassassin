@@ -14,40 +14,42 @@ class UserQueryTest extends FunSpec with QueryTester {
   testStore.persist(new User(None, "foo@foo.com", "Foo Foe", Some("Buis"), pwHash))
   testStore.persist(new User(None, "bar@foo.com", "Bar Bing", None, pwHash))
 
-  it("Should find users by email") {
-    assert(testStore.find(new UserQuery(Some("foo@foo.com"))) ===
+  describe("UserQuery") {
+    it("Should find users by email") {
+      assert(testStore.find(new UserQuery(Some("foo@foo.com"))) ===
       List(User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
-  }
+    }
 
-  it("Should find users by full name") {
-    assert(testStore.find(new UserQuery(None, Some("Buis"))) ===
-      List(User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
-  }
+    it("Should find users by full name") {
+      assert(testStore.find(new UserQuery(None, Some("Buis"))) ===
+        List(User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
+    }
 
-  it("Should not find users when full name does not match") {
-    assert(testStore.find(new UserQuery(Some("foo@foo.com"), Some("Bar Bing"))) === List())
-  }
+    it("Should not find users when full name does not match") {
+      assert(testStore.find(new UserQuery(Some("foo@foo.com"), Some("Bar Bing"))) === List())
+    }
 
-  it("Should find users without constraints") {
-    assert(testStore.find(new UserQuery()) ===
-      List(
-        User(Some(1), "admin", "delete_me", None, sha256Hex("adminchangeme")),
-        User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash),
-        User(Some(3), "bar@foo.com", "Bar Bing", None, pwHash)
+    it("Should find users without constraints") {
+      assert(testStore.find(new UserQuery()) ===
+        List(
+          User(Some(1), "admin", "delete_me", None, sha256Hex("adminchangeme")),
+          User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash),
+          User(Some(3), "bar@foo.com", "Bar Bing", None, pwHash)
+        )
       )
-    )
-  }
+    }
 
-  it("Should respect limits") {
-    val query = new UserQuery()
-    query.firstRecord = 0
-    query.lastRecord = 2
-    assert(testStore.find(query) ===
-      List(
-        User(Some(1), "admin", "delete_me", None, sha256Hex("adminchangeme")),
-        User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)
+    it("Should respect limits") {
+      val query = new UserQuery()
+      query.firstRecord = 0
+      query.lastRecord = 2
+      assert(testStore.find(query) ===
+        List(
+          User(Some(1), "admin", "delete_me", None, sha256Hex("adminchangeme")),
+          User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)
+        )
       )
-    )
+    }
   }
 
 }
