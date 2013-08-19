@@ -8,7 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils.sha256Hex
 
 @RunWith(classOf[JUnitRunner])
 class UserQueryTest extends FunSpec with QueryTester {
-
+  //TODO - use dbunit or something - this is fragile if base schema stuff adds users etc.
   val pwHash = sha256Hex("123")
 
   testStore.persist(new User(None, "foo@foo.com", "Foo Foe", Some("Buis"), pwHash))
@@ -16,12 +16,12 @@ class UserQueryTest extends FunSpec with QueryTester {
 
   it("Should find users by email") {
     assert(testStore.find(new UserQuery(Some("foo@foo.com"))) ===
-      List(User(Some(1), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
+      List(User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
   }
 
   it("Should find users by full name") {
     assert(testStore.find(new UserQuery(None, Some("Buis"))) ===
-      List(User(Some(1), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
+      List(User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
   }
 
   it("Should not find users when full name does not match") {
@@ -31,8 +31,9 @@ class UserQueryTest extends FunSpec with QueryTester {
   it("Should find users without constraints") {
     assert(testStore.find(new UserQuery()) ===
       List(
-        User(Some(1), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash),
-        User(Some(2), "bar@foo.com", "Bar Bing", None, pwHash)
+        User(Some(1), "admin", "delete_me", None, sha256Hex("adminchangeme")),
+        User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash),
+        User(Some(3), "bar@foo.com", "Bar Bing", None, pwHash)
       )
     )
   }
@@ -40,9 +41,12 @@ class UserQueryTest extends FunSpec with QueryTester {
   it("Should respect limits") {
     val query = new UserQuery()
     query.firstRecord = 0
-    query.lastRecord = 1
+    query.lastRecord = 2
     assert(testStore.find(query) ===
-      List(User(Some(1), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash))
+      List(
+        User(Some(1), "admin", "delete_me", None, sha256Hex("adminchangeme")),
+        User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)
+      )
     )
   }
 
