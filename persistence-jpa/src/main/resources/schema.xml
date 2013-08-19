@@ -7,7 +7,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
-    <changeSet id="1" author="jon.sabados">
+    <changeSet id="users_table" author="jon.sabados">
         <createTable tableName="users">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_user"/>
@@ -23,6 +23,14 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="intitial_user" author="jon.sabados">
+        <insert tableName="users">
+            <column name="email_address">admin</column>
+            <column name="handle">delete_me</column>
+            <column name="password_hash">c795ed97dd5d4428189ceb5528c62bf4e47738e49d5622174a3a8db63efbec96</column>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>

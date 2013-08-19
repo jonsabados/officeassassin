@@ -132,7 +132,6 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
 
-        <!-- TODO - this probalby will make its way into common for real use -->
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>

@@ -14,6 +14,7 @@ import javax.servlet.{ServletContextEvent, ServletContext}
 import com.jshnd.shiro.{AuthenticationInfoSource, AuthorizationInfoSource, InjectionRealm}
 import org.apache.shiro.authc.credential.{HashedCredentialsMatcher, CredentialsMatcher}
 import org.apache.shiro.crypto.hash.Sha256Hash
+import org.apache.shiro.SecurityUtils
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -40,6 +41,7 @@ class AssassinServletConfig extends GuiceServletContextListener {
       bind(classOf[UserResource]).in(classOf[GSingleton])
 
       serve("/rest/*").`with`(classOf[GuiceContainer])
+      ShiroWebModule.bindGuiceFilter(binder())
     }
   }
 
@@ -52,6 +54,8 @@ class AssassinServletConfig extends GuiceServletContextListener {
   def getInjector: Injector = {
     val i = Guice.createInjector(new SecurityModule, new ShiroAopModule, new ServletModule)
     i.getInstance(classOf[JpaStoreModuleInitializer]).start()
+    val securityManager = i.getInstance(classOf[org.apache.shiro.mgt.SecurityManager])
+    SecurityUtils.setSecurityManager(securityManager)
     i
   }
 
