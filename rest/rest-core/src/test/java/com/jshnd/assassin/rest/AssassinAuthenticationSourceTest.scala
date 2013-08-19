@@ -5,7 +5,6 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSpec
 import org.apache.shiro.authc.{SimpleAuthenticationInfo, UsernamePasswordToken}
 import com.jshnd.assassin.user.User
-import org.apache.commons.codec.digest.DigestUtils.sha256
 
 @RunWith(classOf[JUnitRunner])
 class AssassinAuthenticationSourceTest extends FunSpec {
