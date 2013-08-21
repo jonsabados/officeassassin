@@ -11,15 +11,15 @@ object AssassinAuthenticationSource {
   val WONT_MATCH_HASH = "!!!We still want hashing to be performed to prevent timing attacks to deduce valid users - nothing will hash to this!!!!"
 }
 
-class AssassinAuthenticationSource @Inject() (@FindUserByEmail userQuery: (String) => List[User])
+class AssassinAuthenticationSource @Inject() (@FindUserByEmail userQuery: (String) => Option[User])
   extends AuthenticationInfoSource {
 
   def authenticationInfo(token: AuthenticationToken): AuthenticationInfo = {
     val email = token.asInstanceOf[UsernamePasswordToken].getUsername
-    val matches = userQuery(email)
-    if(matches.isEmpty) toInfo(new User(None, email, "Nope", None, AssassinAuthenticationSource.WONT_MATCH_HASH))
-    else if (!matches.tail.isEmpty) throw new IllegalStateException("Someone messed with the DB and added a duplicate user for " + email)
-    else toInfo(matches.head)
+    userQuery(email) match {
+      case Some(u) => toInfo(u)
+      case _ => toInfo(new User(None, email, "Nope", None, AssassinAuthenticationSource.WONT_MATCH_HASH))
+    }
   }
 
   private def toInfo(user: User): AuthenticationInfo = {

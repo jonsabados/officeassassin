@@ -25,6 +25,14 @@ class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory, emp: Provider[E
     doFind(query)
   }
 
+  @Transactional
+  def findUnique[T](query: AssassinQuery[T]): Option[T] = {
+    val matches = find(query)
+    if(matches.isEmpty) None
+    else if(matches.tail.isEmpty) Some(matches.head)
+    else throw new IllegalArgumentException("Query " + query + " had many matches")
+  }
+
   private def doFind[J, A](query: AssassinQuery[A]): List[A] = {
     val builder = new NonAmbiguousCriteriaBuilder(em.getCriteriaBuilder)
     val mapper: JpaMapper[J, A] = mapFact.mapper(query.forType)

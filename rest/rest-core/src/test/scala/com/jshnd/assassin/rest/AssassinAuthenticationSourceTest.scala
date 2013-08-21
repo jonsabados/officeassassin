@@ -16,20 +16,13 @@ class AssassinAuthenticationSourceTest extends FunSpec {
 
     val validUser = new User(Some(1), "test@example.com", "test", Some("Test User"), "12345")
 
-    def happyPathFind(x: String): List[User] = {
+    def happyPathFind(x: String): Option[User] = {
       if (!x.equals("test@example.com")) fail("Wrong username passed")
-      List(validUser)
-    }
-
-    it("Should blow up when more than one user is found") {
-      val found = new User(Some(1), "test@example.com", "test", Some("Test User"), "12345")
-      intercept[IllegalStateException] {
-        new AssassinAuthenticationSource((x) => List(found, found)).authenticationInfo(token)
-      }
+      Some(validUser)
     }
 
     it("Should return a user with an invalid hash when no user found") {
-      val result = new AssassinAuthenticationSource((String) => List()).authenticationInfo(token).asInstanceOf[SimpleAuthenticationInfo]
+      val result = new AssassinAuthenticationSource((String) => None).authenticationInfo(token).asInstanceOf[SimpleAuthenticationInfo]
       assert(result.getCredentials === AssassinAuthenticationSource.WONT_MATCH_HASH)
       assert(result.getPrincipals.asList().get(0) === User(None, "test@example.com", "Nope", None, AssassinAuthenticationSource.WONT_MATCH_HASH))
     }

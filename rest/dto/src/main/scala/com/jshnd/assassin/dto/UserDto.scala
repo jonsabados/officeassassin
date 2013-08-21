@@ -19,6 +19,8 @@ class UserCreateDto(emailAddress: String,
                     @BeanProperty @(XmlElement @field) var password: String)
   extends UserBaseDto(emailAddress = emailAddress, handle = handle, fullName = fullName) {
 
+  def this() = this(null, null, null, null)
+
 }
 
 @XmlRootElement(name = "UserEdit")
