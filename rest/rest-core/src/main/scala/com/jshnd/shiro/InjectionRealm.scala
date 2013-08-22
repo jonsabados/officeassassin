@@ -7,7 +7,6 @@ import org.apache.shiro.authc.{AuthenticationInfo, AuthenticationToken}
 import com.google.inject.Inject
 import org.apache.shiro.authc.credential.CredentialsMatcher
 
-//TODO -
 class InjectionRealm @Inject() (authenticate: AuthenticationInfoSource,
                                 authorize: AuthorizationInfoSource,
                                 matcher: CredentialsMatcher)
