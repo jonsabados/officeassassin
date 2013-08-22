@@ -1,16 +1,13 @@
 package com.jshnd.assassin.rest
 
 import javax.ws.rs._
-import com.jshnd.assassin.dto.{UserBaseDto, ListResult}
+import com.jshnd.assassin.dto.{UserEditDto, UserBaseDto, ListResult}
 import com.google.inject.Inject
-import com.jshnd.assassin.user.{User, UserQuery}
 import com.jshnd.assassin.query.AssassinStore
-import com.jshnd.assassin.bindings.{FindUserByEmail, EnlistNewUser}
-import javax.ws.rs.core.Response
-import java.net.URI
-import org.apache.shiro.authz.annotation.RequiresPermissions
+import com.jshnd.assassin.bindings.FindUserByEmail
+import javax.ws.rs.core.{MediaType, Response}
 import com.jshnd.assassin.user.User
-import scala.Some
+import scala.{Array, Some}
 import com.jshnd.assassin.user.UserQuery
 
 
@@ -33,13 +30,11 @@ class UserResource @Inject() (store: AssassinStore, @FindUserByEmail findUser: (
     }
   }
 
-  @GET
-  @Path("secured")
-  @RequiresPermissions(Array("helloShiro"))
-  def helloSecurityWorks(): ListResult[UserBaseDto] = {
-    store.find(new UserQuery()).map(
-      x => new UserBaseDto(x.emailAddress, x.handle, x.fullName.getOrElse(null))
-    )
+  @PUT
+  @Path("/email/{email}")
+  @Consumes(Array(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML))
+  def updateUser(@PathParam("email") email: String, details: UserEditDto): Response = {
+    Response.ok("WEEE!").build();
   }
 
 }

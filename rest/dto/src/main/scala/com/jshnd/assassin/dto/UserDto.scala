@@ -24,8 +24,7 @@ class UserCreateDto(emailAddress: String,
 }
 
 @XmlRootElement(name = "UserEdit")
-class UserEditDto(@BeanProperty @(XmlElement @field) var id: Int,
-                  emailAddress: String,
+class UserEditDto(emailAddress: String,
                   handle: String,
                   fullName: String,
                   @BeanProperty @(XmlElement @field) var password: String)

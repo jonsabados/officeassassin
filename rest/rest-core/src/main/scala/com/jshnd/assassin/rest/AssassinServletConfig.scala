@@ -19,7 +19,6 @@ import com.jshnd.assassin.rest.bindings.PasswordHasher
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
-  // this just feels kinda wrong but guice seems to think the servlet context should be private and this works...
   var sc: ServletContext = _
 
   class SecurityModule extends ShiroWebModule(sc) {
@@ -52,7 +51,6 @@ class AssassinServletConfig extends GuiceServletContextListener {
       serve("/rest/*").`with`(classOf[GuiceContainer])
       filter("/rest/*").through(classOf[GuiceShiroFilter])
     }
-
 
   }
 
