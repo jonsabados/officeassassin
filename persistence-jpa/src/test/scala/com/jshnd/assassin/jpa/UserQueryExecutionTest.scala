@@ -7,7 +7,7 @@ import com.jshnd.assassin.user.{UserQuery, User}
 import org.apache.commons.codec.digest.DigestUtils.sha256Hex
 
 @RunWith(classOf[JUnitRunner])
-class UserQueryTest extends FunSpec with QueryTester {
+class UserQueryExecutionTest extends FunSpec with QueryTester {
   //TODO - use dbunit or something - this is fragile if base schema stuff adds users etc.
   val pwHash = sha256Hex("123")
 

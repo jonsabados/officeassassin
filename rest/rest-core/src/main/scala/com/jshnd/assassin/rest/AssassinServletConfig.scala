@@ -16,6 +16,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.SecurityUtils
 import com.jshnd.assassin.rest.bindings.PasswordHasher
 import com.google.inject.matcher.Matchers._
+import com.jshnd.assassin.rest.exceptionmapping.UnauthorizedExceptionMapper
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -46,6 +47,8 @@ class AssassinServletConfig extends GuiceServletContextListener {
       install(new AssassinRootModule(propertyFile.toMap))
 
       bindInterceptor(any(), annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
+
+      bind(classOf[UnauthorizedExceptionMapper]).in(classOf[GSingleton])
 
       bind(classOf[UserResource]).in(classOf[GSingleton])
       bind(classOf[EnlistmentResource]).in(classOf[GSingleton])

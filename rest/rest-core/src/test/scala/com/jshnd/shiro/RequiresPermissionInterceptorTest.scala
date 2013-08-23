@@ -17,12 +17,12 @@ class RequiresPermissionInterceptorTest extends FunSpec {
   class TestModule extends AbstractModule {
     def configure() {
       bindInterceptor(Matchers.any(), Matchers.annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
-      bind(classOf[Tester])
+      bind(classOf[SecuredClass])
     }
   }
 
   val injector = Guice.createInjector(new TestModule())
-  val tester = injector.getInstance(classOf[Tester])
+  val tester = injector.getInstance(classOf[SecuredClass])
 
   describe("RequiresPermissionInterceptor") {
     it("Should throw AuthorizationExceptions when permissions are not present") {
@@ -44,7 +44,7 @@ class RequiresPermissionInterceptorTest extends FunSpec {
 
 }
 
-class Tester {
+class SecuredClass {
 
   @RequiresPermission("foo:{subA}:{b}")
   def doSomething(@PathParam("noiseA") @Substitution("subA") subA: String,
