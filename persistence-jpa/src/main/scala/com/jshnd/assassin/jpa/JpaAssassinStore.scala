@@ -15,9 +15,18 @@ class JpaAssassinStore @Inject() (mapFact: JpaTypeMapperFactory, emp: Provider[E
   def em = emp.get()
 
   @Transactional
-  def persist[A](entity: A) {
-    val mapper = mapFact.mapper(entity.getClass.asInstanceOf[Class[A]])
-    em.persist(mapper.mapToJpa(entity))
+  def persist[T](entity: T): T = {
+    val mapper: JpaMapper[AnyRef, T] = mapFact.mapper(entity.getClass.asInstanceOf[Class[T]])
+    val jpaEntity = mapper.mapToJpa(entity)
+    em.persist(jpaEntity)
+    mapper.mapToAssassin(jpaEntity)
+  }
+
+  def load[T](id: Any, clazz: Class[T]): Option[T] = {
+    val mapper: JpaMapper[AnyRef, T] = mapFact.mapper(clazz)
+    val entity = em.find(mapper.jpaClass, id)
+    if(entity == null) None
+    else Some(mapper.mapToAssassin(entity))
   }
 
   @Transactional
