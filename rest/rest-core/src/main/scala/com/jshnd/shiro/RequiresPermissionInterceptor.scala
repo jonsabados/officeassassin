@@ -10,7 +10,6 @@ import scala.annotation.tailrec
 class RequiresPermissionInterceptor extends MethodInterceptor {
 
   def invoke(p1: MethodInvocation): AnyRef = {
-    println("I was invoked")
     val annotation = p1.getMethod.getAnnotation(classOf[RequiresPermission])
     val subject = ThreadContext.getSubject
     val permission = apply(annotation.value(), substitutions(p1.getArguments, p1.getMethod.getParameterAnnotations))
@@ -18,17 +17,23 @@ class RequiresPermissionInterceptor extends MethodInterceptor {
     p1.proceed()
   }
 
-  def substitutions(args: Array[AnyRef],
+  @tailrec
+  private def substitutions(args: Array[AnyRef],
                     annotations: Array[Array[Annotation]],
                     index: Int = 0,
                     accu: List[(AnyRef, Substitution)] = List()): List[(AnyRef, Substitution)] = {
-    val nextMatch = annotations.indexWhere(x => x.find(a => a.annotationType().getClass.eq(classOf[Substitution])) != -1, index)
-    println("Hi!" + nextMatch)
-    if(nextMatch == -1) accu
+    if(index >= annotations.length) accu
     else {
-      val toAdd = (args(index), annotations(index).find(a => a.annotationType().getClass.eq(classOf[Substitution])).get.asInstanceOf[Substitution])
-      substitutions(args, annotations, nextMatch, toAdd :: accu)
+      val sub = annotations(index).find(a => a.annotationType().eq(classOf[Substitution]))
+      substitutions(args, annotations, index + 1, addIfPresent(args(index), sub, accu))
     }
+  }
+
+  private def addIfPresent(arg: AnyRef,
+                           sub: Option[Annotation],
+                           accu: List[(AnyRef, Substitution)]): List[(AnyRef, Substitution)] = sub match {
+    case  Some(annotation) =>  (arg, annotation.asInstanceOf[Substitution]) :: accu
+    case _ => accu
   }
 
   @tailrec

@@ -8,14 +8,14 @@ import com.sun.jersey.guice.JerseyServletModule
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import com.jshnd.assassin.AssassinRootModule
 import com.jshnd.assassin.jpa.JpaStoreModuleInitializer
-import org.apache.shiro.guice.aop.ShiroAopModule
 import org.apache.shiro.guice.web.{GuiceShiroFilter, ShiroWebModule}
 import javax.servlet.{ServletContextEvent, ServletContext}
-import com.jshnd.shiro.{AuthenticationInfoSource, AuthorizationInfoSource, InjectionRealm}
+import com.jshnd.shiro._
 import org.apache.shiro.authc.credential.{HashedCredentialsMatcher, CredentialsMatcher}
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.apache.shiro.SecurityUtils
 import com.jshnd.assassin.rest.bindings.PasswordHasher
+import com.google.inject.matcher.Matchers._
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -45,6 +45,8 @@ class AssassinServletConfig extends GuiceServletContextListener {
     override def configureServlets() {
       install(new AssassinRootModule(propertyFile.toMap))
 
+      bindInterceptor(any(), annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
+
       bind(classOf[UserResource]).in(classOf[GSingleton])
       bind(classOf[EnlistmentResource]).in(classOf[GSingleton])
 
@@ -61,7 +63,7 @@ class AssassinServletConfig extends GuiceServletContextListener {
   }
 
   def getInjector: Injector = {
-    val i = Guice.createInjector(new SecurityModule, new ShiroAopModule, new AssassinServletModule)
+    val i = Guice.createInjector(new SecurityModule, new AssassinServletModule)
     i.getInstance(classOf[JpaStoreModuleInitializer]).start()
     val securityManager = i.getInstance(classOf[org.apache.shiro.mgt.SecurityManager])
     SecurityUtils.setSecurityManager(securityManager)

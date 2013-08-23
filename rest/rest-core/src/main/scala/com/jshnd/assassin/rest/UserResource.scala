@@ -9,6 +9,7 @@ import javax.ws.rs.core.{MediaType, Response}
 import com.jshnd.assassin.user.User
 import scala.{Array, Some}
 import com.jshnd.assassin.user.UserQuery
+import com.jshnd.shiro.{Substitution, RequiresPermission}
 
 
 @Path("/users")
@@ -18,12 +19,14 @@ class UserResource @Inject() (store: AssassinStore, @FindUserByEmail findUser: (
 
   @GET
   @Produces(Array("application/json", "application/xml"))
+  @RequiresPermission("users:view:*")
   def allUsers(): ListResult[UserBaseDto] = store.find(new UserQuery()).map(dtoMap)
 
   @GET
   @Path("/email/{email}")
   @Produces(Array("application/json", "application/xml"))
-  def user(@PathParam("email") email: String): Response = {
+  @RequiresPermission("users:view:{email}") // TODO - this needs to be id based
+  def user(@Substitution("email") @PathParam("email") email: String): Response = {
     findUser(email) match {
       case Some(user) => Response.ok(dtoMap(user)).build()
       case None => Response.status(Response.Status.NOT_FOUND).build()
@@ -33,8 +36,9 @@ class UserResource @Inject() (store: AssassinStore, @FindUserByEmail findUser: (
   @PUT
   @Path("/email/{email}")
   @Consumes(Array(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML))
-  def updateUser(@PathParam("email") email: String, details: UserEditDto): Response = {
-    Response.ok("WEEE!").build();
+  @RequiresPermission("users:edit:{email}") // TODO - this needs to be id based
+  def updateUser(@Substitution("email") @PathParam("email") email: String, details: UserEditDto): Response = {
+    Response.ok("WEEE!").build()
   }
 
 }

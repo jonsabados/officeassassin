@@ -14,19 +14,10 @@ import javax.ws.rs.PathParam
 @RunWith(classOf[JUnitRunner])
 class RequiresPermissionInterceptorTest extends FunSpec {
 
-  class Tester {
-
-    @RequiresPermission("foo:{subA}:{b}")
-    def doSomething(@PathParam("noiseA") @Substitution subA: String,
-                    toWhat: Object,
-                    @Substitution("b") @PathParam("noiseB") subB: String) {}
-
-  }
-
   class TestModule extends AbstractModule {
     def configure() {
       bindInterceptor(Matchers.any(), Matchers.annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
-      bind(classOf[Tester]).toInstance(new Tester)
+      bind(classOf[Tester])
     }
   }
 
@@ -50,5 +41,14 @@ class RequiresPermissionInterceptorTest extends FunSpec {
       verify(subj).checkPermission("foo:saw:it")
     }
   }
+
+}
+
+class Tester {
+
+  @RequiresPermission("foo:{subA}:{b}")
+  def doSomething(@PathParam("noiseA") @Substitution("subA") subA: String,
+                  toWhat: Object,
+                  @Substitution("b") @PathParam("noiseB") subB: String) {}
 
 }

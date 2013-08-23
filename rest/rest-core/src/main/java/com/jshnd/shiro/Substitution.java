@@ -9,5 +9,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({ ElementType.PARAMETER })
 public @interface Substitution {
-    String value() default "";
+    String value();
 }
