@@ -9,11 +9,10 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import com.jshnd.assassin.AssassinRootModule
 import com.jshnd.assassin.jpa.JpaStoreModuleInitializer
 import org.apache.shiro.guice.web.{GuiceShiroFilter, ShiroWebModule}
-import javax.servlet.{ServletContextEvent, ServletContext}
+import javax.servlet._
 import com.jshnd.shiro._
 import org.apache.shiro.authc.credential.{HashedCredentialsMatcher, CredentialsMatcher}
 import org.apache.shiro.crypto.hash.Sha256Hash
-import org.apache.shiro.SecurityUtils
 import com.jshnd.assassin.rest.bindings.PasswordHasher
 import com.google.inject.matcher.Matchers._
 import com.jshnd.assassin.rest.exceptionmapping.UnauthorizedExceptionMapper
@@ -33,8 +32,8 @@ class AssassinServletConfig extends GuiceServletContextListener {
       bind(hasherType).annotatedWith(classOf[PasswordHasher]).toInstance(hashPassword)
       expose(hasherType).annotatedWith(classOf[PasswordHasher])
 
+      addFilterChain("/rest/**", ShiroWebModule.NO_SESSION_CREATION) // TODO - this appears to do nothing... see SessionDieFilter and figure out if were just doing something horribly wrong
       addFilterChain("/rest/public/**", ShiroWebModule.ANON)
-      addFilterChain("/rest/**", ShiroWebModule.NO_SESSION_CREATION)
       addFilterChain("/rest/**", ShiroWebModule.AUTHC_BASIC)
     }
 
@@ -68,8 +67,6 @@ class AssassinServletConfig extends GuiceServletContextListener {
   def getInjector: Injector = {
     val i = Guice.createInjector(new SecurityModule, new AssassinServletModule)
     i.getInstance(classOf[JpaStoreModuleInitializer]).start()
-    val securityManager = i.getInstance(classOf[org.apache.shiro.mgt.SecurityManager])
-    SecurityUtils.setSecurityManager(securityManager)
     i
   }
 
