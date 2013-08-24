@@ -4,7 +4,6 @@ import scala.collection.JavaConversions._
 import java.util.{List => JList}
 import javax.xml.bind.annotation._
 import scala.beans.BeanProperty
-import scala.annotation.meta.field
 
 
 object ListResult {
@@ -12,10 +11,13 @@ object ListResult {
 }
 
 @XmlRootElement
-case class ListResult[T](@xmlElementWrapper(name = "items")
-                         @xmlElement @BeanProperty var data: JList[T],
-                         @xmlElement @BeanProperty var totalRecords: Int) {
+@XmlSeeAlso(Array(classOf[UserViewDto]))
+case class ListResult[T](@XmlElementWrapper
+                         @XmlElement @BeanProperty var data: JList[T],
+                         @XmlElement @BeanProperty var totalRecords: Int) {
 
+  def this() = this(null, 0)
 
 }
+
 

@@ -69,6 +69,12 @@
                 <version>${jetty.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.bval</groupId>
+                <artifactId>bval-guice</artifactId>
+                <version>0.5</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -10,13 +10,13 @@
     <changeSet id="users_table" author="jon.sabados">
         <createTable tableName="users">
             <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_user"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_users"/>
             </column>
             <column name="email_address" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="uk_user_email_address"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_email_address"/>
             </column>
             <column name="handle" type="varchar(64)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="uk_user_handle"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_users_handle"/>
             </column>
             <column name="full_name" type="varchar(255)"/>
             <column name="password_hash" type="char(64)">

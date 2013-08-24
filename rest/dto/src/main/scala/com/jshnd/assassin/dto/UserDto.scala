@@ -1,33 +1,39 @@
 package com.jshnd.assassin.dto
 
-import com.sun.xml.internal.txw2.annotation.XmlElement
-import javax.xml.bind.annotation.{XmlRootElement}
-import scala.annotation.meta.field
+import javax.xml.bind.annotation.{XmlElement, XmlRootElement}
 import scala.beans.BeanProperty
 
-@XmlRootElement(name = "User")
-class UserBaseDto(@BeanProperty @(XmlElement @field) var emailAddress: String,
-                  @BeanProperty @(XmlElement @field) var handle: String,
-                  @BeanProperty @(XmlElement @field) var fullName: String) {
 
+abstract class UserBaseDto(emailAddress: String, handle: String, fullName: String)
+
+@XmlRootElement
+case class UserViewDto(@BeanProperty @XmlElement var id: Int,
+                       @BeanProperty @XmlElement var emailAddress: String,
+                       @BeanProperty @XmlElement var handle: String,
+                       @BeanProperty @XmlElement var fullName: String)
+  extends UserBaseDto(emailAddress, handle, fullName) {
+
+  def this() = this(0, null, null, null)
 }
 
-@XmlRootElement(name = "UserCreate")
-class UserCreateDto(emailAddress: String,
-                    handle: String,
-                    fullName: String,
-                    @BeanProperty @(XmlElement @field) var password: String)
-  extends UserBaseDto(emailAddress = emailAddress, handle = handle, fullName = fullName) {
+@XmlRootElement
+case class UserCreateDto(@BeanProperty @XmlElement var emailAddress: String,
+                         @BeanProperty @XmlElement var handle: String,
+                         @BeanProperty @XmlElement var fullName: String,
+                         @BeanProperty @XmlElement var password: String)
+  extends UserBaseDto(emailAddress, handle, fullName) {
 
   def this() = this(null, null, null, null)
 
 }
 
-@XmlRootElement(name = "UserEdit")
-class UserEditDto(emailAddress: String,
-                  handle: String,
-                  fullName: String,
-                  @BeanProperty @(XmlElement @field) var password: String)
-  extends UserBaseDto(emailAddress = emailAddress, handle = handle, fullName = fullName) {
+@XmlRootElement
+case class UserEditDto(@BeanProperty @XmlElement var emailAddress: String,
+                       @BeanProperty @XmlElement var handle: String,
+                       @BeanProperty @XmlElement var fullName: String,
+                       @BeanProperty @XmlElement var password: String)
+  extends UserBaseDto(emailAddress, handle, fullName) {
+
+  def this() = this(null, null, null, null)
 
 }

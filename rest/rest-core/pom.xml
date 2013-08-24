@@ -94,6 +94,11 @@
             <version>${shiro.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.bval</groupId>
+            <artifactId>bval-guice</artifactId>
+        </dependency>
+
         <!-- TODO - this aint right but logging is not a real concern at the moment -->
         <dependency>
             <groupId>org.slf4j</groupId>
