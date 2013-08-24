@@ -21,6 +21,7 @@
         <jersey.version>1.17.1</jersey.version>
         <jackson.version>2.2.2</jackson.version>
         <jetty.version>6.1.25</jetty.version>
+        <bval.version>0.5</bval.version>
     </properties>
 
     <dependencyManagement>
@@ -70,9 +71,19 @@
             </dependency>
 
             <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>1.0.0.GA</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.bval</groupId>
                 <artifactId>bval-guice</artifactId>
-                <version>0.5</version>
+                <version>${bval.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.bval</groupId>
+                <artifactId>bval-jsr303</artifactId>
+                <version>${bval.version}</version>
             </dependency>
 
         </dependencies>

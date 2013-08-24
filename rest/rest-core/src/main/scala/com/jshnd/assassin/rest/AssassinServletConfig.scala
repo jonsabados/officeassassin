@@ -16,6 +16,8 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import com.jshnd.assassin.rest.bindings.PasswordHasher
 import com.google.inject.matcher.Matchers._
 import com.jshnd.assassin.rest.exceptionmapping.UnauthorizedExceptionMapper
+import org.apache.bval.guice.ValidationModule
+import com.jshnd.validation.{ValidationInterceptor, DoValidation}
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -32,8 +34,8 @@ class AssassinServletConfig extends GuiceServletContextListener {
       bind(hasherType).annotatedWith(classOf[PasswordHasher]).toInstance(hashPassword)
       expose(hasherType).annotatedWith(classOf[PasswordHasher])
 
-      addFilterChain("/rest/**", ShiroWebModule.NO_SESSION_CREATION) // TODO - this appears to do nothing... see SessionDieFilter and figure out if were just doing something horribly wrong
       addFilterChain("/rest/public/**", ShiroWebModule.ANON)
+      //addFilterChain("/rest/**", ShiroWebModule.NO_SESSION_CREATION) // TODO - this appears to do nothing and breaks anon... see SessionDieFilter and figure out if were just doing something horribly wrong
       addFilterChain("/rest/**", ShiroWebModule.AUTHC_BASIC)
     }
 
@@ -44,6 +46,12 @@ class AssassinServletConfig extends GuiceServletContextListener {
   class AssassinServletModule extends JerseyServletModule {
     override def configureServlets() {
       install(new AssassinRootModule(propertyFile.toMap))
+      install(new ValidationModule)
+
+      // the bval interceptor doesn't appear to look for @Valid annotations... so well just roll our own.
+      val validator = new ValidationInterceptor
+      requestInjection(validator)
+      bindInterceptor(any(), annotatedWith(classOf[DoValidation]), validator)
 
       bindInterceptor(any(), annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
 
