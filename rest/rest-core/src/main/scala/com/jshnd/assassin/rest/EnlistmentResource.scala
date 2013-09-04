@@ -7,9 +7,8 @@ import com.google.inject.Inject
 import com.jshnd.assassin.rest.bindings.PasswordHasher
 import com.jshnd.assassin.bindings.EnlistNewUser
 import com.jshnd.assassin.user.User
-import org.apache.bval.guice.Validate
 import javax.validation.Valid
-import com.jshnd.validation.DoValidation
+import org.apache.bval.guice.Validate
 
 
 @Path("/public/enlistment")
@@ -17,7 +16,7 @@ class EnlistmentResource @Inject() (@EnlistNewUser enlist: (User) => User,
                                     @PasswordHasher hash: (String, String) => String) {
 
   @POST
-  @DoValidation
+  @Validate
   @Consumes(Array(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML))
   def enlist(@Valid user: UserCreateDto, @Context uriInfo: UriInfo): Response = {
     // TODO (bigtime) - validation!!! (http://bval.apache.org/obtaining-a-validator.html)

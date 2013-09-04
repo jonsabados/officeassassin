@@ -15,9 +15,8 @@ import org.apache.shiro.authc.credential.{HashedCredentialsMatcher, CredentialsM
 import org.apache.shiro.crypto.hash.Sha256Hash
 import com.jshnd.assassin.rest.bindings.PasswordHasher
 import com.google.inject.matcher.Matchers._
-import com.jshnd.assassin.rest.exceptionmapping.UnauthorizedExceptionMapper
+import com.jshnd.assassin.rest.exceptionmapping.{ValidationFailureExceptionMapper, UnauthorizedExceptionMapper}
 import org.apache.bval.guice.ValidationModule
-import com.jshnd.validation.{ValidationInterceptor, DoValidation}
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -48,14 +47,10 @@ class AssassinServletConfig extends GuiceServletContextListener {
       install(new AssassinRootModule(propertyFile.toMap))
       install(new ValidationModule)
 
-      // the bval interceptor doesn't appear to look for @Valid annotations... so well just roll our own.
-      val validator = new ValidationInterceptor
-      requestInjection(validator)
-      bindInterceptor(any(), annotatedWith(classOf[DoValidation]), validator)
-
       bindInterceptor(any(), annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
 
       bind(classOf[UnauthorizedExceptionMapper]).in(classOf[GSingleton])
+      bind(classOf[ValidationFailureExceptionMapper]).in(classOf[GSingleton])
 
       bind(classOf[UserResource]).in(classOf[GSingleton])
       bind(classOf[EnlistmentResource]).in(classOf[GSingleton])

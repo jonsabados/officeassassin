@@ -11,10 +11,16 @@ object ListResult {
 }
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso(Array(classOf[UserViewDto]))
-case class ListResult[T](@XmlElementWrapper
-                         @XmlElement @BeanProperty var data: JList[T],
-                         @XmlElement @BeanProperty var totalRecords: Int) {
+case class ListResult[T](@xmlElementWrapper(name = "items")
+                         @xmlElement(name = "data")
+                         @BeanProperty
+                         var data: JList[T],
+
+                         @xmlElement
+                         @BeanProperty
+                         var totalRecords: Int) {
 
   def this() = this(null, 0)
 
