@@ -16,9 +16,10 @@ class UniqueEmailValidator @Inject() (@FindUserByEmail findByEmail: (String) => 
     if(in.emailAddress == null) true
     else in.id match {
       case None => findByEmail(in.emailAddress).isEmpty
-      case Some(id) => findByEmail(in.emailAddress) match {
+      case Some(editId) => findByEmail(in.emailAddress) match {
         case None => true
-        case Some(existingId) => existingId == id
+        case Some(User(Some(existingId), _, _, _, _)) => existingId == editId
+        case _ => false
       }
     }
   }
