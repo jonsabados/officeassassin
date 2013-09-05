@@ -1,7 +1,7 @@
 package com.jshnd.assassin.rest
 
 import javax.ws.rs._
-import com.jshnd.assassin.dto.{UserViewDto, UserEditDto, UserBaseDto, ListResult}
+import com.jshnd.assassin.dto.{UserViewDto, UserEditDto, UserDto, ListResult}
 import com.google.inject.Inject
 import com.jshnd.assassin.query.AssassinStore
 import com.jshnd.assassin.bindings.FindUserByEmail
@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlSeeAlso
 @Produces(Array("application/json", "application/xml"))
 class UserResource @Inject() (store: AssassinStore) {
 
-  def dtoMap(x: User): UserViewDto = new UserViewDto(x.id.get, x.emailAddress, x.handle, x.fullName.getOrElse(null))
+  def dtoMap(x: User): UserViewDto = new UserViewDto(x.id, x.emailAddress, x.handle, x.fullName.getOrElse(null))
 
   @GET
   //@RequiresPermission("users:view:*")

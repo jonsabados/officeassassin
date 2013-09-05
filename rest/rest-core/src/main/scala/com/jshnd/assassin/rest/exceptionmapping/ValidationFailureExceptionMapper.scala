@@ -14,7 +14,7 @@ class ValidationFailureExceptionMapper extends ExceptionMapper[ConstraintViolati
     Response.status(Response.Status.BAD_REQUEST).entity(toFailures(p1.getConstraintViolations)).build()
 
   def toFailures(violations: MSet[ConstraintViolation[_]]): ValidationFailures = {
-    val general = violations.filter(p => p.getPropertyPath == null).map(toGeneralValidationFailure)
+    val general = violations.filter(p => p.getPropertyPath == null || p.getPropertyPath.equals("")).map(toGeneralValidationFailure)
     val field = violations.filter(p => p.getPropertyPath != null).map(toFieldValidationFailure)
     new ValidationFailures(general, field)
   }
