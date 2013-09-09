@@ -16,10 +16,10 @@ object RunInIntellij extends App {
 
   val webappDir = "rest/webapp/src/main/webapp"
   val context = new WebAppContext()
-  context.setDescriptor(webappDir + "/WEB-INF/web.xml");
-  context.setResourceBase(webappDir);
-  context.setContextPath("/");
-  context.setParentLoaderPriority(true);
+  context.setDescriptor(webappDir + "/WEB-INF/web.xml")
+  context.setResourceBase(webappDir)
+  context.setContextPath("/")
+  context.setParentLoaderPriority(true)
 
   server.setHandler(context)
   server.start()

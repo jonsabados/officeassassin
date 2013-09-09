@@ -22,6 +22,8 @@ import com.jshnd.assassin.validation.{UniqueHandle, UniqueEmail}
 import com.jshnd.assassin.rest.validation.{UniqueHandleValidator, UniqueEmailValidator}
 import com.jshnd.assassin.dto.UserDto
 import org.apache.bval.jsr303.ApacheValidatorFactory
+import scala.sys.SystemProperties
+import java.io.FileInputStream
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -69,7 +71,12 @@ class AssassinServletConfig extends GuiceServletContextListener {
 
   def propertyFile: Properties = {
     val props = new Properties()
-    props.load(getClass.getResourceAsStream("/default-assassin-config.properties"))
+    val sysProps = new SystemProperties
+    if(sysProps.contains("assassin.config")) {
+      props.load(new FileInputStream(sysProps("assassin.config")))
+    } else {
+      props.load(getClass.getResourceAsStream("/default-assassin-config.properties"))
+    }
     props
   }
 

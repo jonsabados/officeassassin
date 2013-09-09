@@ -10,6 +10,8 @@ class EmbeddedJpaStoreModule @Inject() (@Named("embeddedDb.location") dbLocation
   def dataSource: DataSource = {
     val ret = new EmbeddedDataSource
     ret.setCreateDatabase("create")
+    // TODO - real logging
+    System.out.println("Using " + dbLocation)
     ret.setDatabaseName(dbLocation)
     ret
   }
