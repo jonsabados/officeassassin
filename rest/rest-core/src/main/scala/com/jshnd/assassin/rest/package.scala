@@ -9,6 +9,6 @@ package object rest {
 
   def pathBuilder(u: UriInfo, c: Class[_]): UriBuilder = u.getBaseUriBuilder.path(resourcePath(c))
 
-  def created(ub: UriBuilder, args: Any*): Response = Response.created(ub.build(args)).build()
+  def created(ub: UriBuilder, newId: Int): Response = Response.created(ub.build(Integer.valueOf(newId))).build()
 
 }
