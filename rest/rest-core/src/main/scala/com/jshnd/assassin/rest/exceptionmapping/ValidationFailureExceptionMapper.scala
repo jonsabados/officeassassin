@@ -14,15 +14,16 @@ class ValidationFailureExceptionMapper extends ExceptionMapper[ConstraintViolati
     Response.status(Response.Status.BAD_REQUEST).entity(toFailures(p1.getConstraintViolations)).build()
 
   def toFailures(violations: MSet[ConstraintViolation[_]]): ValidationFailures = {
-    val general = violations.filter(p => p.getPropertyPath == null || p.getPropertyPath.equals("")).map(toGeneralValidationFailure)
-    val field = violations.filter(p => p.getPropertyPath != null).map(toFieldValidationFailure)
+    val general = violations.filter(p => !hasPath(p)).map(toGeneralValidationFailure)
+    val field = violations.filter(hasPath).map(toFieldValidationFailure)
     new ValidationFailures(general, field)
   }
 
-  def toFieldValidationFailure(v: ConstraintViolation[_]): FieldValidationFailure =
-    new FieldValidationFailure(v.getMessageTemplate, v.getMessage, v.getPropertyPath.toString, v.getInvalidValue)
+  private def toFieldValidationFailure(v: ConstraintViolation[_]): FieldValidationFailure =
+    new FieldValidationFailure(v.getMessageTemplate, v.getMessage, v.getPropertyPath.toString)
 
-  def toGeneralValidationFailure(v: ConstraintViolation[_]): GeneralValidationFailure =
-    new GeneralValidationFailure(v.getMessageTemplate, v.getMessage, v.getInvalidValue)
+  private def toGeneralValidationFailure(v: ConstraintViolation[_]): GeneralValidationFailure =
+    new GeneralValidationFailure(v.getMessageTemplate, v.getMessage)
 
+  private def hasPath(v: ConstraintViolation[_]) = !v.getPropertyPath.toString.equals("")
 }

@@ -23,16 +23,14 @@ case class ValidationFailures(@xmlElementWrapper(name = "generalFailures")
 trait ValidationFailure {
   def code: String
   def message: String
-  def rejectedValue: Any
 }
 
 @XmlElement
 @XmlAccessorType(XmlAccessType.FIELD)
 case class GeneralValidationFailure(@xmlElement @BeanProperty code: String,
-                                    @xmlElement @BeanProperty message: String,
-                                    @xmlElement @BeanProperty rejectedValue: AnyRef) extends ValidationFailure {
+                                    @xmlElement @BeanProperty message: String) extends ValidationFailure {
 
-  def this() = this(null, null, null)
+  def this() = this(null, null)
 
 }
 
@@ -40,9 +38,8 @@ case class GeneralValidationFailure(@xmlElement @BeanProperty code: String,
 @XmlAccessorType(XmlAccessType.FIELD)
 case class FieldValidationFailure(@xmlElement @BeanProperty code: String,
                                   @xmlElement @BeanProperty message: String,
-                                  @xmlElement @BeanProperty field: String,
-                                  @xmlElement @BeanProperty rejectedValue: AnyRef)  extends ValidationFailure {
+                                  @xmlElement @BeanProperty field: String)  extends ValidationFailure {
 
-  def this() = this(null, null, null, null)
+  def this() = this(null, null, null)
 
 }

@@ -17,10 +17,9 @@ import com.jshnd.assassin.rest.bindings.PasswordHasher
 import com.google.inject.matcher.Matchers._
 import com.jshnd.assassin.rest.exceptionmapping.{ValidationFailureExceptionMapper, UnauthorizedExceptionMapper}
 import org.apache.bval.guice.ValidationModule
-import javax.validation.{ValidatorFactory, Validator, ConstraintValidator}
-import com.jshnd.assassin.validation.UniqueEmail
-import com.jshnd.assassin.user.User
-import com.jshnd.assassin.rest.validation.UniqueEmailValidator
+import javax.validation.{ValidatorFactory, ConstraintValidator}
+import com.jshnd.assassin.validation.{UniqueHandle, UniqueEmail}
+import com.jshnd.assassin.rest.validation.{UniqueHandleValidator, UniqueEmailValidator}
 import com.jshnd.assassin.dto.UserDto
 import org.apache.bval.jsr303.ApacheValidatorFactory
 
@@ -80,8 +79,10 @@ class AssassinServletConfig extends GuiceServletContextListener {
     // note - this is here so the dto's don't have to have knowledge of validating classes. Its an ugly, dirty hack
     // and I feel dirty but it works (for now, likely to be broken in the future) - thankfully bval isn't doing
     // defensive copies
-    i.getInstance(classOf[ValidatorFactory]).asInstanceOf[ApacheValidatorFactory]
-      .getDefaultConstraints.getDefaultConstraints.put(classOf[UniqueEmail].getName, Array(classOf[UniqueEmailValidator]))
+    val defaultValidators =  i.getInstance(classOf[ValidatorFactory]).asInstanceOf[ApacheValidatorFactory]
+      .getDefaultConstraints.getDefaultConstraints
+    defaultValidators.put(classOf[UniqueEmail].getName, Array(classOf[UniqueEmailValidator]))
+    defaultValidators.put(classOf[UniqueHandle].getName, Array(classOf[UniqueHandleValidator]))
     i
   }
 

@@ -20,8 +20,8 @@ class UserQueryExecutionTest extends FunSpec with QueryTester {
       List(User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
     }
 
-    it("Should find users by full name") {
-      assert(testStore.find(new UserQuery(None, Some("Buis"))) ===
+    it("Should find users by handle") {
+      assert(testStore.find(new UserQuery(None, Some("Foo Foe"))) ===
         List(User(Some(2), "foo@foo.com", "Foo Foe", Some("Buis"), pwHash)))
     }
 

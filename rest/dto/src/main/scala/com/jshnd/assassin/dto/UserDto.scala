@@ -2,7 +2,7 @@ package com.jshnd.assassin.dto
 
 import javax.xml.bind.annotation.{XmlAccessType, XmlAccessorType, XmlRootElement}
 import scala.beans.BeanProperty
-import com.jshnd.assassin.validation.UniqueEmail
+import com.jshnd.assassin.validation.{UniqueHandle, UniqueEmail}
 
 
 trait UserDto {
@@ -25,6 +25,7 @@ case class UserViewDto(@BeanProperty @xmlElement @xmlTypeAdapter(classOf[IntOpti
 
 @XmlRootElement
 @UniqueEmail
+@UniqueHandle
 @XmlAccessorType(XmlAccessType.FIELD)
 case class UserCreateDto(@notNull
                          @email

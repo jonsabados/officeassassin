@@ -34,17 +34,17 @@ class UserQueryTest extends FunSpec with Inside {
       verifyFieldPredicate(predicate, "emailAddress", "foo@bar.com")
     }
 
-    it("Should generate one predicate for full name searches") {
-      val predicate: AssassinQueryPredicate = new UserQuery(None, Some("John Doe")).predicate
-      verifyFieldPredicate(predicate, "fullName", "John Doe")
+    it("Should generate one predicate for handle searches") {
+      val predicate: AssassinQueryPredicate = new UserQuery(None, Some("doe")).predicate
+      verifyFieldPredicate(predicate, "handle", "doe")
     }
 
     it("Should generate an and predicate for multiple params") {
-      val predicate: AssassinQueryPredicate = new UserQuery(Some("foo@bar.com"), Some("John Doe")).predicate
+      val predicate: AssassinQueryPredicate = new UserQuery(Some("foo@bar.com"), Some("doe")).predicate
       inside(predicate) {
         case AndPredicate(left, right) =>
           verifyFieldPredicate(left, "emailAddress", "foo@bar.com")
-          verifyFieldPredicate(right, "fullName", "John Doe")
+          verifyFieldPredicate(right, "handle", "doe")
       }
     }
 
