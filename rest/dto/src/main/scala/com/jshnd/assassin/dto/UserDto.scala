@@ -12,9 +12,11 @@ trait UserDto {
   def fullName: String
 }
 
-@XmlRootElement
+@XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.FIELD)
-case class UserViewDto(@BeanProperty @xmlElement @xmlTypeAdapter(classOf[IntOptionAdapter]) var id: Option[Int],
+case class UserViewDto(@BeanProperty @xmlElement
+                       @xmlTypeAdapter(classOf[IntOptionAdapter])
+                       @jsonSerialize(using = classOf[OptionSerializerInt]) var id: Option[Int],
                        @BeanProperty @xmlElement var emailAddress: String,
                        @BeanProperty @xmlElement var handle: String,
                        @BeanProperty @xmlElement var fullName: String)
@@ -23,9 +25,9 @@ case class UserViewDto(@BeanProperty @xmlElement @xmlTypeAdapter(classOf[IntOpti
   def this() = this(None, null, null, null)
 }
 
-@XmlRootElement
 @UniqueEmail
 @UniqueHandle
+@XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.FIELD)
 case class UserCreateDto(@notNull
                          @email
@@ -57,7 +59,7 @@ case class UserCreateDto(@notNull
 
 }
 
-@XmlRootElement
+@XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.FIELD)
 // TODO - figure out how to bind id via a path param with a post body
 case class UserEditDto(@BeanProperty @xmlElement @xmlTypeAdapter(classOf[IntOptionAdapter]) var id: Option[Int],
