@@ -18,3 +18,10 @@ Assassin.ApplicationController = Ember.Controller.extend({
     }.property("currentPath")
 });
 
+
+var Serializable = Ember.Mixin.create({
+    serialize: function() {
+        var propertyNames = this.get("toSerialize");
+        return this.getProperties(propertyNames);
+    }
+});
