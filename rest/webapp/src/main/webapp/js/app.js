@@ -1,5 +1,7 @@
 Assassin = Ember.Application.create({
     currentPath: '',
+    username: '',
+    password: ''
 });
 
 Assassin.ApplicationController = Ember.Controller.extend({
@@ -20,3 +22,15 @@ Assassin.ApplicationController = Ember.Controller.extend({
   }.observes('currentPath')
 
 });
+
+function notEmpty(val) {
+    return val != undefined && val != "";
+}
+
+function trimToUndefinedReplacer(key, value) {
+    if(typeof(value) == "string" && value == "") {
+        return undefined;
+    } else {
+        return value;
+    }
+}

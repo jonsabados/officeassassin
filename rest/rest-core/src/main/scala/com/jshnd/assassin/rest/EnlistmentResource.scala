@@ -18,8 +18,7 @@ class EnlistmentResource @Inject() (@EnlistNewUser enlist: (User) => User,
   @POST
   @Validate
   @Consumes(Array(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML))
-  def enlist(@Valid user: UserCreateDto, @Context uriInfo: UriInfo): Response = {
-    // TODO (bigtime) - validation!!! (http://bval.apache.org/obtaining-a-validator.html)
+  def enlist(@Valid @javax.validation.constraints.NotNull user: UserCreateDto, @Context uriInfo: UriInfo): Response = {
     val newUser = enlist(new User(None, user.emailAddress, user.handle, Option.apply(user.fullName),
       hash(user.emailAddress, user.password)))
     created(pathBuilder(uriInfo,classOf[UserResource]).path("/id/{id}"), newUser.id.get)

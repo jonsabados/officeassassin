@@ -14,8 +14,7 @@ Assassin.EnlistController = Ember.Controller.extend({
     requiredFieldsSet: function() {
         var model = this.get("model");
         return model.get("requiredFields").every(function(property) {
-            var val = model.get(property);
-            return val != undefined && val != "";
+            return notEmpty(model.get(property));
         });
     }.property("model.emailAddress", "model.handle", "model.password", "passwordConfirm"),
 
@@ -43,7 +42,7 @@ Assassin.EnlistController = Ember.Controller.extend({
                 Accept: "application/json"
             },
 
-            data: JSON.stringify(this.get("model").serialize()),
+            data: JSON.stringify(this.get("model").serialize(), trimToUndefinedReplacer),
             success: function() {
                 var appController = me.get("controllers.application");
                 alert("Brand new user - " + appController);
