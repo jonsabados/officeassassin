@@ -5,4 +5,4 @@ var User = Ember.Object.extend(Serializable, {
         "handle",
         "password"
     ])
-})
+});

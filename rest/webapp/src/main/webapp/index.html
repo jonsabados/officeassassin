@@ -38,12 +38,7 @@
               <div class="collapse navbar-collapse">
                   <ul class="nav navbar-nav">
                       {{#each navigation}}
-                        {{#if active}}
-                            <li class="active">{{#linkTo route}}{{label}}{{/linkTo}}</li>
-                        {{else}}
-                            <li>{{#linkTo route}}{{label}}{{/linkTo}}</li>
-                        {{/if}}
-
+                        <li {{bind-attr class="active"}}>{{#linkTo route}}{{label}}{{/linkTo}}</li>
                       {{/each}}
                   </ul>
               </div>
@@ -55,6 +50,24 @@
 
       <form class="form-enlist">
           <h2 class="form-enlist-heading">Recruit Information</h2>
+          {{#if hasGeneralFailures}}
+            {{#each errors.generalFailures}}
+                <div class="alert alert-dismissable alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{message}}
+                </div>
+            {{/each}}
+          {{/if}}
+
+          {{#if hasFieldFailures}}
+          {{#each errors.fieldFailures}}
+          <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              {{field}}: {{message}}
+          </div>
+          {{/each}}
+          {{/if}}
+
           {{input type="text" class="form-control" placeholder="Email address" value=model.emailAddress}}
           {{input type="text" class="form-control" placeholder="Handle" value=model.handle}}
           {{input type="text" class="form-control optional" placeholder="Full Name" value=model.fullName}}
@@ -63,11 +76,8 @@
           <label class="checkbox">
               {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts
           </label>
-          {{#if canSubmit}}
-            <button class="btn btn-lg btn-primary btn-block" type="submit" {{action save}}>Enlist</button>
-          {{else}}
-            <button class="btn btn-lg btn-primary btn-block" type="submit" disabled>Enlist</button>
-          {{/if}}
+
+          <button class="btn btn-lg btn-primary btn-block" type="submit" {{action save}} {{bind-attr disabled=cantSubmit}}>Enlist</button>
       </form>
 
 
@@ -77,10 +87,17 @@
   <script src="js/libs/handlebars-1.0.0.js"></script>
   <script src="js/libs/ember-1.0.0.js"></script>
   <script src="js/libs/bootstrap.js"></script>
+
+  <script src="js/models/serializable.js"></script>
+  <script src="js/models/navItem.js"></script>
+  <script src="js/models/user.js"></script>
+  <script src="js/models/errors.js"></script>
+
   <script src="js/app.js"></script>
   <script src="js/router.js"></script>
-  <script src="js/models/user.js"></script>
+
   <script src="js/routes/enlistRoute.js"></script>
+
   <script src="js/controllers/enlistController.js"></script>
 </body>
 </html>

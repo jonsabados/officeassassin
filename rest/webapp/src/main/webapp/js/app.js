@@ -1,27 +1,22 @@
-Assassin = Ember.Application.create();
-
-Assassin.ApplicationController = Ember.Controller.extend({
-  navigation: function() {
-    var path = this.get('currentPath');
-    return Ember.A([
-        {
-            route: "index",
-            label: "Home",
-            active: path == "index"
-        },
-        {
-            route: "enlist",
-            label: "Enlist",
-            active: path == "enlist"
-        }
-    ])
-    }.property("currentPath")
+Assassin = Ember.Application.create({
+    currentPath: '',
 });
 
+Assassin.ApplicationController = Ember.Controller.extend({
+  navigation: Ember.A([
+    NavItem.create({route: "index", label: "Home"}),
+    NavItem.create({route: "enlist", label: "Enlist"})
+  ]),
 
-var Serializable = Ember.Mixin.create({
-    serialize: function() {
-        var propertyNames = this.get("toSerialize");
-        return this.getProperties(propertyNames);
-    }
+  removeNavItem: function(forRoute) {
+    var nav = this.get("navigation");
+    nav.removeObject(nav.find(function(item) {
+       return item.get("route") == forRoute;
+    }))
+  },
+
+  updateCurrentPath: function() {
+    Assassin.set('currentPath', this.get('currentPath'));
+  }.observes('currentPath')
+
 });
