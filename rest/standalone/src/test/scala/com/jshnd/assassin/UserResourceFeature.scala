@@ -23,7 +23,7 @@ class UserResourceFeature extends FeatureSpec with StartsAssassin with GivenWhen
       enlist(email, "userResourceFeature1", Some("Joe bob"), password)
 
       When("I prepare a GET request to rest/users/email/{my email address}")
-      var svc = url(s"http://localhost:8080/rest/users/email/$email").GET
+      var svc = url(s"$baseUrl/rest/users/email/$email").GET
       And("I set the header Accept to application/json")
       svc = svc.setHeader("Accept", "application/json")
       And("I use basic authentication with my email address and my password")
@@ -56,7 +56,7 @@ class UserResourceFeature extends FeatureSpec with StartsAssassin with GivenWhen
       enlist(email, "userResourceFeature2", None, password)
 
       When("I prepare a GET request to rest/users/email/{my email address}")
-      var svc = url(s"http://localhost:8080/rest/users/email/$email").GET
+      var svc = url(s"$baseUrl/rest/users/email/$email").GET
       And("I set the header Accept to application/json")
       svc = svc.setHeader("Accept", "application/json")
       And("I use basic authentication with my email address and my password")

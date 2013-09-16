@@ -11,10 +11,12 @@ import scala.sys.SystemProperties
 
 trait StartsAssassin extends Suite with BeforeAndAfterAll {
 
+  val baseUrl = "http://localhost:8089"
+
   val server = new Server()
   val connector = new SocketConnector()
 
-  connector.setPort(8080)
+  connector.setPort(8089)
   server.setConnectors(Array(connector))
 
   val context = new WebAppContext()

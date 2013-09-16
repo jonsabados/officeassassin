@@ -15,9 +15,9 @@ class EnlistmentFeature extends FeatureSpec with StartsAssassin with GivenWhenTh
     info("I should be able to enlist users")
 
     scenario("A user enlists without errors") {
-      Given("The enlistment resource lives at http://localhost:8080/rest/public/enlistment")
+      Given(s"The enlistment resource lives at $baseUrl/rest/public/enlistment")
       val json = "{\"fullName\":\"John Doe\",\"password\":\"12345\",\"emailAddress\":\"jd@example.com\",\"handle\": \"jd\"}"
-      val svc = url("http://localhost:8080/rest/public/enlistment")
+      val svc = url(s"$baseUrl/rest/public/enlistment")
       val post = svc.addHeader("Content-Type", "application/json") << json
       val enroll = Http(post OK asNewResource)
 
@@ -55,7 +55,7 @@ class EnlistmentFeature extends FeatureSpec with StartsAssassin with GivenWhenTh
           <password>12345</password>
         </user>
 
-      val svc = url("http://localhost:8080/rest/public/enlistment")
+      val svc = url(s"$baseUrl/rest/public/enlistment")
       val post = svc.addHeader("Content-Type", "application/xml") << xml.toString
       val enroll = Http(post OK asNewResource)
 
