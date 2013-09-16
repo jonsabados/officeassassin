@@ -8,6 +8,8 @@ package object assassin {
 
   val base64 = new Base64()
 
+  val baseUrl = "http://localhost:8089"
+
   def asNewResource = as.Response[String] { response =>
     response.getHeader("Location")
   }
@@ -29,7 +31,7 @@ package object assassin {
         "\",\"emailAddress\":\"" + email+
         "\",\"handle\":\"" + handle + "\"}"
     }
-    val svc = url("http://localhost:8080/rest/public/enlistment")
+    val svc = url(s"$baseUrl/rest/public/enlistment")
     val post = svc.addHeader("Content-Type", "application/json") << json
     val enroll = Http(post OK asNewResource)
     enroll()
