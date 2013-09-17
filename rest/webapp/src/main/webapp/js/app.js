@@ -1,7 +1,9 @@
 Assassin = Ember.Application.create({
-    currentPath: '',
-    username: '',
-    password: ''
+    currentPath: undefined,
+    username: undefined,
+    password: undefined,
+    user: undefined,
+    loggedIn: false
 });
 
 Assassin.ApplicationController = Ember.Controller.extend({
