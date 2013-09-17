@@ -1,8 +1,7 @@
 Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
-    needs: ["application"],
+    needs: ["login"],
     termsAccepted: false,
     passwordConfirm: "",
-    submitting: false,
     hasFieldFailures: function() {
         return this.get("errors").fieldFailures.length > 0;
     }.property("errors"),
@@ -30,22 +29,28 @@ Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
         return !this.get("canSubmit");
     }.property("canSubmit"),
 
-    save: function() {
-        this._submit({
-            url: "rest/public/enlistment",
-            type: "POST",
-            data: this.get("model"),
-            success: function() {
-                var appController = this.get("controllers.application");
-                alert("Brand new user - " + appController);
-                appController.removeNavItem("enlist");
-            }.bind(this),
-            badRequest: function(errors) {
-                this.set("errors", errors);
-            }.bind(this),
-            error: function(failure, status) {
-                alert("Things went wrong, got back status " + failure.status + " from the server");
-            }
-        })
-    },
+    actions: {
+        save: function() {
+            this._submit({
+                url: "rest/public/enlistment",
+                type: "POST",
+                data: this.get("model"),
+
+                success: function() {
+                    alert("Brand new user created!");
+                    var login = this.get("controllers.login");
+                    login.login(this.get("model.emailAddress"), this.get("model.password"));
+                }.bind(this),
+
+                badRequest: function(errors) {
+                    this.set("errors", errors);
+                }.bind(this),
+
+                error: function(failure, status) {
+                    alert("Things went wrong, got back status " + failure.status + " from the server");
+                }
+            })
+        }
+    }
+
 })

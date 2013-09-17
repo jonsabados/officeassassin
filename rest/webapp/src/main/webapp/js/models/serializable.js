@@ -5,5 +5,6 @@ var Serializable = Ember.Mixin.create({
     },
     deserialize: function(hash) {
         this.setProperties(hash);
+        return this;
     }
 });

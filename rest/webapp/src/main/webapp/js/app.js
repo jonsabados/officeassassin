@@ -16,7 +16,10 @@ Assassin.ApplicationController = Ember.Controller.extend({
     var nav = this.get("navigation");
     nav.removeObject(nav.find(function(item) {
        return item.get("route") == forRoute;
-    }))
+    }));
+    if(forRoute == this.get("currentPath")) {
+       this.transitionToRoute("index");
+    }
   },
 
   updateCurrentPath: function() {
