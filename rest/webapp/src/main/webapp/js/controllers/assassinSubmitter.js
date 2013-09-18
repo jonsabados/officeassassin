@@ -1,7 +1,7 @@
 var AssassinSubmitter = Ember.Mixin.create({
     submitting: false,
     authHeader: function(username, password) {
-        return "Basic " + btoa(username + ":" + password);
+        return "BasicCustom " + btoa(username + ":" + password);
     },
 
     _submit: function(submission) {
@@ -26,7 +26,9 @@ var AssassinSubmitter = Ember.Mixin.create({
                 this.set("submitting", false);
             }.bind(this)
         };
-        if(Assassin.get("loggedIn")) {
+        if(submission.sudoCreds != undefined) {
+            ajaxData.headers.Authorization = this.authHeader(submission.sudoCreds.username, submission.sudoCreds.password);
+        } else if(Assassin.get("loggedIn")) {
             ajaxData.headers.Authorization = this.authHeader(Assassin.get("username"), Assassin.get("password"));
         }
         if(submission.returnType != undefined)  {

@@ -14,13 +14,13 @@ Assassin.LoginController = Ember.Controller.extend(AssassinSubmitter, {
             type: "GET",
             url: "rest/users/email/" + username,
             returnType: User,
-            nativeProps: {
-                username: username,
-                password: password
+            sudoCreds: {
+                username: this.get("emailAddress"),
+                password: this.get("password")
             },
 
             error: function(response) {
-                if(response.status == 403) {
+                if(response.status == 401) {
                     alert("Invalid username or password.");
                 } else {
                     alert("Ack - login failed with unexpected status: " + response.status);

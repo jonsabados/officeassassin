@@ -24,6 +24,7 @@ import com.jshnd.assassin.dto.UserDto
 import org.apache.bval.jsr303.ApacheValidatorFactory
 import scala.sys.SystemProperties
 import java.io.FileInputStream
+import com.google.inject.name.Names
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -43,6 +44,9 @@ class AssassinServletConfig extends GuiceServletContextListener {
       addFilterChain("/rest/public/**", ShiroWebModule.ANON)
       //addFilterChain("/rest/**", ShiroWebModule.NO_SESSION_CREATION) // TODO - this appears to do nothing and breaks anon... see SessionDieFilter and figure out if were just doing something horribly wrong
       addFilterChain("/rest/**", ShiroWebModule.AUTHC_BASIC)
+
+      bindConstant().annotatedWith(Names.named("shiro.authcScheme")).to("BasicCustom")
+      bindConstant().annotatedWith(Names.named("shiro.authzScheme")).to("BasicCustom")
     }
 
     def hashPassword(email: String, password: String): String = new Sha256Hash(password, email).toHex

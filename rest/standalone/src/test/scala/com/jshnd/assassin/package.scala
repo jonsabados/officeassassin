@@ -19,7 +19,7 @@ package object assassin {
   }
 
   def authHeader(username: String, password: String): String =
-    "Basic " + base64.encodeToString((username + ":" + password).getBytes)
+    "BasicCustom " + base64.encodeToString((username + ":" + password).getBytes)
 
   def enlist(email: String, handle: String, fullName: Option[String], password: String): String = {
     val json = fullName match {
