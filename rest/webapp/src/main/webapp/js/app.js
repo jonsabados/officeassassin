@@ -12,14 +12,22 @@ Assassin.ApplicationController = Ember.Controller.extend({
     NavItem.create({route: "enlist", label: "Enlist"})
   ]),
 
+  setNavState: function(forRoute, state) {
+    this.get("navigation").find(function(item) {
+      return item.get("route") == forRoute;
+    }).set("enabled", state);
+  },
+
   removeNavItem: function(forRoute) {
-    var nav = this.get("navigation");
-    nav.removeObject(nav.find(function(item) {
-       return item.get("route") == forRoute;
-    }));
+    this.setNavState(forRoute, false);
+
     if(forRoute == this.get("currentPath")) {
        this.transitionToRoute("index");
     }
+  },
+
+  addNavItem: function(forRoute) {
+    this.setNavState(forRoute, true);
   },
 
   updateCurrentPath: function() {

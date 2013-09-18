@@ -34,7 +34,9 @@
               <div class="navbar-header">
                   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                       {{#each navigation}}
-                        <span class="icon-bar"></span>
+                      {{#if enabled}}
+                          <span class="icon-bar"></span>
+                      {{/if}}
                       {{/each}}
                   </button>
                   <a class="navbar-brand" href="#">Office Assassin</a>
@@ -42,7 +44,9 @@
               <div class="collapse navbar-collapse">
                   <ul class="nav navbar-nav">
                       {{#each navigation}}
-                        <li {{bind-attr class="active"}}>{{#linkTo route}}{{label}}{{/linkTo}}</li>
+                      {{#if enabled}}
+                          <li {{bind-attr class="active"}}>{{#linkTo route}}{{label}}{{/linkTo}}</li>
+                      {{/if}}
                       {{/each}}
                   </ul>
                   <form class="navbar-form navbar-right">
@@ -54,7 +58,9 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="login">
-      {{#unless Assassin.loggedIn}}
+      {{#if Assassin.loggedIn}}
+          <button type="submit" class="btn btn-success" {{action logout}} {{bind-attr disabled=cantSubmit}}>Log Out</button>
+      {{else}}
           <div class="form-group">
               {{input type="text" placeholder="Email" class="form-control" value=emailAddress}}
           </div>
@@ -62,7 +68,7 @@
               {{input type="password" placeholder="Password" class="form-control" value=password}}
           </div>
           <button type="submit" class="btn btn-success" {{action login}} {{bind-attr disabled=cantSubmit}}>Sign in</button>
-      {{/unless}}
+      {{/if}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="enlist">

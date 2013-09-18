@@ -17,10 +17,9 @@ import com.jshnd.assassin.rest.bindings.PasswordHasher
 import com.google.inject.matcher.Matchers._
 import com.jshnd.assassin.rest.exceptionmapping.{ValidationFailureExceptionMapper, UnauthorizedExceptionMapper}
 import org.apache.bval.guice.ValidationModule
-import javax.validation.{ValidatorFactory, ConstraintValidator}
+import javax.validation.ValidatorFactory
 import com.jshnd.assassin.validation.{UniqueHandle, UniqueEmail}
 import com.jshnd.assassin.rest.validation.{UniqueHandleValidator, UniqueEmailValidator}
-import com.jshnd.assassin.dto.UserDto
 import org.apache.bval.jsr303.ApacheValidatorFactory
 import scala.sys.SystemProperties
 import java.io.FileInputStream
@@ -65,7 +64,6 @@ class AssassinServletConfig extends GuiceServletContextListener {
 
       bind(classOf[UserResource]).in(classOf[GSingleton])
       bind(classOf[EnlistmentResource]).in(classOf[GSingleton])
-      bind(new TypeLiteral[ConstraintValidator[UniqueEmail, UserDto]] {}).to(classOf[UniqueEmailValidator])
 
       serve("/rest/*").`with`(classOf[GuiceContainer])
       filter("/rest/*").through(classOf[GuiceShiroFilter])

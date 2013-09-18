@@ -41,6 +41,15 @@ Assassin.LoginController = Ember.Controller.extend(AssassinSubmitter, {
     actions: {
         login: function() {
             this.login(this.get("emailAddress"), this.get("password"));
+        },
+
+        logout: function() {
+            Assassin.set("loggedIn", false);
+            Assassin.set("username", undefined);
+            Assassin.set("password", undefined);
+            Assassin.set("user", undefined);
+            var appController = this.get("controllers.application");
+            appController.addNavItem("enlist");
         }
     }
 });
