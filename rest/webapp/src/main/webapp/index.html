@@ -75,29 +75,37 @@
 
       <form class="form-enlist">
           <h2 class="form-enlist-heading">Recruit Information</h2>
-          {{#if hasGeneralFailures}}
-            {{#each errors.generalFailures}}
-                <div class="alert alert-dismissable alert-danger">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{message}}
-                </div>
-            {{/each}}
-          {{/if}}
 
-          {{#if hasFieldFailures}}
-          {{#each errors.fieldFailures}}
+          {{#if hasFailures}}
           <div class="alert alert-dismissable alert-danger">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-              {{field}}: {{message}}
+              <ul>
+              {{#each errors.generalFailures}}
+                  <li>{{message}}</li>
+              {{/each}}
+              {{#each errors.fieldFailures}}
+                  <!-- todo link to {{field}} focus-->
+                  <li>{{message}}</li>
+              {{/each}}
+              </ul>
           </div>
-          {{/each}}
           {{/if}}
 
-          {{input type="text" class="form-control" placeholder="Email address" value=model.emailAddress}}
-          {{input type="text" class="form-control" placeholder="Handle" value=model.handle}}
-          {{input type="text" class="form-control optional" placeholder="Full Name" value=model.fullName}}
-          {{input type="password" class="form-control" placeholder="Password" value=model.password}}
-          {{input type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirm}}
+          <div {{bind-attr class="hasFailureEmailAddress:has-error"}}>
+            {{input id="enlist_email_address" type="text" class="form-control" placeholder="Email address" value=model.emailAddress}}
+          </div>
+          <div {{bind-attr class="hasFailureHandle:has-error"}}>
+            {{input type="text" class="form-control" placeholder="Handle" value=model.handle}}
+          </div>
+          <div {{bind-attr class="hasFailureFullName:has-error"}}>
+            {{input type="text" class="form-control optional" placeholder="Full Name (optional)" value=model.fullName}}
+          </div>
+          <div {{bind-attr class="hasFailurePassword:has-error"}}>
+            {{input type="password" class="form-control" placeholder="Password" value=model.password}}
+          </div>
+          <div {{bind-attr class="hasFailurePasswordConfirm:has-error"}}>
+            {{input type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirm}}
+          </div>
           <label class="checkbox">
               {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts
           </label>
