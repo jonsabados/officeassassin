@@ -25,29 +25,29 @@ case class UserViewDto(@BeanProperty @xmlElement
   def this() = this(None, null, null, null)
 }
 
-@UniqueEmail
-@UniqueHandle
+@UniqueEmail(message = "{user.emailAddress.inuse}")
+@UniqueHandle(message = "{user.handle.inuse}")
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.FIELD)
-case class UserCreateDto(@notNull
-                         @email
-                         @size(min = 1, max = 255)
+case class UserCreateDto(@notNull(message = "{user.emailAddress.required}")
+                         @email(message = "{user.emailAddress.invalid}")
+                         @size(min = 1, max = 255, message = "{user.emailAddress.size}")
                          @xmlElement
                          @BeanProperty
                          var emailAddress: String,
 
-                         @notNull
-                         @size(min = 1, max = 64)
+                         @notNull(message = "{user.handle.required}")
+                         @size(min = 1, max = 64, message="{user.handle.size}")
                          @xmlElement
                          @BeanProperty
                          var handle: String,
 
-                         @size(min = 1, max = 255)
+                         @size(min = 1, max = 255, message = "{user.fullName.size}")
                          @xmlElement
                          @BeanProperty
                          var fullName: String,
 
-                         @notNull
+                         @notNull(message = "{user.password.required}")
                          @xmlElement
                          @BeanProperty
                          var password: String)

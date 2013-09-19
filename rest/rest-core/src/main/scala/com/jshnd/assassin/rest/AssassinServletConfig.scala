@@ -19,11 +19,12 @@ import com.jshnd.assassin.rest.exceptionmapping.{ValidationFailureExceptionMappe
 import org.apache.bval.guice.ValidationModule
 import javax.validation.ValidatorFactory
 import com.jshnd.assassin.validation.{UniqueHandle, UniqueEmail}
-import com.jshnd.assassin.rest.validation.{UniqueHandleValidator, UniqueEmailValidator}
+import com.jshnd.assassin.rest.validation.{LocaleAwareModule, UniqueHandleValidator, UniqueEmailValidator}
 import org.apache.bval.jsr303.ApacheValidatorFactory
 import scala.sys.SystemProperties
 import java.io.FileInputStream
 import com.google.inject.name.Names
+import com.google.inject.util.Modules
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -55,7 +56,7 @@ class AssassinServletConfig extends GuiceServletContextListener {
   class AssassinServletModule extends JerseyServletModule {
     override def configureServlets() {
       install(new AssassinRootModule(propertyFile.toMap))
-      install(new ValidationModule)
+      install(Modules.`override`(new ValidationModule).`with`(new LocaleAwareModule))
 
       bindInterceptor(any(), annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
 
