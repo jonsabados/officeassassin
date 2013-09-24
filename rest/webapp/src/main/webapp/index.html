@@ -85,26 +85,26 @@
               {{/each}}
               {{#each errors.fieldFailures}}
                   <!-- todo link to {{field}} focus-->
-                  <li>{{message}}</li>
+                  <li><a class="alert-link" {{action focusField field href=true}}>{{message}}</a></li>
               {{/each}}
               </ul>
           </div>
           {{/if}}
 
           <div {{bind-attr class="hasFailureEmailAddress:has-error"}}>
-            {{input id="enlist_email_address" type="text" class="form-control" placeholder="Email address" value=model.emailAddress}}
+            {{input id="in_emailAddress" type="email" class="form-control" placeholder="Email address" field="emailAddress" value=model.emailAddress}}
           </div>
           <div {{bind-attr class="hasFailureHandle:has-error"}}>
-            {{input type="text" class="form-control" placeholder="Handle" value=model.handle}}
+            {{input id="in_handle" type="text" class="form-control" placeholder="Handle" value=model.handle}}
           </div>
           <div {{bind-attr class="hasFailureFullName:has-error"}}>
-            {{input type="text" class="form-control optional" placeholder="Full Name (optional)" value=model.fullName}}
+            {{input id="in_fullName" type="text" class="form-control optional" placeholder="Full Name (optional)" value=model.fullName}}
           </div>
           <div {{bind-attr class="hasFailurePassword:has-error"}}>
-            {{input type="password" class="form-control" placeholder="Password" value=model.password}}
+            {{input id="in_password" type="password" class="form-control" placeholder="Password" value=model.password}}
           </div>
           <div {{bind-attr class="hasFailurePasswordConfirm:has-error"}}>
-            {{input type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirm}}
+            {{input id="in_passwordConfirm" type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirm}}
           </div>
           <label class="checkbox">
               {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts

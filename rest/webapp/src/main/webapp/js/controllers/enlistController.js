@@ -61,6 +61,10 @@ Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
                     alert("Things went wrong, got back status " + failure.status + " from the server");
                 }
             })
+        },
+
+        focusField: function(field) {
+            $("#in_" + field).focus();
         }
     }
 
