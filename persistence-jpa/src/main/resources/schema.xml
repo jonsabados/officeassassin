@@ -25,6 +25,34 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="groups" author="jon.sabados">
+        <createTable tableName="groups">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_groups"/>
+            </column>
+            <column name="group_name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_groups_group" />
+            </column>
+        </createTable>
+
+        <createTable tableName="user_groups">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_user_groups"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" references="users(id)" foreignKeyName="fk_user_groups_user"
+                             deleteCascade="true"/>
+            </column>
+            <column name="group_id" type="int">
+                <constraints nullable="false" references="groups(id)" foreignKeyName="fk_user_groups_group"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="user_groups" columnNames="user_id, group_id"
+                             constraintName="uk_user_groups_user_group" />
+    </changeSet>
+
     <changeSet id="roles" author="jon.sabados">
         <createTable tableName="roles">
             <column name="id" type="int" autoIncrement="true">
@@ -40,70 +68,76 @@
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_user_roles"/>
             </column>
             <column name="user_id" type="int">
-                <constraints nullable="false" references="users(id)" foreignKeyName="fk_user_roles_user_id"
+                <constraints nullable="false" references="users(id)" foreignKeyName="fk_user_roles_user"
                              deleteCascade="true"/>
             </column>
             <column name="role_id" type="int">
-                <constraints nullable="false" references="roles(id)" foreignKeyName="fk_user_roles_role_id"
+                <constraints nullable="false" references="roles(id)" foreignKeyName="fk_user_roles_role"
                              deleteCascade="true"/>
             </column>
         </createTable>
 
         <addUniqueConstraint tableName="user_roles" columnNames="user_id, role_id"
                              constraintName="uk_user_roles_user_role" />
-    </changeSet>
 
-    <changeSet id="wildcard_permissions" author="jon.sabados">
-        <createTable tableName="wildcard_permissions">
+        <createTable tableName="group_roles">
             <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_wildcard_permissions"/>
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_group_roles"/>
             </column>
-            <column name="to_what" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="permission_type" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-        </createTable>
-
-        <addUniqueConstraint tableName="wildcard_permissions" columnNames="to_what, permission_type" />
-
-        <insert tableName="wildcard_permissions">
-            <column name="to_what">users</column>
-            <column name="permission_type">*</column>
-        </insert>
-        <insert tableName="wildcard_permissions">
-            <column name="to_what">users</column>
-            <column name="permission_type">view</column>
-        </insert>
-        <insert tableName="wildcard_permissions">
-            <column name="to_what">users</column>
-            <column name="permission_type">edit</column>
-        </insert>
-        <insert tableName="wildcard_permissions">
-            <column name="to_what">users</column>
-            <column name="permission_type">delete</column>
-        </insert>
-    </changeSet>
-
-    <changeSet id="role_wildcard_permissions" author="jon.sabados">
-        <createTable tableName="role_wildcard_permissions">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_role_wildcard_permissions"/>
+            <column name="group_id" type="int">
+                <constraints nullable="false" references="groups(id)" foreignKeyName="fk_group_roles_group"
+                             deleteCascade="true"/>
             </column>
             <column name="role_id" type="int">
-                <constraints nullable="false" references="roles(id)" foreignKeyName="fk_role_wildcard_permissions_role"
-                        deleteCascade="true"/>
-            </column>
-            <column name="wildcard_permission_id" type="int">
-                <constraints nullable="false" references="wildcard_permissions(id)"
-                        foreignKeyName="fk_role_wildcard_permissions_wildcard_permission_id"
-                        deleteCascade="false"/>
+                <constraints nullable="false" references="roles(id)" foreignKeyName="fk_user_groups_role"
+                             deleteCascade="true"/>
             </column>
         </createTable>
 
-        <addUniqueConstraint tableName="role_wildcard_permissions" columnNames="role_id, wildcard_permission_id"
-                             constraintName="uk_role_wildcard_permissions_role_permission" />
+        <addUniqueConstraint tableName="group_roles" columnNames="group_id, role_id"
+                             constraintName="uk_group_roles_group_role" />
+    </changeSet>
+
+    <changeSet id="super_group" author="jon.sabados">
+        <insert tableName="groups">
+            <column name="group_name">super</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="user_group" author="jon.sabados">
+        <insert tableName="groups">
+            <column name="group_name">users</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="user_admin_role" author="jon.sabados">
+        <insert tableName="roles">
+            <column name="role">user_admin</column>
+        </insert>
+        <sql>
+            INSERT INTO group_roles (group_id,role_id)
+            SELECT g.id,r.id FROM groups g
+                CROSS JOIN roles r
+                WHERE g.group_name='super' AND r.role='user_admin'
+        </sql>
+    </changeSet>
+
+    <changeSet id="user_role" author="jon.sabados">
+        <insert tableName="roles">
+            <column name="role">user</column>
+        </insert>
+        <sql>
+            INSERT INTO group_roles (group_id,role_id)
+            SELECT g.id,r.id FROM groups g
+                CROSS JOIN roles r
+                WHERE g.group_name='super' AND r.role='user'
+        </sql>
+        <sql>
+            INSERT INTO group_roles (group_id,role_id)
+            SELECT g.id,r.id FROM groups g
+                CROSS JOIN roles r
+                WHERE g.group_name='users' AND r.role='user'
+        </sql>
     </changeSet>
 
     <changeSet id="intitial_user" author="jon.sabados">
@@ -112,23 +146,11 @@
             <column name="handle">delete_me</column>
             <column name="password_hash">c795ed97dd5d4428189ceb5528c62bf4e47738e49d5622174a3a8db63efbec96</column>
         </insert>
-    </changeSet>
-
-    <changeSet id="super_role" author="jon.sabados">
-        <insert tableName="roles">
-            <column name="role">super</column>
-        </insert>
         <sql>
-            INSERT INTO role_wildcard_permissions (role_id, wildcard_permission_id)
-            SELECT r.id,wp.id FROM roles r
-                CROSS JOIN wildcard_permissions wp
-                WHERE r.role='super' AND wp.to_what='users' AND wp.permission_type='*'
-        </sql>
-        <sql>
-            INSERT INTO user_roles (user_id,role_id)
-            SELECT u.id,r.id FROM users u
-                CROSS JOIN roles r
-                WHERE u.email_address='admin' AND r.role='super'
+            INSERT INTO user_groups (user_id,group_id)
+            SELECT u.id,g.id FROM users u
+                CROSS JOIN groups g
+                WHERE u.email_address='admin' and g.group_name='super'
         </sql>
     </changeSet>
 
