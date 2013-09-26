@@ -25,12 +25,111 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="roles" author="jon.sabados">
+        <createTable tableName="roles">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_roles"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_roles_role" />
+            </column>
+        </createTable>
+
+        <createTable tableName="user_roles">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_user_roles"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false" references="users(id)" foreignKeyName="fk_user_roles_user_id"
+                             deleteCascade="true"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false" references="roles(id)" foreignKeyName="fk_user_roles_role_id"
+                             deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="user_roles" columnNames="user_id, role_id"
+                             constraintName="uk_user_roles_user_role" />
+    </changeSet>
+
+    <changeSet id="wildcard_permissions" author="jon.sabados">
+        <createTable tableName="wildcard_permissions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_wildcard_permissions"/>
+            </column>
+            <column name="to_what" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="permission_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="wildcard_permissions" columnNames="to_what, permission_type" />
+
+        <insert tableName="wildcard_permissions">
+            <column name="to_what">users</column>
+            <column name="permission_type">*</column>
+        </insert>
+        <insert tableName="wildcard_permissions">
+            <column name="to_what">users</column>
+            <column name="permission_type">view</column>
+        </insert>
+        <insert tableName="wildcard_permissions">
+            <column name="to_what">users</column>
+            <column name="permission_type">edit</column>
+        </insert>
+        <insert tableName="wildcard_permissions">
+            <column name="to_what">users</column>
+            <column name="permission_type">delete</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="role_wildcard_permissions" author="jon.sabados">
+        <createTable tableName="role_wildcard_permissions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_role_wildcard_permissions"/>
+            </column>
+            <column name="role_id" type="int">
+                <constraints nullable="false" references="roles(id)" foreignKeyName="fk_role_wildcard_permissions_role"
+                        deleteCascade="true"/>
+            </column>
+            <column name="wildcard_permission_id" type="int">
+                <constraints nullable="false" references="wildcard_permissions(id)"
+                        foreignKeyName="fk_role_wildcard_permissions_wildcard_permission_id"
+                        deleteCascade="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="role_wildcard_permissions" columnNames="role_id, wildcard_permission_id"
+                             constraintName="uk_role_wildcard_permissions_role_permission" />
+    </changeSet>
+
     <changeSet id="intitial_user" author="jon.sabados">
         <insert tableName="users">
             <column name="email_address">admin</column>
             <column name="handle">delete_me</column>
             <column name="password_hash">c795ed97dd5d4428189ceb5528c62bf4e47738e49d5622174a3a8db63efbec96</column>
         </insert>
+    </changeSet>
+
+    <changeSet id="super_role" author="jon.sabados">
+        <insert tableName="roles">
+            <column name="role">super</column>
+        </insert>
+        <sql>
+            INSERT INTO role_wildcard_permissions (role_id, wildcard_permission_id)
+            SELECT r.id,wp.id FROM roles r
+                CROSS JOIN wildcard_permissions wp
+                WHERE r.role='super' AND wp.to_what='users' AND wp.permission_type='*'
+        </sql>
+        <sql>
+            INSERT INTO user_roles (user_id,role_id)
+            SELECT u.id,r.id FROM users u
+                CROSS JOIN roles r
+                WHERE u.email_address='admin' AND r.role='super'
+        </sql>
     </changeSet>
 
 </databaseChangeLog>
