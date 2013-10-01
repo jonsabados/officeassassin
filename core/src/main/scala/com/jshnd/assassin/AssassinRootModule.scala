@@ -5,10 +5,6 @@ import com.google.inject.{Guice, Module, AbstractModule}
 import com.google.inject.name.Names
 import com.jshnd.assassin.user.UserModule
 
-object AssassinRootModule {
-  val storeModuleClassKey = "module.store.class"
-}
-
 class AssassinRootModule(configuration: Map[String, String]) extends AbstractModule {
 
   class BootstrapModule extends AbstractModule {
@@ -21,7 +17,7 @@ class AssassinRootModule(configuration: Map[String, String]) extends AbstractMod
     val bootstrapInjector = Guice.createInjector(new BootstrapModule())
     Names.bindProperties(binder(), configuration)
     install(bootstrapInjector.getInstance(
-      Class.forName(configuration(AssassinRootModule.storeModuleClassKey))).asInstanceOf[Module])
+      Class.forName(configuration(CONFIG_KEY_SESSION_MODULE))).asInstanceOf[Module])
 
     val userMod = new UserModule
     requestInjection(userMod)
