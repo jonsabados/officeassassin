@@ -30,8 +30,8 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_groups"/>
             </column>
-            <column name="group_name" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="uk_groups_group" />
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_groups_name" />
             </column>
         </createTable>
 
@@ -58,8 +58,8 @@
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="pk_roles"/>
             </column>
-            <column name="role" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="uk_roles_role" />
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_roles_name" />
             </column>
         </createTable>
 
@@ -100,43 +100,43 @@
 
     <changeSet id="super_group" author="jon.sabados">
         <insert tableName="groups">
-            <column name="group_name">super</column>
+            <column name="name">super</column>
         </insert>
     </changeSet>
 
     <changeSet id="user_group" author="jon.sabados">
         <insert tableName="groups">
-            <column name="group_name">users</column>
+            <column name="name">users</column>
         </insert>
     </changeSet>
 
     <changeSet id="user_admin_role" author="jon.sabados">
         <insert tableName="roles">
-            <column name="role">user_admin</column>
+            <column name="name">user_admin</column>
         </insert>
         <sql>
             INSERT INTO group_roles (group_id,role_id)
             SELECT g.id,r.id FROM groups g
                 CROSS JOIN roles r
-                WHERE g.group_name='super' AND r.role='user_admin'
+                WHERE g.name='super' AND r.name='user_admin'
         </sql>
     </changeSet>
 
     <changeSet id="user_role" author="jon.sabados">
         <insert tableName="roles">
-            <column name="role">user</column>
+            <column name="name">user</column>
         </insert>
         <sql>
             INSERT INTO group_roles (group_id,role_id)
             SELECT g.id,r.id FROM groups g
                 CROSS JOIN roles r
-                WHERE g.group_name='super' AND r.role='user'
+                WHERE g.name='super' AND r.name='user'
         </sql>
         <sql>
             INSERT INTO group_roles (group_id,role_id)
             SELECT g.id,r.id FROM groups g
                 CROSS JOIN roles r
-                WHERE g.group_name='users' AND r.role='user'
+                WHERE g.name='users' AND r.name='user'
         </sql>
     </changeSet>
 
@@ -150,7 +150,7 @@
             INSERT INTO user_groups (user_id,group_id)
             SELECT u.id,g.id FROM users u
                 CROSS JOIN groups g
-                WHERE u.email_address='admin' and g.group_name='super'
+                WHERE u.email_address='admin' and g.name='super'
         </sql>
     </changeSet>
 
