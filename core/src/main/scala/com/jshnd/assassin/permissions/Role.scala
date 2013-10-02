@@ -5,5 +5,5 @@ import org.squeryl.KeyedEntity
 import org.squeryl.annotations._
 
 case class Role(@Column("name") name: String) extends HasName with KeyedEntity[Int] {
-  val id: Int = _
+  var id: Int = _
 }

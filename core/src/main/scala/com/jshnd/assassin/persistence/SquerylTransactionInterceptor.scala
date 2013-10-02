@@ -7,13 +7,8 @@ import javax.inject.Inject
 
 class SquerylTransactionInterceptor extends MethodInterceptor {
 
-  @Inject
-  val session: Session = _
-
-  def invoke(p1: MethodInvocation): AnyRef = using(session) {
-    inTransaction {
+  def invoke(p1: MethodInvocation): AnyRef = inTransaction {
       p1.proceed()
-    }
   }
 
 }
