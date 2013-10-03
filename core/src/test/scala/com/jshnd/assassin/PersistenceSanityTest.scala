@@ -71,6 +71,4 @@ class PersistenceSanityTest extends FunSpec {
 
   }
 
-
-
 }

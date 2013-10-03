@@ -7,7 +7,6 @@ import java.util.Properties
 import com.sun.jersey.guice.JerseyServletModule
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer
 import com.jshnd.assassin.AssassinRootModule
-import com.jshnd.assassin.jpa.JpaStoreModuleInitializer
 import org.apache.shiro.guice.web.{GuiceShiroFilter, ShiroWebModule}
 import javax.servlet._
 import com.jshnd.shiro._
@@ -25,6 +24,7 @@ import scala.sys.SystemProperties
 import java.io.FileInputStream
 import com.google.inject.name.Names
 import com.google.inject.util.Modules
+import com.jshnd.assassin.persistence.SchemaUpdater
 
 class AssassinServletConfig extends GuiceServletContextListener {
 
@@ -85,7 +85,7 @@ class AssassinServletConfig extends GuiceServletContextListener {
 
   def getInjector: Injector = {
     val i = Guice.createInjector(new SecurityModule, new AssassinServletModule)
-    i.getInstance(classOf[JpaStoreModuleInitializer]).start()
+    i.getInstance(classOf[SchemaUpdater]).updateSchema()
     // note - this is here so the dto's don't have to have knowledge of validating classes. Its an ugly, dirty hack
     // and I feel dirty but it works (for now, likely to be broken in the future) - thankfully bval isn't doing
     // defensive copies

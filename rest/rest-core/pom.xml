@@ -57,7 +57,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jshnd.assassin</groupId>
-            <artifactId>persistence-jpa</artifactId>
+            <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

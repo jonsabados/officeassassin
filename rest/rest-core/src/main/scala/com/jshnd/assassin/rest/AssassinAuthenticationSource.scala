@@ -18,7 +18,7 @@ class AssassinAuthenticationSource @Inject() (@FindUserByEmail userQuery: (Strin
     val email = token.asInstanceOf[UsernamePasswordToken].getUsername
     userQuery(email) match {
       case Some(u) => toInfo(u)
-      case _ => toInfo(new User(None, email, "Nope", None, AssassinAuthenticationSource.WONT_MATCH_HASH))
+      case _ => toInfo(new User(email, "Nope", None, AssassinAuthenticationSource.WONT_MATCH_HASH))
     }
   }
 

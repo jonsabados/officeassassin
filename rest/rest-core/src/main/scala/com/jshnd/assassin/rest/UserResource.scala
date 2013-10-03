@@ -1,23 +1,22 @@
 package com.jshnd.assassin.rest
 
 import javax.ws.rs._
-import com.jshnd.assassin.dto.{UserViewDto, UserEditDto, UserDto, ListResult}
+import com.jshnd.assassin.dto.{UserViewDto, UserEditDto, ListResult}
 import com.google.inject.Inject
-import com.jshnd.assassin.query.AssassinStore
 import com.jshnd.assassin.bindings.FindUserByEmail
 import javax.ws.rs.core.{MediaType, Response}
 import com.jshnd.assassin.user.User
 import scala.{Array, Some}
-import com.jshnd.assassin.user.UserQuery
-import com.jshnd.shiro.{Substitution, RequiresPermission}
-import javax.xml.bind.annotation.XmlSeeAlso
+import com.jshnd.shiro.Substitution
+import com.jshnd.assassin.AssassinSchema._
+import com.jshnd.assassin.persistence.AssassinStore
 
 
 @Path("/users")
 @Produces(Array("application/json", "application/xml"))
 class UserResource @Inject() (store: AssassinStore, @FindUserByEmail findByEmail: (String) => Option[User]) {
 
-  def dtoMap(x: User): UserViewDto = new UserViewDto(x.id, x.emailAddress, x.handle, x.fullName.getOrElse(null))
+  def dtoMap(x: User): UserViewDto = new UserViewDto(Some(x.id), x.emailAddress, x.handle, x.fullName.getOrElse(null))
 
   @GET
   //@RequiresPermission("users:view:*")
@@ -27,7 +26,7 @@ class UserResource @Inject() (store: AssassinStore, @FindUserByEmail findByEmail
   @Path("/id/{id}")
   //@RequiresPermission("users:view:{id}")
   def user(@Substitution("id") @PathParam("id") id: Int): Response = {
-    store.load(id, classOf[User]) match {
+    store.load(users, id) match {
       case Some(user) => Response.ok(dtoMap(user)).build()
       case None => Response.status(Response.Status.NOT_FOUND).build()
     }

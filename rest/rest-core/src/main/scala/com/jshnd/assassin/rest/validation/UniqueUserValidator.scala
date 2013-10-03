@@ -29,7 +29,7 @@ trait UniqueUserValidator[A <: Annotation, T] extends ConstraintValidator[A, Use
       case None => find(property(in)).isEmpty
       case Some(editId) => find(property(in)) match {
         case None => true
-        case Some(User(Some(existingId), _, _, _, _)) => existingId == editId
+        case Some(u: User) => u.id == editId
         case _ => false
       }
     }

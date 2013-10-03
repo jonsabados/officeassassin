@@ -1,6 +1,6 @@
 package com.jshnd.assassin.persistence
 
-import com.google.inject.{Provides, AbstractModule}
+import com.google.inject.{Singleton => GSingleton, Provides, AbstractModule}
 import java.sql.Connection
 import org.squeryl.internals.DatabaseAdapter
 import org.squeryl.{SessionFactory, Session}
@@ -17,6 +17,7 @@ abstract class SessionModule extends AbstractModule {
     requestInjection(transactionInterceptor)
     bindInterceptor(Matchers.any(), Matchers.annotatedWith(classOf[Transactional]), transactionInterceptor)
     bind(classOf[SchemaUpdater])
+    bind(classOf[AssassinStore]).in(classOf[GSingleton])
   }
 
   @Provides
