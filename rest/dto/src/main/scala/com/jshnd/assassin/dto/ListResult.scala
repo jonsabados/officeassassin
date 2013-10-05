@@ -7,7 +7,7 @@ import scala.beans.BeanProperty
 
 
 object ListResult {
-  implicit def wrapList[T](scalaList: List[T]):ListResult[T] = new ListResult(scalaList, scalaList.length)
+  implicit def fromPagedResult[T](scalaList: List[T]):ListResult[T] = new ListResult(scalaList, scalaList.length)
 }
 
 @XmlRootElement

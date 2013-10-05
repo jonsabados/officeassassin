@@ -1,14 +1,35 @@
 package com.jshnd.assassin.persistence
 
 import com.jshnd.assassin.bindings.Transactional
-import org.squeryl.Query
+import org.squeryl.{Table, KeyedEntity, Query}
 import org.squeryl.PrimitiveTypeMode._
 import scala.collection.mutable.ListBuffer
 
 class AssassinStore {
 
-//  @Transactional
-//  def load[I, T >: KeyedEntity[I]](table: Table[T], id: I): Option[T] = table.lookup(id)
+  @Transactional
+  def save[T](table: Table[T], instance: T): T = table.insert(instance)
+
+  @Transactional
+  def find[T <: KeyedEntity[I], I](table: Table[T], id: I): Option[T] = table.lookup(id)
+
+  @Transactional
+  def load[T <: KeyedEntity[I], I](table: Table[T], id: I): T = table.get(id)
+
+  @Transactional
+  def loadUnique[T](query: AssassinQuery[T]): T = query.query.single
+
+  @Transactional
+  def findUnique[T](query: AssassinQuery[T]): Option[T] = {
+    val i = query.query.iterator
+    if(i.isEmpty) None
+    else {
+      val r = i.next()
+      // although chucking a generic runtime exception is lame, it matches what squeryl does so lets do it too for consistency
+      if(i.hasNext) throw new RuntimeException("Non unique result for findUnique, query: " + query)
+      Some(r)
+    }
+  }
 
   @Transactional
   def pagedResult[T](query: PagedAssassinQuery[T]): PagedQueryResult[T] = {

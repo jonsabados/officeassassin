@@ -51,7 +51,7 @@ class UniqueEmailValidatorTest extends FunSpec with MockitoSugar with BeforeAndA
 
     it("Should shoot down duplicates for users without ids when any match is found") {
       val input = new UserCreateDto("foo@bar.com", "bob", "John Doe", "12345")
-      val output = new User(Some(1), "foo@bar.com", "joe", None, "123")
+      val output = new User("foo@bar.com", "joe", None, "123")
       assert(testObj(testFunc("foo@bar.com", Some(output))).isValid(input, ctx) === false)
       verify(nodeBuilder).addConstraintViolation()
     }
@@ -70,21 +70,23 @@ class UniqueEmailValidatorTest extends FunSpec with MockitoSugar with BeforeAndA
 
     it("Should allow a duplicate with the same user id") {
       val input = new UserEditDto(Some(1), "foo@bar.com", "bob", "John Doe", "12345")
-      val output = new User(Some(1), "foo@bar.com", "joe", None, "123")
+      val output = new User("foo@bar.com", "joe", None, "123")
+      output.id = 1
       assert(testObj(testFunc("foo@bar.com", Some(output))).isValid(input, ctx) === true)
       verifyZeroInteractions(nodeBuilder)
     }
 
     it("Should shoot down duplicates with a different user id") {
       val input = new UserEditDto(Some(2), "foo@bar.com", "bob", "John Doe", "12345")
-      val output = new User(Some(1), "foo@bar.com", "joe", None, "123")
+      val output = new User("foo@bar.com", "joe", None, "123")
+      output.id = 1
       assert(testObj(testFunc("foo@bar.com", Some(output))).isValid(input, ctx) === false)
       verify(nodeBuilder).addConstraintViolation()
     }
 
     it("Should shoot down things if it gets a brain dead find function that finds stuff without ids") {
       val input = new UserEditDto(Some(2), "foo@bar.com", "bob", "John Doe", "12345")
-      val output = new User(None, "foo@bar.com", "joe", None, "123")
+      val output = new User("foo@bar.com", "joe", None, "123")
       assert(testObj(testFunc("foo@bar.com", Some(output))).isValid(input, ctx) === false)
       verify(nodeBuilder).addConstraintViolation()
     }

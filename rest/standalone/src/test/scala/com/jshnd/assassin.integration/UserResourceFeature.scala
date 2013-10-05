@@ -1,4 +1,4 @@
-package com.jshnd.assassin
+package com.jshnd.assassin.integration
 
 import org.scalatest.{Inside, GivenWhenThen, FeatureSpec}
 import dispatch._, Defaults._
@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class UserResourceFeature extends FeatureSpec with StartsAssassin with GivenWhenThen with Inside {
+class UserResourceFeature extends FeatureSpec with IntegrationTest with GivenWhenThen with Inside {
 
   feature("Request a specific user - json") {
 

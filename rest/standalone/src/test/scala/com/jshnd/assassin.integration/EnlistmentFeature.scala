@@ -1,4 +1,4 @@
-package com.jshnd.assassin
+package com.jshnd.assassin.integration
 
 import org.scalatest.{GivenWhenThen, FeatureSpec}
 import org.junit.runner.RunWith
@@ -6,7 +6,7 @@ import org.scalatest.junit.JUnitRunner
 import dispatch._, Defaults._
 
 @RunWith(classOf[JUnitRunner])
-class EnlistmentFeature extends FeatureSpec with StartsAssassin with GivenWhenThen {
+class EnlistmentFeature extends FeatureSpec with IntegrationTest with GivenWhenThen {
 
   feature("Enlistment - json content") {
 

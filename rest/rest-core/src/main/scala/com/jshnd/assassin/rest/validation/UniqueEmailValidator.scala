@@ -1,6 +1,5 @@
 package com.jshnd.assassin.rest.validation
 
-import javax.validation.{ConstraintValidatorContext, ConstraintValidator}
 import com.jshnd.assassin.dto.UserDto
 import javax.inject.Inject
 import com.jshnd.assassin.bindings.FindUserByEmail

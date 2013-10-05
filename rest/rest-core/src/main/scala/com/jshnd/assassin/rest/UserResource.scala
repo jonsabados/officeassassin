@@ -5,7 +5,7 @@ import com.jshnd.assassin.dto.{UserViewDto, UserEditDto, ListResult}
 import com.google.inject.Inject
 import com.jshnd.assassin.bindings.FindUserByEmail
 import javax.ws.rs.core.{MediaType, Response}
-import com.jshnd.assassin.user.User
+import com.jshnd.assassin.user.{UserQuery, User}
 import scala.{Array, Some}
 import com.jshnd.shiro.Substitution
 import com.jshnd.assassin.AssassinSchema._
@@ -20,13 +20,13 @@ class UserResource @Inject() (store: AssassinStore, @FindUserByEmail findByEmail
 
   @GET
   //@RequiresPermission("users:view:*")
-  def allUsers(): ListResult[UserViewDto] = store.find(new UserQuery()).map(dtoMap)
+  def allUsers(): ListResult[UserViewDto] = store.pagedResult(new UserQuery(None, None, 0, 10)).results.map(dtoMap)
 
   @GET
   @Path("/id/{id}")
   //@RequiresPermission("users:view:{id}")
   def user(@Substitution("id") @PathParam("id") id: Int): Response = {
-    store.load(users, id) match {
+    store.find(users, id) match {
       case Some(user) => Response.ok(dtoMap(user)).build()
       case None => Response.status(Response.Status.NOT_FOUND).build()
     }
