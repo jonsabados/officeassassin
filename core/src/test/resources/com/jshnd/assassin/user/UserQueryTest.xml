@@ -1,8 +1,8 @@
 <dataset>
-    <users email="one@one.com"
+    <users email_address="one@one.com"
            handle="one"
            password_hash="123" />
-    <users email="two@one.com"
+    <users email_address="two@one.com"
            handle="two"
            password_hash="123" />
 </dataset>

@@ -30,25 +30,19 @@ class FullTxnTestBit @Inject() (p: PartialTxnTestBit) {
 }
 
 @RunWith(classOf[JUnitRunner])
-class PersistenceSanityTest extends FunSpec {
+class PersistenceSanityTest extends FunSpec with DbTester {
 
   describe("Assassin @Transactional behavior") {
-    val i = Guice.createInjector(new AssassinRootModule(Map(
-      CONFIG_KEY_SESSION_MODULE -> "com.jshnd.assassin.persistence.EmbeddedDerbyModule",
-      CONFIG_KEY_EMBEDDED_DB_LOCATION -> "memory:test"
-    )))
-
-    i.getInstance(classOf[SchemaUpdater]).updateSchema()
 
     it("Should commit when nothing goes wrong") {
       val email = "single"
-      i.getInstance(classOf[PartialTxnTestBit]).save(new User(email, "ok", None, "123"))
+      injector.getInstance(classOf[PartialTxnTestBit]).save(new User(email, "ok", None, "123"))
       assert(1 === userCount(email))
     }
 
     it("Should be all or nothing inside a transaction") {
       val dupeEmail = "duplicatesAbound"
-      val testBit = i.getInstance(classOf[FullTxnTestBit])
+      val testBit = injector.getInstance(classOf[FullTxnTestBit])
       // ugh... squeryl just chucks generic runtime exceptions
       intercept[RuntimeException] {
         testBit.doBadInsertion(dupeEmail)
@@ -57,7 +51,7 @@ class PersistenceSanityTest extends FunSpec {
     }
 
     def userCount(username: String): Long = {
-      val conn = i.getInstance(classOf[Connection])
+      val conn = injector.getInstance(classOf[Connection])
       try {
         val stmt = conn.prepareStatement("select count(*) from users where email_address=?")
         stmt.setString(1, username)
@@ -71,4 +65,5 @@ class PersistenceSanityTest extends FunSpec {
 
   }
 
+  def testData: String = "/com/jshnd/assassin/PersistenceSanityTest.xml"
 }

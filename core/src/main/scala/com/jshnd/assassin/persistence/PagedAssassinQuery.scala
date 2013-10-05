@@ -1,7 +1,7 @@
 package com.jshnd.assassin.persistence
 
 
-trait PagedQuery[T] extends Query[T] {
+trait PagedAssassinQuery[T] extends AssassinQuery[T] {
 
   def offset: Int
 

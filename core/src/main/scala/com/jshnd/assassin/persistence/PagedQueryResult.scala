@@ -1,5 +1,4 @@
 package com.jshnd.assassin.persistence
 
-import scala.collection.mutable.Buffer
+case class PagedQueryResult[T](results: List[T], resultCount: Int, totalResults: Long)
 
-class PagedQueryResult[T](results: Buffer[T], totalResults: Long)

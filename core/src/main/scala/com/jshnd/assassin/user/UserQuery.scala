@@ -2,12 +2,12 @@ package com.jshnd.assassin.user
 
 import org.squeryl.PrimitiveTypeMode._
 import com.jshnd.assassin.AssassinSchema._
-import com.jshnd.assassin.persistence.PagedQuery
-import org.squeryl.Queryable
+import com.jshnd.assassin.persistence.PagedAssassinQuery
+import org.squeryl.{Query, Queryable}
 
-class UserQuery(email: Option[String], handle: Option[String], o: Int, pl: Int) extends PagedQuery[User] {
+class UserQuery(email: Option[String], handle: Option[String], o: Int, pl: Int) extends PagedAssassinQuery[User] {
 
-  def query: Queryable[User] = from(users)(u =>
+  def query: Query[User] = from(users)(u =>
     where(
       u.emailAddress === email.?
       and u.handle === handle.?
