@@ -17,10 +17,10 @@ class AssassinStore {
   def load[T <: KeyedEntity[I], I](table: Table[T], id: I): T = table.get(id)
 
   @Transactional
-  def loadUnique[T](query: AssassinQuery[T]): T = query.query.single
+  def load[T](query: AssassinQuery[T]): T = query.query.single
 
   @Transactional
-  def findUnique[T](query: AssassinQuery[T]): Option[T] = {
+  def find[T](query: AssassinQuery[T]): Option[T] = {
     val i = query.query.iterator
     if(i.isEmpty) None
     else {

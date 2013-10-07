@@ -28,6 +28,13 @@ class EnlistmentFeature extends FeatureSpec with IntegrationTest with GivenWhenT
       val check = url(location).GET.addHeader("Authorization", authHeader("jd@example.com", "12345"))
       val followup = Http(check OK as.String)
       assert(followup().contains("jd@example.com"))
+
+      And("I should not be denied when requesting all users")
+      // TODO - Content-Type, application/json should be reusable
+      val usersSvc = url(s"$baseUrl/rest/users").addHeader("Content-Type", "application/json")
+      val authed = usersSvc setHeader("Authorization", authHeader("jd@example.com", "12345"))
+      val userCheck = Http(authed OK asResponseCode)
+      assert(userCheck() / 100 === 2)
     }
 
     scenario("The email address used is already in use") {

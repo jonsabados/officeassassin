@@ -4,6 +4,7 @@ import scala.collection.JavaConversions._
 import com.google.inject.{Guice, Module, AbstractModule}
 import com.google.inject.name.Names
 import com.jshnd.assassin.user.UserModule
+import com.jshnd.assassin.permissions.DefaultUserPermissionModule
 
 class AssassinRootModule(configuration: Map[String, String]) extends AbstractModule {
 
@@ -22,5 +23,6 @@ class AssassinRootModule(configuration: Map[String, String]) extends AbstractMod
     val userMod = new UserModule
     requestInjection(userMod)
     install(userMod)
+    install(new DefaultUserPermissionModule)
   }
 }

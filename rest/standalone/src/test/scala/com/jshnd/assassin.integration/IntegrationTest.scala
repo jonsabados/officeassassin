@@ -37,6 +37,10 @@ trait IntegrationTest extends Suite with BeforeAndAfterAll {
     response.getHeader("Location")
   }
 
+  def asResponseCode = as.Response[Int] { response =>
+    response.getStatusCode
+  }
+
   def asJsonObject = as.Response[Map[String, _]] { response =>
     JSON.parseFull(response.getResponseBody).get.asInstanceOf[Map[String, _]]
   }

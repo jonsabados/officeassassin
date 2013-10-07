@@ -1,0 +1,42 @@
+<dataset>
+    <users id="2500"
+           email_address="targetUser@test.com"
+           handle="one"
+           password_hash="123" />
+    <users id="2501"
+           email_address="noiseUser@test.com"
+           handle="two"
+           password_hash="123" />
+
+    <roles id="2000"
+           name="roleA" />
+    <roles id="2001"
+           name="roleB" />
+    <roles id="2002"
+           name="roleC" />
+    <roles id="2003"
+           name="roleD" />
+
+    <groups id="2000"
+            name="targetGroup" />
+    <groups id="2001"
+            name="noiseGroup" />
+
+    <user_roles user_id="2500"
+                role_id="2000" />
+    <user_roles user_id="2501"
+                role_id="2003" />
+
+    <user_groups user_id="2500"
+                 group_id="2000" />
+    <user_groups user_id="2501"
+                 group_id="2001" />
+
+    <group_roles group_id="2000"
+                 role_id="2000" /> <!-- duplicate role is intentional, user may share specific roles with group but query should return unique results -->
+    <group_roles group_id="2000"
+                 role_id="2001" />
+    <group_roles group_id="2001"
+                 role_id="2002" />
+
+</dataset>
