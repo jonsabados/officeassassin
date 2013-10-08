@@ -1,4 +1,8 @@
-Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
+var Assassin = require("config/App"),
+  AssassinSubmitter = require("controllers/AssassinSubmitter"),
+  Errors = require("models/Errors");
+
+module.exports = Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
     needs: ["login"],
     termsAccepted: false,
     passwordConfirm: "",
@@ -24,7 +28,7 @@ Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
     requiredFieldsSet: function() {
         var model = this.get("model");
         return model.get("requiredFields").every(function(property) {
-            return notEmpty(model.get(property));
+            return !!model.get(property);
         });
     }.property("model.emailAddress", "model.handle", "model.password", "passwordConfirm"),
 

@@ -1,0 +1,26 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                {{#each navigation}}
+                {{#if enabled}}
+                <span class="icon-bar"></span>
+                {{/if}}
+                {{/each}}
+            </button>
+            <a class="navbar-brand" href="#">Office Assassin</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                {{#each navigation}}
+                {{#if enabled}}
+                <li {{bind-attr class="active"}}>{{#linkTo route}}{{label}}{{/linkTo}}</li>
+                {{/if}}
+                {{/each}}
+            </ul>
+            <form class="navbar-form navbar-right">
+                {{render "login"}}
+            </form>
+        </div>
+    </div>
+</div>

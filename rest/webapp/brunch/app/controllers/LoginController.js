@@ -1,8 +1,11 @@
-Assassin.LoginController = Ember.Controller.extend(AssassinSubmitter, {
+var Assassin = require("config/App"),
+  AssassinSubmitter = require("controllers/AssassinSubmitter");
+
+module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubmitter, {
     needs: ["application"],
 
     canSubmit: function() {
-        return notEmpty(this.get("emailAddress")) && notEmpty(this.get("password"));
+        return !!this.get("emailAddress") && !!this.get("password");
     }.property("emailAddress", "password"),
 
     cantSubmit: function() {

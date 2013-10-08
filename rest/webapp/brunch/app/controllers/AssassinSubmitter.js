@@ -1,4 +1,6 @@
-var AssassinSubmitter = Ember.Mixin.create({
+var Errors = require("models/Errors");
+
+module.exports = Ember.Mixin.create({
     submitting: false,
     authHeader: function(username, password) {
         return "BasicCustom " + btoa(username + ":" + password);

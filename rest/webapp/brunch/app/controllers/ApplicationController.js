@@ -1,10 +1,5 @@
-Assassin = Ember.Application.create({
-    currentPath: undefined,
-    username: undefined,
-    password: undefined,
-    user: undefined,
-    loggedIn: false
-});
+var Assassin = require("config/App"),
+  NavItem = require("models/NavItem");
 
 Assassin.ApplicationController = Ember.Controller.extend({
   navigation: Ember.A([
@@ -35,15 +30,3 @@ Assassin.ApplicationController = Ember.Controller.extend({
   }.observes('currentPath')
 
 });
-
-function notEmpty(val) {
-    return val != undefined && val != "";
-}
-
-function trimToUndefinedReplacer(key, value) {
-    if(typeof(value) == "string" && value == "") {
-        return undefined;
-    } else {
-        return value;
-    }
-}

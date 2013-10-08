@@ -1,0 +1,39 @@
+<form class="form-enlist">
+    <h2 class="form-enlist-heading">Recruit Information</h2>
+
+    {{#if hasFailures}}
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <ul>
+            {{#each errors.generalFailures}}
+            <li>{{message}}</li>
+            {{/each}}
+            {{#each errors.fieldFailures}}
+            <!-- todo link to {{field}} focus-->
+            <li><a class="alert-link" {{action focusField field href=true}}>{{message}}</a></li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+
+    <div {{bind-attr class="hasFailureEmailAddress:has-error"}}>
+    {{input id="in_emailAddress" type="email" class="form-control" placeholder="Email address" field="emailAddress" value=model.emailAddress}}
+    </div>
+    <div {{bind-attr class="hasFailureHandle:has-error"}}>
+    {{input id="in_handle" type="text" class="form-control" placeholder="Handle" value=model.handle}}
+    </div>
+    <div {{bind-attr class="hasFailureFullName:has-error"}}>
+    {{input id="in_fullName" type="text" class="form-control optional" placeholder="Full Name (optional)" value=model.fullName}}
+    </div>
+    <div {{bind-attr class="hasFailurePassword:has-error"}}>
+    {{input id="in_password" type="password" class="form-control" placeholder="Password" value=model.password}}
+    </div>
+    <div {{bind-attr class="hasFailurePasswordConfirm:has-error"}}>
+    {{input id="in_passwordConfirm" type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirm}}
+    </div>
+    <label class="checkbox">
+        {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts
+    </label>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" {{action save}} {{bind-attr disabled=cantSubmit}}>Enlist</button>
+</form>
