@@ -8,8 +8,10 @@ import com.jshnd.assassin.AssassinSchema._
 import com.jshnd.assassin.persistence.AssassinStore
 import com.jshnd.assassin.permissions.{UserGroup, GroupQuery, Group}
 import org.mockito.{Matchers, ArgumentCaptor}
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
-
+@RunWith(classOf[JUnitRunner])
 class UserControllerTest extends FunSpec with MockitoSugar with Inside with BeforeAndAfterEach {
 
   val mockStore = mock[AssassinStore]
