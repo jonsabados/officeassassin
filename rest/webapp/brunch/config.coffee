@@ -5,18 +5,18 @@ exports.config =
   files:
     javascripts:
       joinTo:
-        'javascripts/app.js': /^app/
-        'javascripts/vendor.js': /^(vendor|bower_components)/
+        'js/assassin.js': /^app/
+        'js/vendor.js': /^(vendor|bower_components)/
 
       order:
         before: ['vendor/scripts/console-polyfill.js']
 
     stylesheets:
       joinTo:
-        'stylesheets/app.css': /^(app|vendor)/
+        'css/assassin.css': /^(app|vendor)/
 
     templates:
       precompile: true
       root: 'templates'
-      joinTo: 'javascripts/app.js' : /^app/
+      joinTo: 'js/assassin.js' : /^app/
 

@@ -15,9 +15,10 @@ object RunInIntellij extends App {
   server.setConnectors(Array(connector))
 
   val webappDir = "rest/webapp/src/main/webapp"
+  val brunchDir = "rest/webapp/brunch/public"
   val context = new WebAppContext()
   context.setDescriptor(webappDir + "/WEB-INF/web.xml")
-  context.setResourceBase(webappDir)
+  context.setResourceBase(brunchDir)
   context.setContextPath("/")
   context.setParentLoaderPriority(true)
 

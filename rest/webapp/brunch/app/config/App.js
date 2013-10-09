@@ -5,11 +5,3 @@ module.exports = Ember.Application.create({
     user: null,
     loggedIn: false
 });
-
-function trimToUndefinedReplacer(key, value) {
-    if(typeof(value) == "string" && value == "") {
-        return undefined;
-    } else {
-        return value;
-    }
-}

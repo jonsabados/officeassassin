@@ -1,5 +1,6 @@
 var Assassin = require("config/App"),
-  AssassinSubmitter = require("controllers/AssassinSubmitter");
+  AssassinSubmitter = require("controllers/AssassinSubmitter"),
+  User = require("models/User");
 
 module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubmitter, {
     needs: ["application"],
@@ -18,8 +19,8 @@ module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubm
             url: "rest/users/email/" + username,
             returnType: User,
             sudoCreds: {
-                username: this.get("emailAddress"),
-                password: this.get("password")
+                username: username,
+                password: password
             },
 
             error: function(response) {

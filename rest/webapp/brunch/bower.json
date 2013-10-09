@@ -18,12 +18,6 @@
   "overrides": {
     "handlebars": {
       "main": "handlebars.runtime.js"
-    },
-    "bootstrap": {
-      "main": "bootstrap.js"
-    },
-    "jquery": {
-      "main": "jquery.js"
     }
   }
 }

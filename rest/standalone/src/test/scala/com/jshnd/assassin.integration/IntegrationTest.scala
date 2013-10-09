@@ -26,8 +26,8 @@ trait IntegrationTest extends Suite with BeforeAndAfterAll {
   server.setConnectors(Array(connector))
 
   val context = new WebAppContext()
-  context.setDescriptor(webappDir + "/WEB-INF/web.xml")
-  context.setResourceBase(webappDir)
+  context.setDescriptor(webappDir + "/src/main/webapp/WEB-INF/web.xml")
+  context.setResourceBase(webappDir + "/brunch/public/")
   context.setContextPath("/")
   context.setParentLoaderPriority(true)
 
@@ -69,7 +69,7 @@ trait IntegrationTest extends Suite with BeforeAndAfterAll {
     val pathToProps = new File(getClass.getResource("/integration-test-assassin-config.properties").getFile)
     // resources -> test -> src -> standalone -> rest
     val restDir = pathToProps.getParentFile.getParentFile.getParentFile.getParentFile
-    new File(restDir, "webapp/src/main/webapp").getAbsolutePath
+    new File(restDir, "webapp/").getAbsolutePath
   }
 
   override def beforeAll() {

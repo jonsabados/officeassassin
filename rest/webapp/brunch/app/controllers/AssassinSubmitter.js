@@ -56,4 +56,12 @@ module.exports = Ember.Mixin.create({
         $.ajax(ajaxData);
     }
 
-})
+});
+
+function trimToUndefinedReplacer(key, value) {
+    if(typeof(value) == "string" && value == "") {
+        return undefined;
+    } else {
+        return value;
+    }
+}
