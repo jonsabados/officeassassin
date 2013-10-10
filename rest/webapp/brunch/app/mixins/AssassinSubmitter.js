@@ -25,35 +25,21 @@ module.exports = Ember.Mixin.create({
                 } else {
                     submission.error(response);
                 }
-                this.set("submitting", false);
-            }.bind(this)
+            }
         };
+
         if(submission.sudoCreds != undefined) {
             ajaxData.headers.Authorization = this.authHeader(submission.sudoCreds.username, submission.sudoCreds.password);
         } else if(Assassin.get("loggedIn")) {
             ajaxData.headers.Authorization = this.authHeader(Assassin.get("username"), Assassin.get("password"));
         }
-        if(submission.returnType != undefined)  {
-            ajaxData.dataType = "json";
-            ajaxData.success = function(json) {
-                submission.success(submission.returnType.create().deserialize(json));
-                this.set("submitting", false);
-            }.bind(this);
-        } else {
-            ajaxData.success = function(responseData, textStatus, jqXHR) {
-                submission.success(responseData, textStatus, jqXHR);
-                this.set("submitting", false);
-            }.bind(this);
-        }
 
-        if(submission.nativeProps != undefined) {
-            for(key in submission.nativeProps) {
-                ajaxData[key] = submission.nativeProps[key];
-            }
+        if(submission.type == "GET") {
+            ajaxData.dataType = "json";
         }
 
         this.set("submitting", true);
-        $.ajax(ajaxData);
+        return $.ajax(ajaxData).always(function () {this.set("submitting", false);}.bind(this));
     }
 
 });

@@ -2,28 +2,21 @@ var Assassin = require("config/App"),
   NavItem = require("models/NavItem");
 
 Assassin.ApplicationController = Ember.Controller.extend({
-  navigation: Ember.A([
-    NavItem.create({route: "index", label: "Home"}),
-    NavItem.create({route: "enlist", label: "Enlist"})
-  ]),
-
-  setNavState: function(forRoute, state) {
-    this.get("navigation").find(function(item) {
-      return item.get("route") == forRoute;
-    }).set("enabled", state);
-  },
-
-  removeNavItem: function(forRoute) {
-    this.setNavState(forRoute, false);
-
-    if(forRoute == this.get("currentPath")) {
-       this.transitionToRoute("index");
+  navigation: function() {
+    var ret = [NavItem.create({route: "index", label: "Home"})];
+    if(!Assassin.get("loggedIn")) {
+      ret.push(NavItem.create({route: "enlist", label: "Enlist"}));
     }
-  },
+    return ret;
+  }.property("Assassin.loggedIn"),
 
-  addNavItem: function(forRoute) {
-    this.setNavState(forRoute, true);
-  },
+  bounceToIndex: function() {
+    if(!this.get("navigation").find(function(navItem) {
+      return navItem.get("route") == this.get("currentPath");
+    }.bind(this)) != undefined) {
+      this.transitionToRoute("index");
+    }
+  }.observes("navigation"),
 
   updateCurrentPath: function() {
     Assassin.set('currentPath', this.get('currentPath'));

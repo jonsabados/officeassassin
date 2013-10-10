@@ -1,5 +1,5 @@
 var Assassin = require("config/App"),
-  AssassinSubmitter = require("controllers/AssassinSubmitter"),
+  AssassinSubmitter = require("mixins/AssassinSubmitter"),
   Errors = require("models/Errors");
 
 module.exports = Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
@@ -36,13 +36,9 @@ module.exports = Assassin.EnlistController = Ember.Controller.extend(AssassinSub
         return this.get("model").get("password") === this.get("passwordConfirm");
     }.property("model.password", "passwordConfirm"),
 
-    canSubmit: function() {
-        return this.get("requiredFieldsSet") && this.get("termsAccepted") && this.get("passwordMatch") && !this.get("submitting");
-    }.property("requiredFieldsSet", "termsAccepted", "passwordMatch", "submitting"),
+    canSubmit: Ember.computed.and("requiredFieldsSet", "termsAccepted", "passwordMatch"),
 
-    cantSubmit: function() {
-        return !this.get("canSubmit");
-    }.property("canSubmit"),
+    cantSubmit: Ember.computed.not("canSubmit"),
 
     actions: {
         save: function() {
@@ -51,12 +47,6 @@ module.exports = Assassin.EnlistController = Ember.Controller.extend(AssassinSub
                 type: "POST",
                 data: this.get("model"),
 
-                success: function() {
-                    alert("Brand new user created!");
-                    var login = this.get("controllers.login");
-                    login.login(this.get("model.emailAddress"), this.get("model.password"));
-                }.bind(this),
-
                 badRequest: function(errors) {
                     this.set("errors", errors);
                 }.bind(this),
@@ -64,7 +54,10 @@ module.exports = Assassin.EnlistController = Ember.Controller.extend(AssassinSub
                 error: function(failure, status) {
                     alert("Things went wrong, got back status " + failure.status + " from the server");
                 }
-            })
+            }).done(function () {
+              alert("Brand new user created!");
+              this.get("controllers.login").login(this.get("model.emailAddress"), this.get("model.password"));
+            }.bind(this))
         },
 
         focusField: function(field) {
