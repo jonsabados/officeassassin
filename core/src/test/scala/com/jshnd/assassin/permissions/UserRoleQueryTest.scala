@@ -16,10 +16,8 @@ class UserRoleQueryTest extends FunSpec with DbTester {
     it("Should find all roles a user has") {
       val roleResult = store.allResults(new UserRoleQuery("targetUser@test.com"))
       assert(roleResult.resultCount === 2)
-      assert(roleResult.results.toSet === Set(
-        Role("roleA"),
-        Role("roleB")
-      ))
+      assert(roleResult.results.indexWhere(r => r.name == "roleA") != -1)
+      assert(roleResult.results.indexWhere(r => r.name == "roleB") != -1)
     }
 
   }

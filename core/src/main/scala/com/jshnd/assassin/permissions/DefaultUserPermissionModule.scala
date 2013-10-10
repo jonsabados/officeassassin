@@ -16,12 +16,12 @@ class DefaultUserPermissionModule extends AbstractModule {
 
 class UserPermissions extends RolePermissions {
   def permissions(user: User): Set[String] = {
-    Set("users:view:*", "users:edit:" + user.id)
+    Set("users:view:*", "users:edit:" + user.id, "users:viewRoles:" + user.id)
   }
 }
 
 class UserAdminPermissions extends RolePermissions {
   def permissions(user: User): Set[String] = {
-    Set("users:edit:*")
+    Set("users:edit:*", "users:viewRoles:*")
   }
 }

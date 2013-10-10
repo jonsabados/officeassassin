@@ -64,6 +64,20 @@ trait IntegrationTest extends Suite with BeforeAndAfterAll {
     enroll()
   }
 
+  def userId(forUser: String, username: String, password: String): Int = {
+    val svc = jsonResponse(withAuth(url(s"$baseUrl/rest/users/email/$forUser").GET, username, password))
+    val get = Http(svc OK asJsonObject)
+    get()("id").asInstanceOf[Number].intValue()
+  }
+
+  def jsonResponse(svc: Req): Req = {
+    svc.addHeader("Accept", "application/json")
+  }
+
+  def withAuth(svc: Req, username: String, password: String): Req = {
+    svc.setHeader("Authorization", authHeader(username, password))
+  }
+
   def webappDir: String = {
     // There is probably a better way to do this, but it works to allow the tests to run in intellij & from maven
     val pathToProps = new File(getClass.getResource("/integration-test-assassin-config.properties").getFile)

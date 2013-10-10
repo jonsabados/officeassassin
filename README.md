@@ -4,15 +4,13 @@ Office Assassin
 What is this?
 -------------
 The combination of an office full of developers picking up nerf weapons without any direction -
-[see wikipedia](http://en.wikipedia.org/wiki/Assassin_\(game\)), and me wanting to learn scala and how it might look in a large
-scale project living with existing java stuff (like jersey).
+[see wikipedia](http://en.wikipedia.org/wiki/Assassin_\(game\)), and me wanting to learn scala and how it might look
+living with an existing java stuff (like jersey).
 
 What it is not?
 ---------------
 * This is most likely NOT a good example of scala
 * This is NOT a good example of how I would actually implement a fairly simple app
-* This is NOT a good example of only making things as complex as they need be (it is intentionally over complex just to
- see how things might work when they need to be)
 * This is NOT a good example of the level of testing I would add to a real project. The test coverage is pretty crappy,
  and usually only exists for things where it was easier to write a test than fire the app up.
 * This is probably NOT useful - even if this ever reaches a point where a usable app is produced, it will just be an app

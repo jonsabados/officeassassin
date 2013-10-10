@@ -1,18 +1,13 @@
 package com.jshnd.assassin.dto
 
-import scala.collection.JavaConversions._
 import java.util.{List => JList}
 import javax.xml.bind.annotation._
 import scala.beans.BeanProperty
 
 
-object ListResult {
-  implicit def fromPagedResult[T](scalaList: List[T]):ListResult[T] = new ListResult(scalaList, scalaList.length)
-}
-
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso(Array(classOf[UserViewDto]))
+@XmlSeeAlso(Array(classOf[RoleDto]))
 case class ListResult[T](@xmlElementWrapper(name = "items")
                          @xmlElement(name = "data")
                          @BeanProperty
@@ -20,9 +15,17 @@ case class ListResult[T](@xmlElementWrapper(name = "items")
 
                          @xmlElement
                          @BeanProperty
+                         var offset: Int,
+
+                         @xmlElement
+                         @BeanProperty
+                         var pageLength: Int,
+
+                         @xmlElement
+                         @BeanProperty
                          var totalRecords: Int) {
 
-  def this() = this(null, 0)
+  def this() = this(null, 0, 0, 0)
 
 }
 

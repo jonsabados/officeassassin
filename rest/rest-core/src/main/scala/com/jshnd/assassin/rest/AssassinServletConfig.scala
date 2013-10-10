@@ -57,6 +57,8 @@ class AssassinServletConfig extends GuiceServletContextListener {
     override def configureServlets() {
       install(new AssassinRootModule(propertyFile.toMap))
       install(Modules.`override`(new ValidationModule).`with`(new LocaleAwareModule))
+      install(new MappingModule)
+      install(new QueryUtilModule)
 
       bindInterceptor(any(), annotatedWith(classOf[RequiresPermission]), new RequiresPermissionInterceptor())
 

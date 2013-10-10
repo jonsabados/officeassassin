@@ -4,6 +4,7 @@ import org.scalatest.{Inside, GivenWhenThen, FeatureSpec}
 import dispatch._, Defaults._
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import javax.servlet.http.HttpServletResponse
 
 @RunWith(classOf[JUnitRunner])
 class UserResourceFeature extends FeatureSpec with IntegrationTest with GivenWhenThen with Inside {
@@ -92,6 +93,69 @@ class UserResourceFeature extends FeatureSpec with IntegrationTest with GivenWhe
     scenario("I use the wrong password") {
 
       pending
+    }
+
+  }
+
+  feature("Request a users roles") {
+
+    info("As an api consumer")
+    info("Using json")
+    info("I should be able to look up roles")
+
+    scenario("I look up my own roles as a normal user") {
+      Given("I have enlisted and I know my id")
+      val email = "userResourceFeature3@test.com"
+      val password = "12345"
+      enlist(email, "userResourceFeature3", None, password)
+      val id = userId(email, email, password)
+
+      When("I lookup my roles")
+      val svc = jsonResponse(withAuth(url(s"$baseUrl/rest/users/id/$id/roles").GET, email, password))
+      val get = Http(svc OK asJsonObject)
+
+      Then("The result should contain the role 'user'")
+      val result = get()
+      val items = result("data").asInstanceOf[List[Map[String, _]]]
+      assert(items.indexWhere(r => r("name") == "user") != -1)
+    }
+
+    scenario("I look up someone else's roles as a normal user") {
+      Given("I have enlisted")
+      val email = "userResourceFeature4@test.com"
+      val password = "12345"
+      enlist(email, "userResourceFeature4", None, password)
+
+      And("I know another users id")
+      val target = "userResourceFeature5@test.com"
+      enlist(target, "userResourceFeature5", None, "foo")
+      val id = userId(target, email, password)
+
+      When("I lookup their roles")
+      val svc = jsonResponse(withAuth(url(s"$baseUrl/rest/users/id/$id/roles").GET, email, password))
+      val get = Http(svc > asResponseCode)
+
+      Then("I should be forbidden")
+      val result = get()
+      assert(result === HttpServletResponse.SC_FORBIDDEN)
+    }
+
+    scenario("I look up someone else's roles as a super user") {
+      Given("I am an admin and I know a users id")
+      val adminUser = "admin"
+      val password = "changeme"
+      val email = "userResourceFeature6@test.com"
+      enlist(email, "userResourceFeature6", None, "bar")
+      val id = userId(email, adminUser, password)
+
+      When("I lookup their roles")
+      val svc = jsonResponse(withAuth(url(s"$baseUrl/rest/users/id/$id/roles").GET, adminUser, password))
+      val get = Http(svc OK asJsonObject)
+
+      Then("The result should contain the role 'user'")
+      val result = get()
+      val items = result("data").asInstanceOf[List[Map[String, _]]]
+      assert(items.indexWhere(r => r("name") == "user") != -1)
     }
 
   }

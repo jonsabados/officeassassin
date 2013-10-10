@@ -4,6 +4,6 @@ import com.jshnd.assassin.HasName
 import org.squeryl.KeyedEntity
 import org.squeryl.annotations._
 
-case class Role(@Column("name") name: String) extends HasName {
+case class Role(@Column("name") name: String) extends KeyedEntity[Int] with HasName {
   var id: Int = _
 }
