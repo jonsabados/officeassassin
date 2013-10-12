@@ -10,16 +10,16 @@ Assassin.ApplicationController = Ember.Controller.extend({
     return ret;
   }.property("Assassin.loggedIn"),
 
-  bounceToIndex: function() {
-    if(!this.get("navigation").find(function(navItem) {
+  bounceToIndexIfNeeded: function() {
+    if(this.get("navigation").find(function(navItem) {
       return navItem.get("route") == this.get("currentPath");
-    }.bind(this)) != undefined) {
+    }.bind(this)) == undefined) {
       this.transitionToRoute("index");
     }
   }.observes("navigation"),
 
   updateCurrentPath: function() {
-    Assassin.set('currentPath', this.get('currentPath'));
-  }.observes('currentPath')
+    Assassin.set("currentPath", this.get("currentPath"));
+  }.observes("currentPath")
 
 });

@@ -21,7 +21,7 @@ module.exports = Ember.Mixin.create({
 
             error: function(response) {
                 if(response.status == 400) {
-                    submission.badRequest(Errors.create().deserialize(JSON.parse(response.responseText)));
+                    submission.badRequest(Errors.create(JSON.parse(response.responseText)));
                 } else {
                     submission.error(response);
                 }

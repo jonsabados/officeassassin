@@ -1,7 +1,4 @@
-var Serializable = require("models/Serializable");
-
-module.exports = Ember.Object.extend(Serializable, {
-    toSerialize: ["generalFailures", "fieldFailures"],
+module.exports = Ember.Object.extend({
     generalFailures: [],
     fieldFailures: []
 });

@@ -12,7 +12,8 @@ import com.jshnd.assassin.permissions.{UserRoleQuery, Role}
 
 @Path("/users")
 @Produces(Array("application/json", "application/xml"))
-class UserResource @Inject() (userUtil: QueryUtil[Int, User, UserViewDto], roleUtil: QueryUtil[Int, Role, RoleDto]) {
+class UserResource @Inject() (userUtil: QueryUtil[Int, User, UserViewDto],
+                              roleUtil: QueryUtil[Int, Role, RoleDto]) {
 
   @GET
   @RequiresPermission("users:view:*")
