@@ -5,19 +5,32 @@ var Assassin = require("config/App"),
 
 module.exports = Ember.Object.extend(Serializable, AssassinSubmitter, {
     toSerialize: ["emailAddress", "handle", "fullName", "password"],
-    requiredFields: Ember.A([
+
+    requiredFields: [
         "emailAddress",
         "handle",
         "password"
-    ]),
+    ],
+
+    displayName: function() {
+        return this.get("fullName") || this.get("emailAddress");
+    }.property("emailAddress", "fullName"),
+
     roles: function() {
+        if(!this.get("_roles")) {
+            this._fetchRoles();
+        }
+        return this.get("_roles");
+    }.property("_roles"),
+
+    _fetchRoles: function() {
         return this._submit({
             type: "GET",
-            url: "rest/users/id/" + Assassin.get("user.id"),
-        }).done(function(data) {
-            return data.map(function(roleData) {
+            url: "rest/users/id/" + Assassin.get("user.id") + "/roles",
+        }).done(function(results) {
+            this.set("_roles", results.data.map(function(roleData) {
                return Role.create(roleData);
-            });
-        });
-    }.property()
+            }));
+        }.bind(this));
+    }
 });
