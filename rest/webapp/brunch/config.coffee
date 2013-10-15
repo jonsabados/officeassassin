@@ -9,7 +9,7 @@ exports.config =
         'js/vendor.js': /^(vendor|bower_components)/
 
       order:
-        before: ['vendor/scripts/console-polyfill.js']
+        after: ['vendor/scripts/ember-validations-1.0.0.beta.1.js']
 
     stylesheets:
       joinTo:

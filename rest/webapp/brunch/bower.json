@@ -17,7 +17,7 @@
   },
   "overrides": {
     "handlebars": {
-      "main": "handlebars.runtime.js"
+      "main": "handlebars.js"
     }
   }
 }

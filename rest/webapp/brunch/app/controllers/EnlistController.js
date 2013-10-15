@@ -2,43 +2,27 @@ var Assassin = require("config/App"),
   AssassinSubmitter = require("mixins/AssassinSubmitter"),
   Errors = require("models/Errors");
 
-module.exports = Assassin.EnlistController = Ember.Controller.extend(AssassinSubmitter, {
+module.exports = Assassin.EnlistController = Ember.ObjectController.extend(AssassinSubmitter, {
   needs: ["login"],
-  termsAccepted: false,
-  passwordConfirm: "",
-  errors: Errors.create({}),
+  creationErrors: Errors.create({}),
 
-  hasFailures: function() {
-    return this.get("errors").generalFailures.length > 0 || this.get("errors").fieldFailures.length > 0;
-  }.property("errors"),
+  hasCreateFailures: function() {
+    return this.get("creationErrors").generalFailures.length > 0 || this.get("creationErrors").fieldFailures.length > 0;
+  }.property("creationErrors"),
 
-  // TODO - there has got to be a better way to do this other than a slew of hasFailureFEILD functions
   hasFailure: function(field) {
-    return this.get("errors").fieldFailures.any(function(error) {
+    return this.get("creationErrors").fieldFailures.any(function(error) {
       return error.field == field;
     });
   },
 
-  hasFailureEmailAddress: function() {return this.hasFailure("emailAddress")}.property("errors"),
-  hasFailureHandle: function() {return this.hasFailure("handle")}.property("errors"),
-  hasFailureFullName: function() {return this.hasFailure("fullName")}.property("errors"),
-  hasFailurePassword: function() {return this.hasFailure("password")}.property("errors"),
-  hasFailurePasswordConfirm: function() {return this.hasFailure("passwordConfirm")}.property("errors"),
+  hasFailureEmailAddress: function() {return this.hasFailure("emailAddress")}.property("creationErrors"),
+  hasFailureHandle: function() {return this.hasFailure("handle")}.property("creationErrors"),
+  hasFailureFullName: function() {return this.hasFailure("fullName")}.property("creationErrors"),
+  hasFailurePassword: function() {return this.hasFailure("password")}.property("creationErrors"),
+  hasFailurePasswordConfirm: function() {return this.hasFailure("passwordConfirm")}.property("creationErrors"),
 
-  requiredFieldsSet: function() {
-    var model = this.get("model");
-    return model.get("requiredFields").every(function(property) {
-      return !!model.get(property);
-    });
-  }.property("model.emailAddress", "model.handle", "model.password", "passwordConfirm"),
-
-  passwordMatch: function() {
-    return this.get("model").get("password") === this.get("passwordConfirm");
-  }.property("model.password", "passwordConfirm"),
-
-  canSubmit: Ember.computed.and("requiredFieldsSet", "termsAccepted", "passwordMatch"),
-
-  cantSubmit: Ember.computed.not("canSubmit"),
+  cantSubmit: Ember.computed.not("isValid"),
 
   actions: {
     save: function() {
@@ -47,8 +31,8 @@ module.exports = Assassin.EnlistController = Ember.Controller.extend(AssassinSub
         type: "POST",
         data: this.get("model").serialize(),
 
-        badRequest: function(errors) {
-          this.set("errors", errors);
+        badRequest: function(creationErrors) {
+          this.set("creationErrors", creationErrors);
         }.bind(this),
 
         error: function(failure, status) {

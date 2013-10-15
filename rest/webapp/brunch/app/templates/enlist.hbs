@@ -1,14 +1,14 @@
 <form class="form-enlist">
     <h2 class="form-enlist-heading">Recruit Information</h2>
 
-    {{#if hasFailures}}
+    {{#if hasCreateFailures}}
     <div class="alert alert-dismissable alert-danger">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <ul>
-            {{#each errors.generalFailures}}
+            {{#each creationErrors.generalFailures}}
             <li>{{message}}</li>
             {{/each}}
-            {{#each errors.fieldFailures}}
+            {{#each creationErrors.fieldFailures}}
             <!-- todo link to {{field}} focus-->
             <li><a class="alert-link" {{action focusField field href=true}}>{{message}}</a></li>
             {{/each}}
@@ -29,7 +29,7 @@
     {{input id="in_password" type="password" class="form-control" placeholder="Password" value=model.password}}
     </div>
     <div {{bind-attr class="hasFailurePasswordConfirm:has-error"}}>
-    {{input id="in_passwordConfirm" type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirm}}
+    {{input id="in_passwordConfirm" type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirmation}}
     </div>
     <label class="checkbox">
         {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts

@@ -3,14 +3,15 @@ var Assassin = require("config/App"),
   Role = require("models/Role"),
   LimitedPostData = require("models/LimitedPostData");
 
-module.exports = Ember.Object.extend(LimitedPostData, AssassinSubmitter, {
-  toSerialize: ["emailAddress", "handle", "fullName", "password"],
+module.exports = Ember.Object.extend(LimitedPostData, AssassinSubmitter, Ember.Validations.Mixin, {
+  emailAddress: null,
+  handle: null,
+  fullName: null,
+  password: null,
+  termsAccepted: false,
+  passwordConfirmation: null,
 
-  requiredFields: [
-    "emailAddress",
-    "handle",
-    "password"
-  ],
+  toSerialize: ["emailAddress", "handle", "fullName", "password"],
 
   displayName: function() {
     return this.get("fullName") || this.get("emailAddress");
@@ -32,5 +33,22 @@ module.exports = Ember.Object.extend(LimitedPostData, AssassinSubmitter, {
          return Role.create(roleData);
       }));
     }.bind(this));
+  },
+
+  validations: {
+    emailAddress: {
+      presence: true
+    },
+    handle: {
+      presence: true
+    },
+    password: {
+      presence: true,
+      confirmation: true
+    },
+    termsAccepted: {
+      acceptance: true
+    }
   }
+
 });
