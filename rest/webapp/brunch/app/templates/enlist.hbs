@@ -16,15 +16,28 @@
     </div>
     {{/if}}
 
-    <div {{bind-attr class="hasFailureEmailAddress:has-error"}}>
-    {{input id="in_emailAddress" type="email" class="form-control" placeholder="Email address" field="emailAddress" value=model.emailAddress}}
-    </div>
-    <div {{bind-attr class="hasFailureHandle:has-error"}}>
-    {{input id="in_handle" type="text" class="form-control" placeholder="Handle" value=model.handle}}
-    </div>
-    <div {{bind-attr class="hasFailureFullName:has-error"}}>
-    {{input id="in_fullName" type="text" class="form-control optional" placeholder="Full Name (optional)" value=model.fullName}}
-    </div>
+    {{text-input inputId="email"
+                 type="email"
+                 placeholder="Email Address"
+                 valueBinding="emailAddress"
+                 errorsBinding="errors.emailAddress"
+                 label="Email Address:"}}
+
+    {{text-input inputId="handle"
+                 type="text"
+                 placeholder="Handle"
+                 valueBinding="handle"
+                 errorsBinding="errors.handle"
+                 label="Handle:"}}
+
+    {{text-input inputId="fullName"
+                 type="text"
+                 placeholder="Full Name"
+                 valueBinding="fullName"
+                 errorsBinding="errors.fullName"
+                 label="Full Name:"}}
+
+
     <div {{bind-attr class="hasFailurePassword:has-error"}}>
     {{input id="in_password" type="password" class="form-control" placeholder="Password" value=model.password}}
     </div>
