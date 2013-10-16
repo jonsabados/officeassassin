@@ -1,11 +1,11 @@
 {{#if Assassin.loggedIn}}
-<h3>Hi {{Assassin.user.displayName}} - your signed in!</h3>
-Your roles:
-<ul>
+  <h3>Hi {{Assassin.user.displayName}} - your signed in!</h3>
+  Your roles:
+  <ul>
     {{#each Assassin.user.roles}}
-        <li>Role: {{name}}</li>
+      <li>Role: {{name}}</li>
     {{/each}}
-</ul>
+  </ul>
 {{else}}
-<h3>Hi there - enroll, sign in or go away</h3>
+  <h3>Hi there - enroll, sign in or go away</h3>
 {{/if}}

@@ -1,52 +1,51 @@
 <form class="form-enlist">
-    <h2 class="form-enlist-heading">Recruit Information</h2>
+  <h2 class="form-enlist-heading">Recruit Information</h2>
 
-    {{#if hasCreateFailures}}
-    <div class="alert alert-dismissable alert-danger">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <ul>
-            {{#each creationErrors.generalFailures}}
-            <li>{{message}}</li>
-            {{/each}}
-            {{#each creationErrors.fieldFailures}}
-            <!-- todo link to {{field}} focus-->
-            <li><a class="alert-link" {{action focusField field href=true}}>{{message}}</a></li>
-            {{/each}}
-        </ul>
-    </div>
-    {{/if}}
+  {{#if hasCreateFailures}}
+  <div class="alert alert-dismissable alert-danger">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <ul>
+      {{#each creationErrors.generalFailures}}
+      <li>{{message}}</li>
+      {{/each}}
+      {{#each creationErrors.fieldFailures}}
+      <!-- todo link to {{field}} focus-->
+      <li><a class="alert-link" {{action focusField field href=true}}>{{message}}</a></li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/if}}
 
-    {{text-input inputId="email"
-                 type="email"
-                 placeholder="Email Address"
-                 valueBinding="emailAddress"
-                 errorsBinding="errors.emailAddress"
-                 label="Email Address:"}}
+  {{text-input inputId="email"
+               type="email"
+               placeholder="Email Address"
+               valueBinding="emailAddress"
+               errorsBinding="errors.emailAddress"
+               label="Email Address:"}}
 
-    {{text-input inputId="handle"
-                 type="text"
-                 placeholder="Handle"
-                 valueBinding="handle"
-                 errorsBinding="errors.handle"
-                 label="Handle:"}}
+  {{text-input inputId="handle"
+               type="text"
+               placeholder="Handle"
+               valueBinding="handle"
+               errorsBinding="errors.handle"
+               label="Handle:"}}
 
-    {{text-input inputId="fullName"
-                 type="text"
-                 placeholder="Full Name"
-                 valueBinding="fullName"
-                 errorsBinding="errors.fullName"
-                 label="Full Name:"}}
+  {{text-input inputId="fullName"
+               type="text"
+               placeholder="Full Name"
+               valueBinding="fullName"
+               errorsBinding="errors.fullName"
+               label="Full Name:"}}
 
-
-    <div {{bind-attr class="hasFailurePassword:has-error"}}>
+  <div {{bind-attr class="hasFailurePassword:has-error"}}>
     {{input id="in_password" type="password" class="form-control" placeholder="Password" value=model.password}}
-    </div>
-    <div {{bind-attr class="hasFailurePasswordConfirm:has-error"}}>
+  </div>
+  <div {{bind-attr class="hasFailurePasswordConfirm:has-error"}}>
     {{input id="in_passwordConfirm" type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirmation}}
-    </div>
-    <label class="checkbox">
-        {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts
-    </label>
+  </div>
+  <label class="checkbox">
+    {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts
+  </label>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit" {{action save}} {{bind-attr disabled=cantSubmit}}>Enlist</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" {{action save}} {{bind-attr disabled=cantSubmit}}>Enlist</button>
 </form>
