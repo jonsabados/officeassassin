@@ -20,3 +20,14 @@ exports.config =
       root: 'templates'
       joinTo: 'js/assassin.js' : /^app/
 
+  plugins:
+    jshint:
+      pattern: /^app\/.*\.js$/
+      options:
+        bitwise: true
+        curly: true
+        indent: 2
+        trailing: true
+        white: true
+      globals:
+        jQuery: true

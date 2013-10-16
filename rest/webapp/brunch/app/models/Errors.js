@@ -1,4 +1,4 @@
 module.exports = Ember.Object.extend({
-    generalFailures: [],
-    fieldFailures: []
+  generalFailures: [],
+  fieldFailures: []
 });

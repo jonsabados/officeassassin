@@ -7,7 +7,7 @@ module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubm
 
   cantSubmit: Ember.computed.not("canSubmit"),
 
-  login: function(username, password) {
+  login: function (username, password) {
     this._submit({
       type: "GET",
       url: "rest/users/email/" + username,
@@ -16,14 +16,14 @@ module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubm
         password: password
       },
 
-      error: function(response) {
-        if(response.status == 401) {
+      error: function (response) {
+        if (response.status == 401) {
           alert("Invalid username or password.");
         } else {
           alert("Ack - login failed with unexpected status: " + response.status);
         }
       }.bind(this)
-    }).done(function(data) {
+    }).done(function (data) {
       var user = User.create(data);
       Assassin.set("username", username);
       Assassin.set("password", password);
@@ -33,11 +33,11 @@ module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubm
   },
 
   actions: {
-    login: function() {
+    login: function () {
       this.login(this.get("emailAddress"), this.get("password"));
     },
 
-    logout: function() {
+    logout: function () {
       Assassin.set("loggedIn", false);
       Assassin.set("username", undefined);
       Assassin.set("password", undefined);
