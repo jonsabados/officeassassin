@@ -10,7 +10,8 @@ var folderOrder = [
   "controllers",
   "helpers",
   "templates",
-  "components"
+  "components",
+  "validators"
 ];
 
 folderOrder.forEach(function (folder) {

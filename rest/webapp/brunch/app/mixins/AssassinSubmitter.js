@@ -7,7 +7,7 @@ module.exports = Ember.Mixin.create({
   },
 
   _submit: function (submission) {
-    var data = submission.data ? undefined : JSON.stringify(submission.data, trimToUndefinedReplacer);
+    var data = submission.data ? JSON.stringify(submission.data, trimToUndefinedReplacer) : undefined;
     var ajaxData = {
       processData: false,
       contentType: "application/json",

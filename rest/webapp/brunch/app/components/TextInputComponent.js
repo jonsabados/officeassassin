@@ -1,7 +1,7 @@
 var Assassin = require("config/App");
 
 module.exports = Assassin.TextInputComponent = Ember.Component.extend({
-  classNames: ["form-group"],
+  classNames: ["form-group", "assassin-text-input"],
   classNameBindings: ["showError:has-error"],
   hasFocusedOut: false,
   errors: null,

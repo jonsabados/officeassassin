@@ -8,10 +8,6 @@
       {{#each creationErrors.generalFailures}}
       <li>{{message}}</li>
       {{/each}}
-      {{#each creationErrors.fieldFailures}}
-      <!-- todo link to {{field}} focus-->
-      <li><a class="alert-link" {{action focusField field href=true}}>{{message}}</a></li>
-      {{/each}}
     </ul>
   </div>
   {{/if}}
@@ -37,12 +33,20 @@
                errorsBinding="errors.fullName"
                label="Full Name:"}}
 
-  <div {{bind-attr class="hasFailurePassword:has-error"}}>
-    {{input id="in_password" type="password" class="form-control" placeholder="Password" value=model.password}}
-  </div>
-  <div {{bind-attr class="hasFailurePasswordConfirm:has-error"}}>
-    {{input id="in_passwordConfirm" type="password" class="form-control" placeholder="Confirm Password" value=passwordConfirmation}}
-  </div>
+  {{text-input inputId="password"
+               type="password"
+               placeholder="Password"
+               valueBinding="password"
+               errorsBinding="errors.password"
+               label="Password:"}}
+
+  {{text-input inputId="passwordConfirmation"
+               type="password"
+               placeholder="Confirm Password"
+               valueBinding="passwordConfirmation"
+               errorsBinding="errors.passwordConfirmation"
+               label="Confirm Password:"}}
+
   <label class="checkbox">
     {{input type="checkbox" checked=termsAccepted}} I acknowledge that by enlisting I agree to be randomly shot by nerf darts
   </label>

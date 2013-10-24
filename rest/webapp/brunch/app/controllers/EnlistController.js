@@ -7,7 +7,7 @@ module.exports = Assassin.EnlistController = Ember.ObjectController.extend(Assas
   creationErrors: Errors.create({}),
 
   hasCreateFailures: function () {
-    return this.get("creationErrors").generalFailures.length > 0 || this.get("creationErrors").fieldFailures.length > 0;
+    return this.get("creationErrors").generalFailures.length > 0;
   }.property("creationErrors"),
 
   hasFailure: function (field) {
@@ -33,6 +33,9 @@ module.exports = Assassin.EnlistController = Ember.ObjectController.extend(Assas
 
         badRequest: function (creationErrors) {
           this.set("creationErrors", creationErrors);
+          $.each(creationErrors.fieldFailures, function (index, failure) {
+            this.get("errors." + failure.field).pushObject(failure.message);
+          }.bind(this));
         }.bind(this),
 
         error: function (failure, status) {

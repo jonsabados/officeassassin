@@ -37,17 +37,26 @@ module.exports = Ember.Object.extend(LimitedPostData, AssassinSubmitter, Ember.V
 
   validations: {
     emailAddress: {
-      presence: true
+      presence: { message: "Email Address is required" }
     },
+
     handle: {
-      presence: true
+      presence: { message: "Handle is required" }
     },
+
     password: {
-      presence: true,
-      confirmation: true
+      presence: { message: "Password is required" }
     },
+
+    passwordConfirmation: {
+      matchesProperty: {
+        propertyToMatch: "password",
+        message: "Password confirmation does not match password"
+      }
+    },
+
     termsAccepted: {
-      acceptance: true
+      acceptance: { message: "Terms and conditions must be accepted" }
     }
   }
 

@@ -1,12 +1,21 @@
-<label {{bind-attr for=view.inputId}}>{{view.label}}</label>
-{{input idBinding="view.inputId"
-        class="form-control"
-        typeBinding="view.type"
-        class="form-control"
-        placeholderBinding="view.placeholder"
-        valueBinding="view.value"}}
-{{#if view.showError}}
-  <span class="help-block">
-    {{#each error in view.errors}}{{error}}{{/each}}
-  </span>
-{{/if}}
+<div class="row">
+  <div class="col-md-2">
+    <label {{bind-attr for=view.inputId}}>{{view.label}}</label>
+  </div>
+  <div class="col-md-5">
+    {{input idBinding="view.inputId"
+            class="form-control"
+            typeBinding="view.type"
+            class="form-control"
+            placeholderBinding="view.placeholder"
+            valueBinding="view.value"}}
+  </label>
+  </div>
+  <div class="col-md-5">
+    {{#if view.showError}}
+      <span class="help-block">
+        {{#each error in view.errors}}{{error}}{{/each}}
+      </span>
+    {{/if}}
+  </div>
+</div>
