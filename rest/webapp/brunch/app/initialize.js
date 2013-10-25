@@ -11,7 +11,8 @@ var folderOrder = [
   "helpers",
   "templates",
   "components",
-  "validators"
+  "validators",
+  "repositories"
 ];
 
 folderOrder.forEach(function (folder) {
