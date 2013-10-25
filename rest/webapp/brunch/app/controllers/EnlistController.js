@@ -4,23 +4,10 @@ var Assassin = require("config/App"),
 
 module.exports = Assassin.EnlistController = Ember.ObjectController.extend(AssassinSubmitter, {
   needs: ["login"],
-  creationErrors: Errors.create({}),
 
-  hasCreateFailures: function () {
-    return this.get("creationErrors").generalFailures.length > 0;
+  hasGeneralFailures: function () {
+    return (this.get("creationErrors.generalFailures") || []).length > 0;
   }.property("creationErrors"),
-
-  hasFailure: function (field) {
-    return this.get("creationErrors").fieldFailures.any(function (error) {
-      return error.field == field;
-    });
-  },
-
-  hasFailureEmailAddress: function () { return this.hasFailure("emailAddress"); }.property("creationErrors"),
-  hasFailureHandle: function () { return this.hasFailure("handle"); }.property("creationErrors"),
-  hasFailureFullName: function () { return this.hasFailure("fullName"); }.property("creationErrors"),
-  hasFailurePassword: function () { return this.hasFailure("password"); }.property("creationErrors"),
-  hasFailurePasswordConfirm: function () { return this.hasFailure("passwordConfirm"); }.property("creationErrors"),
 
   cantSubmit: Ember.computed.not("isValid"),
 
@@ -33,8 +20,19 @@ module.exports = Assassin.EnlistController = Ember.ObjectController.extend(Assas
 
         badRequest: function (creationErrors) {
           this.set("creationErrors", creationErrors);
+          if (!this.get("rejectedValues")) {
+            this.set("rejectedValues", {});
+          }
+
           $.each(creationErrors.fieldFailures, function (index, failure) {
-            this.get("errors." + failure.field).pushObject(failure.message);
+            var field = failure.field;
+            if (!this.get("rejectedValues." + field)) {
+              this.set("rejectedValues." + field, []);
+            }
+            this.get("rejectedValues." + field).pushObject({
+              value: this.get(field),
+              message: failure.message
+            });
           }.bind(this));
         }.bind(this),
 

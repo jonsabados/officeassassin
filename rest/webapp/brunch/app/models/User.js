@@ -10,6 +10,8 @@ module.exports = Ember.Object.extend(LimitedPostData, AssassinSubmitter, Ember.V
   password: null,
   termsAccepted: false,
   passwordConfirmation: null,
+  creationErrors: null,
+  rejectedValues: null,
 
   toSerialize: ["emailAddress", "handle", "fullName", "password"],
 
@@ -37,11 +39,17 @@ module.exports = Ember.Object.extend(LimitedPostData, AssassinSubmitter, Ember.V
 
   validations: {
     emailAddress: {
-      presence: { message: "Email Address is required" }
+      presence: { message: "Email Address is required" },
+      serverRejected: { rejectedValues: "rejectedValues" }
     },
 
     handle: {
-      presence: { message: "Handle is required" }
+      presence: { message: "Handle is required" },
+      serverRejected: { rejectedValues: "rejectedValues" }
+    },
+
+    fullName: {
+      serverRejected: { rejectedValues: "rejectedValues" }
     },
 
     password: {
