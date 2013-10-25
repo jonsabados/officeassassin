@@ -3,7 +3,7 @@ var Assassin = require("config/App"),
   User = require("models/User");
 
 module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubmitter, {
-  canSubmit: Ember.computed.and("emailAddress", "password"),
+  canSubmit: Ember.computed.and("emailAddress", "password", "notSubmitting"),
 
   cantSubmit: Ember.computed.not("canSubmit"),
 
@@ -27,8 +27,8 @@ module.exports = Assassin.LoginController = Ember.Controller.extend(AssassinSubm
       var user = User.create(data);
       Assassin.set("username", username);
       Assassin.set("password", password);
-      Assassin.set("user", user);
       Assassin.set("loggedIn", true);
+      Assassin.set("user", user);
     }.bind(this));
   },
 

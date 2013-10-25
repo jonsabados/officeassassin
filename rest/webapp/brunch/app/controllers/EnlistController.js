@@ -9,7 +9,8 @@ module.exports = Assassin.EnlistController = Ember.ObjectController.extend(Assas
     return (this.get("creationErrors.generalFailures") || []).length > 0;
   }.property("creationErrors"),
 
-  cantSubmit: Ember.computed.not("isValid"),
+  canSubmit: Ember.computed.and("isValid", "notSubmitting"),
+  cantSubmit: Ember.computed.not("canSubmit"),
 
   actions: {
     save: function () {

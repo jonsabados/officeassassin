@@ -2,6 +2,7 @@ var Errors = require("models/Errors");
 
 module.exports = Ember.Mixin.create({
   submitting: false,
+  notSubmitting: Ember.computed.not("submitting"),
   authHeader: function (username, password) {
     return "BasicCustom " + btoa(username + ":" + password);
   },
