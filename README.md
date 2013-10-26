@@ -45,6 +45,8 @@ Or:
 
     java -jar -Dassassin.config=YOUR_CONFIG_FILE_HERE rest/standalone/target/standalone-1.0-SNAPSHOT.war
 
+Then just hit http://localhost:8080/
+
 See rest/webapp/ for a war suitable for deployment in an external servlet container.
 
 License
