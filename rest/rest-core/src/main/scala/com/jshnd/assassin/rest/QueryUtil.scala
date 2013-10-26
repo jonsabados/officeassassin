@@ -12,8 +12,8 @@ class QueryUtil[K, I <: KeyedEntity[K], O] @Inject() (store: AssassinStore, mapF
 
   def listResponse(query: PagedAssassinQuery[I]): Response = {
     val r = store.pagedResult(query)
-    val responseObj =  ListResult(r.results.map(mapFunc), query.offset, query.pageLength, r.resultCount)
-    val lastPage = r.resultCount < query.pageLength || query.offset + r.resultCount <= r.totalResults
+    val responseObj =  ListResult(r.results.map(mapFunc), query.offset, query.pageLength, r.totalResults)
+    val lastPage = r.resultCount < query.pageLength || query.offset + r.resultCount == r.totalResults
     if(lastPage) {
       Response.ok(responseObj).build()
     } else {

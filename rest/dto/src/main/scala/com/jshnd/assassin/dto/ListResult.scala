@@ -23,7 +23,7 @@ case class ListResult[T](@xmlElementWrapper(name = "items")
 
                          @xmlElement
                          @BeanProperty
-                         var totalRecords: Int) {
+                         var totalRecords: Long) {
 
   def this() = this(null, 0, 0, 0)
 
