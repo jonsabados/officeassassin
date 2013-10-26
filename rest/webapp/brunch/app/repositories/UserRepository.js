@@ -16,7 +16,7 @@ module.exports = Ember.Object.extend(AssassinSubmitter, {
   fetchResults: function () {
     return this._submit({
       type: "GET",
-      url: "rest/users/?pageLength=" + this.get("fetchSize")
+      url: "rest/users/?pageLength=" + this.get("fetchSize") + "&offset=" + this.get("firstRecord")
     }).done(function (results, textStatus, jqXHR) {
       this.set("hasMoreResults", jqXHR.status === 206);
       this.set("totalRecords", results.totalRecords);
@@ -24,5 +24,5 @@ module.exports = Ember.Object.extend(AssassinSubmitter, {
         return User.create(user);
       }));
     }.bind(this));
-  }.observes("resultsPerPage", "currentPage").on("init")
+  }.observes("fetchSize", "firstRecord").on("init")
 });
