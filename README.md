@@ -16,25 +16,19 @@ What it is not?
 * This is probably NOT useful - even if this ever reaches a point where a usable app is produced, it will just be an app
  to assign someone a target and track when someone else says that they hit them.
 
-License
--------
-* Ummmm... if your really interested in re-using any of this code I would probably advise against it, but since it
- does bother me to see a project on github without a clear license, think Apache - I may put the proper files and
- notices in at some point, but if it really matters file a bug and force me to do it.
-
 Building and running
 --------------------
 In order to build Office Assassin you will need to have mvn, npm, bower and brunch on your path. Get maven, an up
 to date version of nodejs (note, the version of node that is in the base ubuntu repositories is not up to date, see
 https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager), and then execute:
 
-  sudo npm install -g bower
+    sudo npm install -g bower
 
-  sudo npm install -g brunch
+    sudo npm install -g brunch
 
 At this point you should be able to build the app:
 
-  mvn verify
+    mvn verify
 
 (note, mvn package will work as well but there are integration tests that will be skipped)
 
@@ -45,10 +39,16 @@ property assassin.config.
 
 To run the standalone jar:
 
-  java -jar rest/standalone/target/standalone-1.0-SNAPSHOT.war
+    java -jar rest/standalone/target/standalone-1.0-SNAPSHOT.war
 
 Or:
 
-  java -jar -Dassassin.config=YOUR_CONFIG_FILE_HERE rest/standalone/target/standalone-1.0-SNAPSHOT.war
+    java -jar -Dassassin.config=YOUR_CONFIG_FILE_HERE rest/standalone/target/standalone-1.0-SNAPSHOT.war
 
 See rest/webapp/ for a war suitable for deployment in an external servlet container.
+
+License
+-------
+* Ummmm... if your really interested in re-using any of this code I would probably advise against it, but since it
+ does bother me to see a project on github without a clear license, think Apache - I may put the proper files and
+ notices in at some point, but if it really matters file a bug and force me to do it.
