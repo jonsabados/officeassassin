@@ -10,10 +10,5 @@ Assassin.ApplicationController = Ember.Controller.extend({
     if (!NavigationManager.routeAllowed(this.get("currentPath"))) {
       this.transitionToRoute("index");
     }
-  }.observes("navigation"),
-
-  updateCurrentPath: function () {
-    Assassin.set("currentPath", this.get("currentPath"));
-  }.observes("currentPath")
-
+  }.observes("navigation")
 });

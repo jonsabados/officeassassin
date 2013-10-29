@@ -3,9 +3,7 @@
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         {{#each navigation}}
-          {{#if enabled}}
-            <span class="icon-bar"></span>
-          {{/if}}
+          <span class="icon-bar"></span>
         {{/each}}
       </button>
       <a class="navbar-brand" href="#">Office Assassin</a>
@@ -13,9 +11,7 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         {{#each navigation}}
-          {{#if enabled}}
-            <li {{bind-attr class="active"}}>{{#linkTo route}}{{label}}{{/linkTo}}</li>
-          {{/if}}
+          {{#linkTo route tagName="li" href=false}}{{#linkTo route}}{{label}}{{/linkTo}}{{/linkTo}}
         {{/each}}
       </ul>
       <form class="navbar-form navbar-right">

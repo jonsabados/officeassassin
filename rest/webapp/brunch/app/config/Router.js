@@ -4,6 +4,6 @@ module.exports = Assassin.Router.map(function () {
   this.route("index", { path: "/" });
   this.route("enlist", { path: "/enlist" });
   this.resource("userAdmin", { path: "/userAdmin" }, function () {
-    this.route("user");
+    this.route("user", { path: "/user/:user_id" });
   });
 });
