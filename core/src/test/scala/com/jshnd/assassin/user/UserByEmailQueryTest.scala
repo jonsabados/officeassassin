@@ -7,13 +7,15 @@ import com.jshnd.assassin.DbTester
 import com.jshnd.assassin.persistence.{QueryResult, AssassinStore}
 
 @RunWith(classOf[JUnitRunner])
-class UserQueryTest extends FunSpec with Inside with DbTester {
+class UserByEmailQueryTest extends FunSpec with Inside with DbTester {
 
   val store = injector.getInstance(classOf[AssassinStore])
 
-  describe("UserQuery") {
-    it("Should find users") {
-      // TODO - when the query has predicates
+  describe("UserByEmailQuery") {
+    it("should find users by email") {
+      inside(store.allResults(new UserByEmailQuery("one@one.com"))) {
+        case QueryResult(List(User("one@one.com", "one", None, _)), 1) =>
+      }
     }
   }
 

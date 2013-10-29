@@ -33,7 +33,7 @@ class QueryUtilTest extends FunSpec with MockitoSugar with BeforeAndAfter {
 
     describe("#listResponse()") {
       it("Should return a partial content response when there are more results") {
-        val query = new UserQuery(None, None, 10, 10)
+        val query = new UserQuery(10, 10)
         val result = new PagedQueryResult[User](users(10), 10, 21)
         when(mockStore.pagedResult(query)).thenReturn(result)
         val response = testObj.listResponse(query)
@@ -41,7 +41,7 @@ class QueryUtilTest extends FunSpec with MockitoSugar with BeforeAndAfter {
       }
 
       it("Should return a 200 response when there are less results than results per page") {
-        val query = new UserQuery(None, None, 10, 10)
+        val query = new UserQuery(10, 10)
         val result = new PagedQueryResult[User](users(9), 9, 19)
         when(mockStore.pagedResult(query)).thenReturn(result)
         val response = testObj.listResponse(query)
@@ -49,7 +49,7 @@ class QueryUtilTest extends FunSpec with MockitoSugar with BeforeAndAfter {
       }
 
       it("Should return a 200 response when on the last page and it is full but there are no more results") {
-        val query = new UserQuery(None, None, 10, 10)
+        val query = new UserQuery(10, 10)
         val result = new PagedQueryResult[User](users(10), 10, 20)
         when(mockStore.pagedResult(query)).thenReturn(result)
         val response = testObj.listResponse(query)

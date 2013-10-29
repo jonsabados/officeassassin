@@ -4,8 +4,8 @@ import javax.ws.rs._
 import com.jshnd.assassin.dto.{UserViewDto, RoleDto, UserEditDto}
 import com.google.inject.Inject
 import javax.ws.rs.core.{MediaType, Response}
-import com.jshnd.assassin.user.{UserQuery, User}
-import scala.{Array, Some}
+import com.jshnd.assassin.user.{UserByEmailQuery, UserQuery, User}
+import scala.Array
 import com.jshnd.shiro.{RequiresPermission, Substitution}
 import com.jshnd.assassin.permissions.{UserRoleQuery, Role}
 
@@ -17,12 +17,12 @@ class UserResource @Inject() (userUtil: QueryUtil[Int, User, UserViewDto],
 
   @GET
   @RequiresPermission("users:view:*")
-  def allUsers(@QueryParam("offset")
+  def users(@QueryParam("offset")
                @DefaultValue("0")
                offset: Int,
                @QueryParam("pageLength")
                @DefaultValue("10")
-               pageLength: Int): Response = userUtil.listResponse(new UserQuery(None, None, offset, pageLength))
+               pageLength: Int): Response = userUtil.listResponse(new UserQuery(offset, pageLength))
 
   @GET
   @Path("/id/{id}")
@@ -45,7 +45,7 @@ class UserResource @Inject() (userUtil: QueryUtil[Int, User, UserViewDto],
   @Path("/email/{emailAddress}")
   @RequiresPermission("users:view:{email}")
   def userByEmail(@PathParam("emailAddress") emailAddress: String): Response =
-    userUtil.uniqueResponse(new UserQuery(Some(emailAddress), None))
+    userUtil.uniqueResponse(new UserByEmailQuery(emailAddress))
 
   @PUT
   @Path("/id/{id}")

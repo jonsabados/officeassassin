@@ -19,10 +19,10 @@ class UserModule extends AbstractModule {
       userController.newUser(u)
     )
     bind(new TypeLiteral[(String) => Option[User]] {}).annotatedWith(classOf[FindUserByEmail]).toInstance(e =>
-      store.find(new UserQuery(Some(e), None))
+      store.find(new UserByEmailQuery(e))
     )
     bind(new TypeLiteral[(String) => Option[User]] {}).annotatedWith(classOf[FindUserByHandle]).toInstance(h =>
-      store.find(new UserQuery(None, Some(h)))
+      store.find(new UserByHandleQuery(h))
     )
 
   }
