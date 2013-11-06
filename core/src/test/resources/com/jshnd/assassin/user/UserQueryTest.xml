@@ -1,8 +1,18 @@
 <dataset>
     <users email_address="one@one.com"
            handle="one"
+           full_name="One at One"
            password_hash="123" />
     <users email_address="two@one.com"
            handle="two"
+           full_name="Two at Two"
+           password_hash="123" />
+    <users email_address="fooA@foo.com"
+           handle="fooA"
+           full_name="Foo Alpha"
+           password_hash="123" />
+    <users email_address="fooB@foo.com"
+           handle="fooB"
+           full_name="Foo Beta"
            password_hash="123" />
 </dataset>

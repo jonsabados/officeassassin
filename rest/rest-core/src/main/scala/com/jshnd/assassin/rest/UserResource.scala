@@ -18,11 +18,11 @@ class UserResource @Inject() (userUtil: QueryUtil[Int, User, UserViewDto],
   @GET
   @RequiresPermission("users:view:*")
   def users(@QueryParam("offset")
-               @DefaultValue("0")
-               offset: Int,
-               @QueryParam("pageLength")
-               @DefaultValue("10")
-               pageLength: Int): Response = userUtil.listResponse(new UserQuery(offset, pageLength))
+            @DefaultValue("0")
+            offset: Int,
+            @QueryParam("pageLength")
+            @DefaultValue("10")
+            pageLength: Int): Response = userUtil.listResponse(new UserQuery(None, None, None, offset, pageLength))
 
   @GET
   @Path("/id/{id}")

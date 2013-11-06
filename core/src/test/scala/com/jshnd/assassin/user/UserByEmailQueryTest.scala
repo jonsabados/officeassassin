@@ -14,7 +14,7 @@ class UserByEmailQueryTest extends FunSpec with Inside with DbTester {
   describe("UserByEmailQuery") {
     it("should find users by email") {
       inside(store.allResults(new UserByEmailQuery("one@one.com"))) {
-        case QueryResult(List(User("one@one.com", "one", None, _)), 1) =>
+        case QueryResult(List(User("one@one.com", "one", _, _)), 1) =>
       }
     }
   }
